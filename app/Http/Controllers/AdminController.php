@@ -19,9 +19,9 @@ class AdminController extends Controller
 
         $orders = Order::get();
         $totalorder = count($orders);
-     
-        
-        
+
+
+
         if(Reminder::find(1)==null)
         {
             $reminder=new Reminder();
@@ -34,7 +34,7 @@ class AdminController extends Controller
         {
             $reminder = Reminder::find(1);
         }
-        
+
         $gross = Order::get();
         $gross->transform(function($order,$key){
             $order->cart = unserialize($order->cart);
@@ -47,14 +47,14 @@ class AdminController extends Controller
 
 
         $latest=Order::orderBy('created_at','DESC')->take(5)->get();
-        
-        return view('admin.index',compact('latest','totaluser','totalorder','totalgross','reminder'));
+
+        return view('admin.master',compact('latest','totaluser','totalorder','totalgross','reminder'));
     }
 
     public function order()
     {
         $orders=Order::orderBy('created_at','DESC')->get();
-        
+
         return view('admin.order',compact('orders'));
     }
 
@@ -85,3 +85,4 @@ class AdminController extends Controller
         return redirect()->route('admin.index')->with('success','Successfully updated the reminder!');
     }
 }
+

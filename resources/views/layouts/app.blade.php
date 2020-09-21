@@ -40,8 +40,8 @@
                     <ul class="navbar-nav mx-auto" style="width:50%;">
                         <li class="nav-item mx-auto w-100">
                             <form action="" class="d-flex row-flex border" validate>
-                                <input type="search" name="query" class="form-control border-0" id="" style="outline:0px !important; -webkit-appearance:none; box-shadow: none !important;" placeholder="Search fot items" required>
-                                <button type="submit" class="" style="outline:0px !important;"><i class="fa fa-search"></i></button>
+                                <input type="search" name="query"  oninvalid="this.setCustomValidity(' ')" onvalid="this.setCustomValidity('')" class="form-control border-0" id="" style="outline:0px !important; -webkit-appearance:none; box-shadow: none !important;" placeholder="Search fot items" required>
+                                <button type="submit" class="px-3 bg-light" style="outline:0px !important;"><i class="fa fa-search"></i></button>
                             </form>
                         </li>
                     </ul>

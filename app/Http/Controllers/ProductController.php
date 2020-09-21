@@ -21,7 +21,7 @@ class ProductController extends Controller
         $maxPrice = Product::select('price')->max('price');
         $minPrice = Product::select('price')->min('price');
         return view('products.index',compact(['brands','genders','categories','maxPrice','minPrice','products']));
-        
+
     }
 
     public function filter(Request $request)
@@ -33,10 +33,10 @@ class ProductController extends Controller
             $price = json_decode($request->get('price'));
             $gender = json_decode($request->get('gender'));
             $brand = json_decode($request->get('brand'));
-            
+
             if(!empty($query))
             {
-                $products= $products->where('name','like','%'.$query.'%');        
+                $products= $products->where('name','like','%'.$query.'%');
             }
             if(!empty($price))
             {
@@ -45,13 +45,13 @@ class ProductController extends Controller
             if(!empty($gender))
             {
                 $products= $products->whereIn('gender',$gender);
-            }   
+            }
             if(!empty($brand))
             {
                 $products= $products->whereIn('brand',$brand);
             }
             $products=$products->get();
-            
+
 
             $total_row = $products->count();
             if($total_row>0)
@@ -65,7 +65,7 @@ class ProductController extends Controller
                             <a href="product/'.$product->id.'">
                                 <div class="card-body ">
                                     <div class="product-info">
-                                    
+
                                     <div class="info-1"><img src="'.asset('/storage/'.$product->image).'" alt=""></div>
                                     <div class="info-4"><h5>'.$product->brand.'</h5></div>
                                     <div class="info-2"><h4>'.$product->name.'</h4></div>
@@ -74,7 +74,7 @@ class ProductController extends Controller
                                 </div>
                             </a>
                         </div>
-                        
+
                     </div>
                     ';
                 }
@@ -91,12 +91,12 @@ class ProductController extends Controller
                 'table_data'    =>$output
             );
             echo json_encode($data);
-        
+
         }
     }
 
     public function show(Product $product)
-    {   
+    {
         $sizes = Stock::where('product_id','=',$product->id)
                      ->get([
                             'name',
@@ -123,7 +123,7 @@ class ProductController extends Controller
         ]);
 
         $imagepath = $request->image->store('products','public');
-        
+
         $product = new Product();
         $product->name=request('name');
         $product->brand=request('brand');
@@ -132,13 +132,13 @@ class ProductController extends Controller
         $product->category=request('category');
         $product->image=$imagepath;
 
-        
+
 
         $product->save();
         // DB:: table('products')->insert($product);
         return redirect()->route('admin.product')->with('success','Successfully added the product!');
     }
-    
+
     public function editform($id)
     {
         $product = Product::findOrFail($id);
@@ -159,7 +159,7 @@ class ProductController extends Controller
         {
             $imagepath = $request->image->store('products','public');
             $product = Product::findOrFail($id);
-            
+
             $product->name=request('name');
             $product->brand=request('brand');
             $product->price=request('price');
@@ -179,9 +179,9 @@ class ProductController extends Controller
             $product->save();
         }
         return redirect()->route('admin.product')->with('success','Successfully edited the product!');
-        
+
     }
-    
+
     public function remove($id)
     {
         Product::where('id',$id)->delete();
