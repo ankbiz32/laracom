@@ -1,4 +1,4 @@
-@extends('layouts.admin')
+@extends('layouts.admin_old')
 
 @section ('content')
 
@@ -26,7 +26,7 @@
         <div class="col-4 totalorder">
             <div class="card">
                 <div class="card-header">
-                    <i class="fa fa-dropbox"> ORDER</i> 
+                    <i class="fa fa-dropbox"> ORDER</i>
                 </div>
                 <div class="card-body">
                     <h5>{{ $totalorder }} </h5>
@@ -39,7 +39,7 @@
                     <i class="fa fa-money"> GROSS</i>
                 </div>
                 <div class="card-body">
-                    
+
                     <h5>RM {{ $totalgross }}</h5>
                 </div>
             </div>
@@ -57,7 +57,7 @@
                                 <div class="col-12 d-flex">
                                     <div class="id" style="width:150px">Order ID: {{ $order->id }}</div>
                                     <div class="name">Customer Name: {{ $order->name }}</div>
-                                    <div class="status text-success ml-auto">PAID</div> 
+                                    <div class="status text-success ml-auto">PAID</div>
                                 </div>
                             </div>
                         </a>
@@ -83,5 +83,5 @@
         </div>
     </div>
 </div>
-    
+
 @endsection

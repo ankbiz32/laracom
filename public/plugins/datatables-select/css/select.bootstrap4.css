@@ -1,11 +1,11 @@
 table.dataTable tbody > tr.selected,
 table.dataTable tbody > tr > .selected {
-  background-color: #0275d8;
+  background-color: #ddd;
 }
 table.dataTable.stripe tbody > tr.odd.selected,
 table.dataTable.stripe tbody > tr.odd > .selected, table.dataTable.display tbody > tr.odd.selected,
 table.dataTable.display tbody > tr.odd > .selected {
-  background-color: #0172d2;
+  background-color: #ddd;
 }
 table.dataTable.hover tbody > tr.selected:hover,
 table.dataTable.hover tbody > tr > .selected:hover, table.dataTable.display tbody > tr.selected:hover,
@@ -68,27 +68,24 @@ table.dataTable tbody th.select-checkbox:before,
 table.dataTable tbody th.select-checkbox:after {
   display: block;
   position: absolute;
-  top: 1.2em;
-  left: 50%;
-  width: 12px;
-  height: 12px;
+  top: 38%;
+  left: 25%;
+  width: 18px;
+  height: 18px;
   box-sizing: border-box;
 }
 table.dataTable tbody td.select-checkbox:before,
 table.dataTable tbody th.select-checkbox:before {
   content: ' ';
-  margin-top: -6px;
-  margin-left: -6px;
   border: 1px solid black;
   border-radius: 3px;
 }
 table.dataTable tr.selected td.select-checkbox:after,
 table.dataTable tr.selected th.select-checkbox:after {
   content: '\2714';
-  margin-top: -11px;
-  margin-left: -4px;
+  margin-top: -1px;
+  margin-left: -1px;
   text-align: center;
-  text-shadow: 1px 1px #B0BED9, -1px -1px #B0BED9, 1px -1px #B0BED9, -1px 1px #B0BED9;
 }
 
 div.dataTables_wrapper span.select-info,
@@ -106,10 +103,10 @@ div.dataTables_wrapper span.select-item {
 table.dataTable tbody tr.selected,
 table.dataTable tbody th.selected,
 table.dataTable tbody td.selected {
-  color: white;
+  /* color: white; */
 }
 table.dataTable tbody tr.selected a,
 table.dataTable tbody th.selected a,
 table.dataTable tbody td.selected a {
-  color: #a2d4ed;
+  /* color: #a2d4ed; */
 }

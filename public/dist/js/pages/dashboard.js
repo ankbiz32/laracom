@@ -1,9 +1,3 @@
-/*
- * Author: Abdullah A Almsaeed
- * Date: 4 Jan 2014
- * Description:
- *      This is a demo file used only for the main dashboard (index.html)
- **/
 
 $(function () {
 
@@ -19,34 +13,9 @@ $(function () {
   })
   $('.connectedSortable .card-header, .connectedSortable .nav-tabs-custom').css('cursor', 'move')
 
-  // jQuery UI sortable for the todo list
-  $('.todo-list').sortable({
-    placeholder         : 'sort-highlight',
-    handle              : '.handle',
-    forcePlaceholderSize: true,
-    zIndex              : 999999
-  })
 
   // bootstrap WYSIHTML5 - text editor
   $('.textarea').summernote()
-
-  $('.daterange').daterangepicker({
-    ranges   : {
-      'Today'       : [moment(), moment()],
-      'Yesterday'   : [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
-      'Last 7 Days' : [moment().subtract(6, 'days'), moment()],
-      'Last 30 Days': [moment().subtract(29, 'days'), moment()],
-      'This Month'  : [moment().startOf('month'), moment().endOf('month')],
-      'Last Month'  : [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
-    },
-    startDate: moment().subtract(29, 'days'),
-    endDate  : moment()
-  }, function (start, end) {
-    window.alert('You chose: ' + start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'))
-  })
-
-  /* jQueryKnob */
-  $('.knob').knob()
 
   // jvectormap data
   var visitorsData = {
@@ -96,17 +65,6 @@ $(function () {
   sparkline1.draw([1000, 1200, 920, 927, 931, 1027, 819, 930, 1021]);
   sparkline2.draw([515, 519, 520, 522, 652, 810, 370, 627, 319, 630, 921]);
   sparkline3.draw([15, 19, 20, 22, 33, 27, 31, 27, 19, 30, 21]);
-
-  // The Calender
-  $('#calendar').datetimepicker({
-    format: 'L',
-    inline: true
-  })
-
-  // SLIMSCROLL FOR CHAT WIDGET
-  $('#chat-box').overlayScrollbars({
-    height: '250px'
-  })
 
   /* Chart.js Charts */
   // Sales chart
@@ -162,9 +120,9 @@ $(function () {
   }
 
   // This will get the first returned node in the jQuery collection.
-  var salesChart = new Chart(salesChartCanvas, { 
-      type: 'line', 
-      data: salesChartData, 
+  var salesChart = new Chart(salesChartCanvas, {
+      type: 'line',
+      data: salesChartData,
       options: salesChartOptions
     }
   )
@@ -173,9 +131,9 @@ $(function () {
   var pieChartCanvas = $('#sales-chart-canvas').get(0).getContext('2d')
   var pieData        = {
     labels: [
-        'Instore Sales', 
+        'Instore Sales',
         'Download Sales',
-        'Mail-Order Sales', 
+        'Mail-Order Sales',
     ],
     datasets: [
       {
@@ -196,7 +154,7 @@ $(function () {
   var pieChart = new Chart(pieChartCanvas, {
     type: 'doughnut',
     data: pieData,
-    options: pieOptions      
+    options: pieOptions
   });
 
   // Sales graph chart
@@ -254,9 +212,9 @@ $(function () {
   }
 
   // This will get the first returned node in the jQuery collection.
-  var salesGraphChart = new Chart(salesGraphChartCanvas, { 
-      type: 'line', 
-      data: salesGraphChartData, 
+  var salesGraphChart = new Chart(salesGraphChartCanvas, {
+      type: 'line',
+      data: salesGraphChartData,
       options: salesGraphChartOptions
     }
   )

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App;
+use Storage;
 use App\Product;
 use App\Stock;
 use App\Cart;
@@ -66,7 +67,7 @@ class ProductController extends Controller
                                 <div class="card-body ">
                                     <div class="product-info">
 
-                                    <div class="info-1"><img src="'.asset('/storage/'.$product->image).'" alt=""></div>
+                                    <div class="info-1"><img src="'.asset($product->image).'" alt=""></div>
                                     <div class="info-4"><h5>'.$product->brand.'</h5></div>
                                     <div class="info-2"><h4>'.$product->name.'</h4></div>
                                     <div class="info-3"><h5>RM '.$product->price.'</h5></div>
@@ -113,13 +114,14 @@ class ProductController extends Controller
 
     public function create(Request $request)
     {
+        // dd($request);
         $this->validate(request(),[
             'image'=>'required|image',
             'name'=>'required|string',
             'brand'=>'required|in:Nike,Adidas,New Balance,Asics,Puma,Skechers,Fila,Bata,Burberry,Converse',
             'price'=>'required|integer',
             'gender'=>'required|in:Male,Female,Unisex',
-            'category'=>'required|in:Shoes',
+            'category'=>'required|in:Shoes'
         ]);
 
         $imagepath = $request->image->store('products','public');
@@ -132,11 +134,8 @@ class ProductController extends Controller
         $product->category=request('category');
         $product->image=$imagepath;
 
-
-
         $product->save();
-        // DB:: table('products')->insert($product);
-        return redirect()->route('admin.product')->with('success','Successfully added the product!');
+        return redirect()->route('admin.product')->with('success','Product added !');
     }
 
     public function editform($id)
@@ -178,8 +177,25 @@ class ProductController extends Controller
             $product->category=request('category');
             $product->save();
         }
-        return redirect()->route('admin.product')->with('success','Successfully edited the product!');
+        return redirect()->route('admin.product')->with('success','Product updated !');
 
+    }
+
+    public function status(Request $request)
+    {
+        $product = Product::findOrFail(request('id'));
+            $product->is_active=request('active');
+            $product->save();
+
+        return response()->json(['success'=>'Status updated!']);
+    }
+
+    public function makeInActive($id)
+    {
+        Product::where('id',$id)->delete();
+        Stock::where('product_id',$id)->delete();
+
+        return redirect()->route('admin.product')->with('success','Product removed !');
     }
 
     public function remove($id)
@@ -187,10 +203,10 @@ class ProductController extends Controller
         Product::where('id',$id)->delete();
         Stock::where('product_id',$id)->delete();
 
-        return redirect()->route('admin.product')->with('success','Successfully removed the product!');
+        return redirect()->route('admin.product')->with('success','Product removed !');
     }
 
-    public function list()
+    public function listProducts()
     {
         $products = Product::orderBy('id')->get();
         //dd($products);

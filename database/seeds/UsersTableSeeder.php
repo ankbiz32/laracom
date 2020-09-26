@@ -16,15 +16,15 @@ class UsersTableSeeder extends Seeder
             [
                 'id'=>1,
                 'name'=>'Admin',
-                'email'=>'admin@mail.com',
+                'email'=>'admin@bhukyra.com',
                 'password'=>Hash::make('admin'),
                 'role'=>'Admin'
             ],
             [
                 'id'=>2,
                 'name'=>'Dawn Roe',
-                'email'=>'dawnroe@mail.com',
-                'password'=>Hash::make('dawnroe'),
+                'email'=>'user@gmail.com',
+                'password'=>Hash::make('user'),
                 'role'=>'Customer'
             ],
         ]);

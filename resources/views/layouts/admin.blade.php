@@ -1,150 +1,371 @@
-<!doctype html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+<!DOCTYPE html>
+<html>
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>{{ config('app.name', 'Laravel') }} CMS</title>
+  <link rel="icon" href="{{ URL::asset('photo/favicon.ico') }}" type="image/x-icon"/>
+  <!-- Tell the browser to be responsive to screen width -->
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="{{URL::to('/')}}/plugins/fontawesome-free/css/all.min.css">
+  <!-- Ionicons -->
+  <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+  <!-- JQVMap -->
+  <link rel="stylesheet" href="{{URL::to('/')}}/plugins/jqvmap/jqvmap.min.css">
+  <!-- Theme style -->
+  <link rel="stylesheet" href="{{URL::to('/')}}/dist/css/adminlte.min.css">
+  <!-- overlayScrollbars -->
+  <link rel="stylesheet" href="{{URL::to('/')}}/plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
+  <!-- summernote -->
+  <link rel="stylesheet" href="{{URL::to('/')}}/plugins/summernote/summernote-bs4.css">
+  <!-- Google Font: Source Sans Pro -->
+  <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="https://unpkg.com/notie/dist/notie.min.css">
+  <style>
+    .notie-container {
+        z-index:100000;
+    }
+      table.dataTable tbody td{
+        vertical-align: middle;
+    }
+    span.req{
+        color:red;
+    }
+  </style>
 
-    <!-- CSRF Token -->
-    <meta name="csrf-token" content="{{ csrf_token() }}">
-
-    <title>{{ config('app.name', 'Laravel') }}</title>
-
-    <!-- Fonts -->
-    <link rel="dns-prefetch" href="//fonts.gstatic.com">
-    <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
-
-    <!-- Styles -->
-    <link rel="icon" href="{{ URL::asset('photo/box2.svg') }}" type="image/x-icon"/>
-    {{-- <link href="{{ asset('css/app.css') }}" rel="stylesheet"> --}}
-    <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <link href="{{ asset('external-css/style.css') }}" rel="stylesheet">
+  @yield('css')
 
 </head>
-<body>
-    <div id="app">
-        <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">   
-            <div class="container">
-                <a class="navbar-brand" href="{{ route('admin.index') }}">
-                    <div class="d-flex">
-                        <div><img src="{{ asset('photo/box.svg') }}" style="height:50px;" alt=""></div>
-                        <div class="pl-3 ml-3 pt-2" style="border-left:1px solid rgba(0, 0, 0, 0.5); font-size:1.5rem;">{{ config('app.name', 'Laravel') }}</div>
-                    </div>
+<body class="hold-transition sidebar-mini layout-fixed text-sm">
+<div class="wrapper">
+
+  <!-- Navbar -->
+  <nav class="main-header navbar navbar-expand navbar-expand navbar-light navbar-warning">
+    <!-- Left navbar links -->
+    <ul class="navbar-nav">
+      <li class="nav-item">
+        <a class="nav-link" data-widget="pushmenu" href="#" role="button"><strong><i class="fas fa-bars"></i>&nbsp; Menu</strong></a>
+      </li>
+    </ul>
+
+    <span class="mx-auto d-sm-none d-flex align-items-center">
+        <img src="{{URL::to('/')}}/dist/img/bhukyra_emblem.png" alt="Logo" class="brand-image img-circle " height="30">
+        <span class="ml-1">Bhukyra</span>
+    </span>
+    <!-- <form class="form-inline ml-3">
+      <div class="input-group input-group-sm">
+        <input class="form-control form-control-navbar" type="search" placeholder="Search" aria-label="Search">
+        <div class="input-group-append">
+          <button class="btn btn-navbar" type="submit">
+            <i class="fas fa-search"></i>
+          </button>
+        </div>
+      </div>
+    </form> -->
+
+    <!-- Right navbar links -->
+    <ul class="navbar-nav ml-auto">
+      <!-- Notifications Dropdown Menu -->
+
+      <li class="nav-item mr-2 d-none d-sm-inline-block">
+        <a href="{{URL::to('/')}}" target="_blank" class="nav-link"><strong><i class="fas fa-external-link-alt"></i>&nbsp; Visit Store</strong></a>
+      </li>
+      <li class="nav-item dropdown mr-0 mr-sm-2">
+        <a class="nav-link" data-toggle="dropdown" href="#">
+        <i class="fa fa-user"></i> &nbsp;<i class="fa fa-caret-down"></i>
+          <!-- <span class="badge badge-warning navbar-badge">15</span> -->
+        </a>
+        <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
+          <!-- <span class="dropdown-item dropdown-header">15 Notifications</span> -->
+          <div class="dropdown-divider"></div>
+          <a href="#" class="dropdown-item">
+            <i class="fas fa-user"></i> &nbsp; Admin profile
+          </a>
+          <div class="dropdown-divider"></div>
+          <a href="#" class="dropdown-item text-danger"
+            onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+            <i class="fas fa-sign-out-alt"></i> &nbsp; {{ __('Logout') }}
+          </a>
+
+          <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+            @csrf
+          </form>
+        </div>
+      </li>
+    </ul>
+  </nav>
+  <!-- /.navbar -->
+
+
+
+ <!-- Main Sidebar Container -->
+ <aside class="main-sidebar sidebar-dark-warning elevation-0">
+    <!-- Brand Logo -->
+    <a href="{{URL::to('/dashboard')}}" class="brand-link navbar-warning">
+      <img src="{{URL::to('/')}}/dist/img/bhukyra_emblem.png" alt="Logo" class="brand-image img-circle elevation-3"
+           style="opacity: .8">
+      <span class="brand-text text-dark text-md">Bhukyra <strong>CMS</strong></span>
+    </a>
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+      <!-- Sidebar user panel (optional) -->
+      <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+        <div class="image">
+          <img src="{{URL::to('/')}}/dist/img/user2-160x160.jpg" class="img-circle elevation-0" alt="User Image">
+        </div>
+        <div class="info">
+          <a href="#" class="d-block">{{ Auth::user()->name }}</a>
+        </div>
+      </div>
+
+      <!-- Sidebar Menu -->
+      <nav class="mt-2">
+        <ul class="nav nav-pills nav-sidebar nav-child-indent nav-compacts nav-legacy flex-column pb-5" data-widget="treeview" role="menu" data-accordion="false">
+            <li class="nav-item">
+                <a href="{{ route('admin.index') }}" class="nav-link py-3 active">
+                    <i class="fas fa-tachometer-alt nav-icon"></i>
+                    <p>Dashboard</p>
                 </a>
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
+            </li>
+            <li class="nav-item has-treeview">
+                <a href="#" class="nav-link py-3">
+                <i class="nav-icon fas fa-cube"></i>
+                <p class="">
+                    Products
+                    <i class="right mt-2 fas fa-angle-left"></i>
+                </p>
+                </a>
+                <ul class="nav nav-treeview">
+                <li class="nav-item">
+                    <a href="{{ route('admin.product') }}" class="nav-link active">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Products</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ route('admin.categories') }}" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Categories</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ route('admin.product') }}" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Brands</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ route('admin.tags') }}" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Tags</p>
+                    </a>
+                </li>
+                </ul>
+            </li>
+            <li class="nav-item has-treeview">
+                <a href="#" class="nav-link py-3">
+                <i class="nav-icon fas fa-rupee-sign"></i>
+                <p class="">
+                    Sales
+                    <i class="right mt-2 fas fa-angle-left"></i>
+                </p>
+                </a>
+                <ul class="nav nav-treeview">
+                <li class="nav-item">
+                    <a href="{{ route('admin.order') }}" class="nav-link active">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Orders</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ route('admin.transactions') }}" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Transactions</p>
+                    </a>
+                </li>
+                </ul>
+            </li>
 
-                <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <!-- Left Side Of Navbar -->
-                    <ul class="navbar-nav mr-auto">
+            <li class="nav-header pt-2 text-grey" style="opacity: .5">FRONTEND</li>
+            <li class="nav-item">
+                <a href="#" class="nav-link py-3">
+                    <i class="fas fa-store nav-icon"></i>
+                    <p>Store Profile</p>
+                </a>
+            </li>
 
+            <li class="nav-header pt-2 text-grey" style="opacity: .5">SYSTEM</li>
+            <li class="nav-item">
+                <a href="#" class="nav-link py-3">
+                    <i class="far fa-chart-bar nav-icon"></i>
+                    <p>Reports</p>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="#" class="nav-link py-3">
+                    <i class="fa fa-map-marked-alt nav-icon"></i>
+                    <p>Marketplaces</p>
+                </a>
+            </li>
+            <li class="nav-item has-treeview">
+                <a href="#" class="nav-link py-3">
+                <i class="nav-icon fas fa-users"></i>
+                <p class="">
+                    Users
+                    <i class="right mt-2 fas fa-angle-left"></i>
+                </p>
+                </a>
+                <ul class="nav nav-treeview">
+                <li class="nav-item">
+                    <a href="" class="nav-link active">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Users</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Roles</p>
+                    </a>
+                </li>
+                </ul>
+            </li>
+
+
+            <!-- <li class="nav-item has-treeview">
+                <a href="#" class="nav-link py-3">
+                <i class="nav-icon fas fa-list"></i>
+                <p>
+                    Multilevel
+                    <i class="right mt-2 fas fa-angle-left"></i>
+                </p>
+                </a>
+                <ul class="nav nav-treeview">
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Level 2</p>
+                    </a>
+                </li>
+                <li class="nav-item has-treeview">
+                    <a href="#" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>
+                        Level 2
+                        <i class="right fas fa-angle-left"></i>
+                    </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">
+                        <i class="far fa-dot-circle nav-icon"></i>
+                        <p>Level 3</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">
+                        <i class="far fa-dot-circle nav-icon"></i>
+                        <p>Level 3</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">
+                        <i class="far fa-dot-circle nav-icon"></i>
+                        <p>Level 3</p>
+                        </a>
+                    </li>
                     </ul>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Level 2</p>
+                    </a>
+                </li>
+                </ul>
+            </li> -->
 
-                    <!-- Right Side Of Navbar -->
-                    <ul class="navbar-nav ml-auto">
-                        <!-- Authentication Links -->
-                
-                        <li class="nav-item dropdown">
-                            <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                                {{ Auth::user()->name }} <span class="caret"></span>
-                            </a>
-
-                            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                                <a href="{{ route('profile.edit',['user'=>Auth::user()->id ]) }}" class="dropdown-item">Edit Profile</a>
-                                
-                                @if(Auth::user()->role == 'Customer')
-                                <a href="{{ route('order.show',['user'=>Auth::user()->id]) }}" class="dropdown-item">Purchase History</a>
-                                @endif
-                                
-                                <a class="dropdown-item" href="{{ route('logout') }}"
-                                    onclick="event.preventDefault();
-                                                    document.getElementById('logout-form').submit();">
-                                    {{ __('Logout') }}
-                                </a>
-
-                                <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-                                    @csrf
-                                </form>
-                            </div>
-                        </li>
-                  
-                    </ul>
-                </div>
-            </div>
-        </nav>
-
-
-        <main class="py-4">
-            <div class="container">
-                <div class="row mx-auto">
-                    <div class="col-12 col-md-12 col-lg-2 col-md-2 col-sm-12 pb-2">
-                        <div class="card">
-                            <div class="card-header">
-                                NAVIGATION
-                            </div>
-                            <ul class="list-group">
-                                <a href="{{ route('admin.index') }}" class="list-group-item admin-navigation">
-                                    Dashboard
-                                </a>
-                                <a href="{{ route('admin.user') }}" class="list-group-item admin-navigation">
-                                        User
-                                </a>
-                                <a href="{{ route('admin.product') }}" class="list-group-item admin-navigation">
-                                        Product
-                                </a>
-                                <a href="{{ route('admin.stock') }}" class="list-group-item admin-navigation">
-                                        Stock
-                                </a>
-                                <a href="{{ route('admin.order') }}" class="list-group-item admin-navigation">
-                                        Order
-                                </a>
-                            </ul>
-                        </div>
-                        
-                    </div>
-                    @yield('content')
-                </div>
-            </div>
-            
-        </main>
-
+        </ul>
+      </nav>
+      <!-- /.sidebar-menu -->
     </div>
+    <!-- /.sidebar -->
+  </aside>
 
+  @yield('content')
+
+
+
+
+  <!-- /.content-wrapper -->
+  <footer class="main-footer">
+    <strong>Copyright &copy; 2020-21 <a href="https://bhukyra.com" target="_blank">Bhukyra Agro Pvt. Ltd.</a></strong> |
+    All rights reserved.
+    <div class="float-right d-none d-sm-inline-block">
+      <b></b>
+    </div>
+  </footer>
+</div>
+<!-- ./wrapper -->
+
+<!-- jQuery -->
+<script src="{{URL::to('/')}}/plugins/jquery/jquery.min.js"></script>
+<!-- jQuery UI 1.11.4 -->
+<script src="{{URL::to('/')}}/plugins/jquery-ui/jquery-ui.min.js"></script>
+<!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
+<script>
+  $.widget.bridge('uibutton', $.ui.button)
+</script>
+<!-- Bootstrap 4 -->
+<script src="{{URL::to('/')}}/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+<!-- ChartJS -->
+<script src="{{URL::to('/')}}/plugins/chart.js/Chart.min.js"></script>
+<!-- Sparkline -->
+<script src="{{URL::to('/')}}/plugins/sparklines/sparkline.js"></script>
+<!-- JQVMap -->
+<script src="{{URL::to('/')}}/plugins/jqvmap/jquery.vmap.min.js"></script>
+<script src="{{URL::to('/')}}/plugins/jqvmap/maps/jquery.vmap.usa.js"></script>
+<!-- Summernote -->
+<script src="{{URL::to('/')}}/plugins/summernote/summernote-bs4.min.js"></script>
+<!-- overlayScrollbars -->
+<script src="{{URL::to('/')}}/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
+<!-- AdminLTE App -->
+<script src="{{URL::to('/')}}/dist/js/adminlte.js"></script>
+
+<script src="{{URL::to('/')}}/dist/js/demo.js"></script>
+
+<script src="https://unpkg.com/notie"></script>
+@yield('scripts')
+
+
+    @if ($errors->any())
+        @foreach ($errors->all() as $error)
+        <script>
+            notie.alert({
+                text: "{{ $error}}" ,
+                type: 'error'
+            })
+        </script>
+        @endforeach
+    @endif
+
+    @if(Session::has('success'))
+    <script>
+        notie.alert({
+            text: "{{ Session::get('success') }}" ,
+            type: 'success'
+        })
+    </script>
+    @elseif(Session::has('error'))
+    <script>
+        notie.alert({
+            text: "{{ Session::get('error') }}" ,
+            type: 'error'
+        })
+    </script>
+    @endif
 
 </body>
-
-<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-
-@yield('script')
-<script>
-
-function product_size()
-        {
-            var id =JSON.stringify($('#product-list').val());
-            
-            $.ajax({
-                url:"{{ route('admin.stockshow') }}",
-                method:'GET',
-                data:{
-                         id:id,
-                    },
-                dataType:'json',
-                success:function(data)
-                {
-                    $('#stock-list').html(data.table_data);
-                }
-            })
-        }
-
-        $(document).on('change','#product-list',function(){
-            product_size();
-        });
-    
-</script>
-
 </html>
-

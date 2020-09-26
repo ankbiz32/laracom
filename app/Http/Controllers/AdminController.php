@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 use App\Order;
 use App\User;
+use App\Product;
 use App\Profile;
 use App\Reminder;
 use Illuminate\Http\Request;
@@ -20,7 +21,10 @@ class AdminController extends Controller
         $orders = Order::get();
         $totalorder = count($orders);
 
+        $products = Product::get();
+        $totalproduct = count($products);
 
+        $latest=Order::orderBy('created_at','DESC')->take(5)->get();
 
         if(Reminder::find(1)==null)
         {
@@ -46,9 +50,8 @@ class AdminController extends Controller
         }
 
 
-        $latest=Order::orderBy('created_at','DESC')->take(5)->get();
 
-        return view('admin.master',compact('latest','totaluser','totalorder','totalgross','reminder'));
+        return view('admin.dashboard',compact('latest','totaluser','totalorder','totalproduct','totalgross','reminder'));
     }
 
     public function order()
@@ -78,11 +81,17 @@ class AdminController extends Controller
 
     public function updatereminder()
     {
+        $this->validate(request(),[
+            'reminder'=>'required'
+        ]);
         $reminder= Reminder::find(1);
         $reminder->reminder = request('reminder');
-        $reminder->save();
-
-        return redirect()->route('admin.index')->with('success','Successfully updated the reminder!');
+        if( $reminder->save()){
+            return redirect()->route('admin.index')->with('success','Reminder updated !');
+        }
+        else{
+            return redirect()->route('admin.index')->with('error','Error! Try again');
+        }
     }
 }
 

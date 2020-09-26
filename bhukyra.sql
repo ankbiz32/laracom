@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Aug 28, 2020 at 01:50 PM
+-- Generation Time: Sep 26, 2020 at 11:19 AM
 -- Server version: 10.4.13-MariaDB
 -- PHP Version: 7.4.8
 
@@ -18,7 +18,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `laracom`
+-- Database: `bhukyra`
 --
 
 -- --------------------------------------------------------
@@ -53,15 +53,15 @@ CREATE TABLE `migrations` (
 --
 
 INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
-(1, '2014_10_12_000000_create_users_table', 1),
-(2, '2014_10_12_100000_create_password_resets_table', 1),
-(3, '2019_08_19_000000_create_failed_jobs_table', 1),
-(4, '2020_04_18_101953_create_products_table', 1),
-(5, '2020_04_18_132841_create_profiles_table', 1),
-(6, '2020_04_21_154729_create_stocks_table', 1),
-(7, '2020_04_24_084350_create_orders_table', 1),
-(8, '2020_04_26_123151_create_reminders_table', 1),
-(9, '2020_04_27_044831_create_newsletters_table', 1);
+(19, '2014_10_12_000000_create_users_table', 1),
+(20, '2014_10_12_100000_create_password_resets_table', 1),
+(21, '2019_08_19_000000_create_failed_jobs_table', 1),
+(22, '2020_04_18_101953_create_products_table', 1),
+(23, '2020_04_18_132841_create_profiles_table', 1),
+(24, '2020_04_21_154729_create_stocks_table', 1),
+(25, '2020_04_24_084350_create_orders_table', 1),
+(26, '2020_04_26_123151_create_reminders_table', 1),
+(27, '2020_04_27_044831_create_newsletters_table', 1);
 
 -- --------------------------------------------------------
 
@@ -124,6 +124,7 @@ CREATE TABLE `products` (
   `gender` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `category` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `quantity` int(11) NOT NULL DEFAULT 1,
+  `is_active` int(11) NOT NULL DEFAULT 1,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -132,26 +133,26 @@ CREATE TABLE `products` (
 -- Dumping data for table `products`
 --
 
-INSERT INTO `products` (`id`, `name`, `brand`, `price`, `image`, `gender`, `category`, `quantity`, `created_at`, `updated_at`) VALUES
-(1, 'AIR JORDAN 1 X OFF-WHITE NRG \"OFF WHITE UNC\"', 'US', 1375, 'products/1.jpg', 'Female', 'Shoes', 1, NULL, NULL),
-(2, 'STUSSY X AIR ZOOM SPIRIDON CAGED \"PURE PLATINUM\"', 'Nike', 225, 'products/2.jpg', 'Unisex', 'Shoes', 12, NULL, NULL),
-(3, 'SUPREME X AIR FORCE 1 LOW \"BOX LOGO - WHITE\"', 'Nike', 275, 'products/3.jpg', 'Male', 'Shoes', 1, NULL, NULL),
-(4, 'SACAI X LDV WAFFLE \"BLACK NYLON\"', 'Nike', 190, 'products/4.jpg', 'Male', 'Shoes', 1, NULL, NULL),
-(5, 'AIR JORDAN 1 RETRO HIGH \"SHATTERED BACKBOARD\"', 'Nike', 980, 'products/5.jpg', 'Male', 'Shoes', 14, NULL, NULL),
-(6, 'YEEZY BOOST 350 V2 \"CREAM\"', 'Adidas', 780, 'products/6.jpg', 'Unisex', 'Shoes', 3, NULL, NULL),
-(7, 'YEEZY BOOST 350 V2\"YECHEIL NON-REFLECT\"', 'Adidas', 978, 'products/7.jpg', 'Male', 'Shoes', 5, NULL, NULL),
-(8, 'YEEZY BOOST 350 V2 \"FROZEN YELLOW\"', 'Adidas', 1100, 'products/8.jpg', 'Unisex', 'Shoes', 3, NULL, NULL),
-(9, 'AIR JORDAN 5 RETRO SP \"MUSLIN\"', 'Nike', 1499, 'products/9.jpg', 'Male', 'Shoes', 3, NULL, NULL),
-(10, 'AIR JORDAN 1 RETRO HIGH ZOOM \"RACER BLUE\"', 'Nike', 625, 'products/10.jpg', 'Male', 'Shoes', 5, NULL, NULL),
-(11, 'FENTY SLIDE \"PINK BOW \"', 'Puma', 399, 'products/11.jpg', 'Female', 'Shoes', 3, NULL, NULL),
-(12, 'WMNS RS-X TRACKS \"FAIR AQUA\"', 'Puma', 499, 'products/12.jpg', 'Female', 'Shoes', 3, NULL, NULL),
-(13, 'OLD SKOOL \'BLACK WHITE\' \"BLACK WHITE\"', 'Vans', 239, 'products/13.jpg', 'Unisex', 'Shoes', 6, NULL, NULL),
-(14, 'OLD SKOOL \"YACHT CLUB\"', 'Vans', 359, 'products/14.jpg', 'Unisex', 'Shoes', 5, NULL, NULL),
-(15, 'VANS OLD SKOOL \"RED CHECKERBOARD \"', 'Vans', 419, 'products/15.jpg', 'Unisex', 'Shoes', 5, NULL, NULL),
-(16, 'ALL STAR 70S HI \"MILK\"', 'Converse', 579, 'products/16.jpg', 'Unisex', 'Shoes', 5, NULL, NULL),
-(17, 'ALL-STAR 70S HI \"PLAY\"', 'Puma', 619, 'products/17.jpg', 'Unisex', 'Shoes', 3, NULL, NULL),
-(18, 'FEAR OF GOD CHUCK 70 HI \"NATURAL\"', 'Converse', 1259, 'products/18.jpg', 'Female', 'Shoes', 5, NULL, NULL),
-(19, 'Bata AIR ZOOM SPIRIDON CAGED \"PURE PLATINUM\"', 'Bata', 225, 'products/2.jpg', 'Unisex', 'Shoes', 12, NULL, NULL);
+INSERT INTO `products` (`id`, `name`, `brand`, `price`, `image`, `gender`, `category`, `quantity`, `is_active`, `created_at`, `updated_at`) VALUES
+(1, 'AIR JORDAN 1 X OFF-WHITE NRG \"OFF WHITE UNC\"', 'Nike', 1375, 'products/1.jpg', 'Female', 'Shoes', 1, 1, NULL, '2020-09-26 03:45:39'),
+(2, 'STUSSY X AIR ZOOM SPIRIDON CAGED \"PURE PLATINUM\"', 'Nike', 225, 'products/2.jpg', 'Unisex', 'Shoes', 12, 1, NULL, '2020-09-26 03:45:35'),
+(3, 'SUPREME X AIR FORCE 1 LOW \"BOX LOGO - WHITE\"', 'Nike', 275, 'products/3.jpg', 'Male', 'Shoes', 1, 1, NULL, '2020-09-26 03:45:34'),
+(4, 'SACAI X LDV WAFFLE \"BLACK NYLON\"', 'Nike', 190, 'products/4.jpg', 'Male', 'Shoes', 1, 1, NULL, '2020-09-26 03:45:33'),
+(5, 'AIR JORDAN 1 RETRO HIGH \"SHATTERED BACKBOARD\"', 'Nike', 980, 'products/5.jpg', 'Male', 'Shoes', 14, 1, NULL, NULL),
+(6, 'YEEZY BOOST 350 V2 \"CREAM\"', 'Adidas', 780, 'products/6.jpg', 'Unisex', 'Shoes', 3, 1, NULL, NULL),
+(7, 'YEEZY BOOST 350 V2\"YECHEIL NON-REFLECT\"', 'Adidas', 978, 'products/7.jpg', 'Male', 'Shoes', 5, 1, NULL, NULL),
+(8, 'YEEZY BOOST 350 V2 \"FROZEN YELLOW\"', 'Adidas', 1100, 'products/8.jpg', 'Unisex', 'Shoes', 3, 1, NULL, NULL),
+(9, 'AIR JORDAN 5 RETRO SP \"MUSLIN\"', 'Nike', 1499, 'products/9.jpg', 'Male', 'Shoes', 3, 1, NULL, NULL),
+(10, 'AIR JORDAN 1 RETRO HIGH ZOOM \"RACER BLUE\"', 'Nike', 625, 'products/10.jpg', 'Male', 'Shoes', 5, 1, NULL, NULL),
+(11, 'FENTY SLIDE \"PINK BOW \"', 'Puma', 399, 'products/11.jpg', 'Female', 'Shoes', 3, 1, NULL, NULL),
+(12, 'WMNS RS-X TRACKS \"FAIR AQUA\"', 'Puma', 499, 'products/12.jpg', 'Female', 'Shoes', 3, 1, NULL, NULL),
+(13, 'OLD SKOOL \'BLACK WHITE\' \"BLACK WHITE\"', 'Vans', 239, 'products/13.jpg', 'Unisex', 'Shoes', 6, 1, NULL, NULL),
+(14, 'OLD SKOOL \"YACHT CLUB\"', 'Vans', 359, 'products/14.jpg', 'Unisex', 'Shoes', 5, 1, NULL, NULL),
+(15, 'VANS OLD SKOOL \"RED CHECKERBOARD \"', 'Vans', 419, 'products/15.jpg', 'Unisex', 'Shoes', 5, 1, NULL, NULL),
+(16, 'ALL STAR 70S HI \"MILK\"', 'Converse', 579, 'products/16.jpg', 'Unisex', 'Shoes', 5, 1, NULL, NULL),
+(17, 'ALL-STAR 70S HI \"PLAY\"', 'Puma', 619, 'products/17.jpg', 'Unisex', 'Shoes', 3, 1, NULL, NULL),
+(18, 'FEAR OF GOD CHUCK 70 HI \"NATURAL\"', 'Converse', 1259, 'products/18.jpg', 'Female', 'Shoes', 5, 1, NULL, '2020-09-26 03:47:44'),
+(23, 'Whatsapp', 'Nike', 899, 'products/sShCHttCz5sIzyvdUxzFc3NR7duDB8gDi77gcPE3.jpeg', 'Male', 'Shoes', 1, 1, '2020-09-26 01:02:26', '2020-09-26 03:48:59');
 
 -- --------------------------------------------------------
 
@@ -199,7 +200,7 @@ CREATE TABLE `reminders` (
 --
 
 INSERT INTO `reminders` (`id`, `reminder`, `created_at`, `updated_at`) VALUES
-(1, 'Type Something', NULL, NULL);
+(1, 'Put your reminders here.', NULL, '2020-09-26 00:55:19');
 
 -- --------------------------------------------------------
 
@@ -302,10 +303,8 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `name`, `email`, `email_verified_at`, `password`, `role`, `remember_token`, `created_at`, `updated_at`) VALUES
-(1, 'Admin', 'admin@therack.com', NULL, '$2y$10$Uzj4uNT.LD8L8dswuyWUMuPKUXHNZyC4QuuOrWn0dWyeJxXeaZ8OK', 'Admin', NULL, NULL, NULL),
-(2, 'Dawn Roe', 'dawnroe@gmail.com', NULL, '$2y$10$Uzj4uNT.LD8L8dswuyWUMuPKUXHNZyC4QuuOrWn0dWyeJxXeaZ8OK', 'Customer', NULL, NULL, NULL),
-(3, 'John Doe', 'john_doe@gmail.com', NULL, '$2y$10$DrbV/aivhFsP30./FpLl2enNaYvgACh/XpZl7JttiQB6Zx4V7VYVS', 'Customer', NULL, NULL, NULL),
-(4, 'Emillie Norton', 'emillie_norton@gmail.com', NULL, '$2y$10$3XJdLtojDMZVsbUfmIDHbOrNiQc4CNbqRorMpiAZe.SWQ5b.vywGq', 'Customer', NULL, NULL, NULL);
+(1, 'Admin', 'admin@bhukyra.com', NULL, '$2y$10$/sJ80JyKsrfKRcFSOibpNOe6E08jYIY511yvar3kD8ixL6Qlr1m.e', 'Admin', NULL, NULL, NULL),
+(2, 'Dawn Roe', 'user@gmail.com', NULL, '$2y$10$7VY3t2I8VWlkA4/PI5AfreK970eZlSwx4.3GYz6WWU9FRISdlTIg.', 'Customer', NULL, NULL, NULL);
 
 --
 -- Indexes for dumped tables
@@ -388,7 +387,7 @@ ALTER TABLE `failed_jobs`
 -- AUTO_INCREMENT for table `migrations`
 --
 ALTER TABLE `migrations`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
 
 --
 -- AUTO_INCREMENT for table `newsletters`
@@ -406,7 +405,7 @@ ALTER TABLE `orders`
 -- AUTO_INCREMENT for table `products`
 --
 ALTER TABLE `products`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
 
 --
 -- AUTO_INCREMENT for table `profiles`
@@ -430,7 +429,7 @@ ALTER TABLE `stocks`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

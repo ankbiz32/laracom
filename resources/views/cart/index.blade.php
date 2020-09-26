@@ -16,7 +16,7 @@
                         @foreach ($products as $product)
                             <div class="col-12 d-flex p-2 justify-content-between cart-item">
                                 <div class="item-image">
-                                    <img src="{{ asset('/storage/'.$product['item']['image']) }}" alt="">
+                                    <img src="{{ asset($product['item']['image']) }}" alt="">
                                 </div>
                                 <div class="item-detail mr-auto d-flex flex-column justify-content-center">
                                     <div class="info-2"><h5>{{ $product['item']['name'] }}</h5> </div> 

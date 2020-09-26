@@ -16,7 +16,7 @@
                         @foreach ($order->cart->items as $item)
                             <div class="col-12 d-flex justify-content-between ">
                                 <div class="order-image">
-                                    <img src="{{ asset('/storage/'.$item['item']['image']) }}" alt="">
+                                    <img src="{{ asset($item['item']['image']) }}" alt="">
                                 </div>
 
                                 <div class="order-detail mr-auto d-flex flex-column justify-content-center">

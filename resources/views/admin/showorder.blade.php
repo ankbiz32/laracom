@@ -18,7 +18,7 @@
                         Buyer Name <br>
                         Phone Number <br>
                         Status
-        
+
                     </div>
                     <div class="col-7">
                         : {{ $id->id }} <br>
@@ -29,9 +29,9 @@
                         : PAID
                     </div>
                 </div>
-                
+
             </div>
-            
+
 
             <div class="col-12 col-lg-6 col-md-6 col-sm-12 pt-2">
                 <h5>SHIPPING ADDRESS</h5>
@@ -42,14 +42,14 @@
                         City <br>
                         Zipcode <br>
                         Address <br>
-                        
+
                     </div>
                     <div class="col-7">
                         : {{ $id->country }} <br>
                         : {{ $id->city }} <br>
                         : {{ $id->zipcode }} <br>
                         : {{ $id->address }} <br>
-                        
+
                     </div>
                 </div>
             </div>
@@ -79,14 +79,14 @@
                                 <div class="detail-4">
                                     <h6>Price: RM   {{ $item['price'] }}</h6>
                                 </div>
-                            </div> 
+                            </div>
                         </div>
                     @endforeach
-                </div>                      
+                </div>
             </div>
             @endforeach
         </div>
     </div>
-</div> 
-    
+</div>
+
 @endsection

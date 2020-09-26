@@ -14,21 +14,21 @@
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
 
     <!-- Styles -->
-    <link rel="icon" href="{{ URL::asset('photo/box2.svg') }}" type="image/x-icon"/>
+    <link rel="icon" href="{{ URL::asset('photo/favicon.ico') }}" type="image/x-icon"/>
     {{-- <link href="{{ asset('css/app.css') }}" rel="stylesheet"> --}}
     <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link href="{{ asset('external-css/style.css') }}" rel="stylesheet">
 
 </head>
-<body>
+<body style="background-color:#eeeeee">
     <div id="app">
         <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
             <div class="container">
                 <a class="navbar-brand" href="{{ url('/') }}">
                     <div class="d-flex">
-                        <div><img src="{{ asset('photo/box.svg') }}" style="height:50px;" alt=""></div>
-                        <div class="pl-3 ml-3 pt-2" style="border-left:1px solid rgba(0, 0, 0, 0.5); font-size:1.5rem;">{{ config('app.name', 'Laravel') }}</div>
+                        <div><img src="{{ asset('photo/logo.png') }}" style="height:50px;" alt=""></div>
+                        <!-- <div class="pl-3 ml-3 pt-2" style="border-left:1px solid rgba(0, 0, 0, 0.5); font-size:1.5rem;">{{ config('app.name', 'Laravel') }}</div> -->
                     </div>
                 </a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
@@ -108,7 +108,7 @@
                 <div class='row'>
                     <div class='col-md-4 col-sm-12 pt-3'>
                         <h3>Contact Information</h3>
-                        <p> Kaniel outis <br> +123456789 <br> info@laracom.com</p>
+                        <p> Kaniel outis <br> +123456789 <br> info@bhukyra.com</p>
                     </div>
                     <div class='col-md-4 col-sm-12 pt-3'>
                         <h3>Follow Us On</h3>

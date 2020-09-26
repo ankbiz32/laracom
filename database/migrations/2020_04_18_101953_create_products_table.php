@@ -22,6 +22,7 @@ class CreateProductsTable extends Migration
             $table->string('gender');
             $table->string('category');
             $table->integer('quantity')->default(1);
+            $table->integer('is_active')->default(1);
             $table->timestamps();
         });
     }
