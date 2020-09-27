@@ -211,7 +211,10 @@
                                         <div class="form-group row">
                                             <label class="col-sm-2 col-form-label" for="image">Product Image<span class="req"> *</span></label>
                                             <div class="col-sm-10">
-                                                <input type="file" class="form-control @error('image') is-invalid @enderror" id="image" name="image" accept=".jpg, .jpeg, .png, .bmp, .svg" required>
+                                                <div class="custom-file">
+                                                    <input type="file" class="custom-file-input @error('image') is-invalid @enderror" id="customFile" name="image" accept=".jpg, .jpeg, .png, .bmp, .svg" required>
+                                                    <label class="custom-file-label" for="customFile">Choose file</label>
+                                                </div>
                                                 @error('image')
                                                     <small class="text-danger">{{$message}}</small>
                                                 @enderror
@@ -262,4 +265,14 @@
                 </div>
         </section>
     </div>
+@endsection
+
+
+@section('scripts')
+    <script src="{{URL::to('/')}}/plugins/bs-custom-file-input/bs-custom-file-input.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            bsCustomFileInput.init();
+        });
+    </script>
 @endsection

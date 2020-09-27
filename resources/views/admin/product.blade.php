@@ -3,6 +3,11 @@
 @section ('css')
 <link rel="stylesheet" href="plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
 <link rel="stylesheet" href="plugins/datatables-select/css/select.bootstrap4.css">
+<style>
+    .custom-control-label.btn::after, .custom-switch.custom-switch-on-success .custom-control-input:checked~.custom-control-label::after{
+        background:white;
+    }
+</style>
 @endsection ('css')
 
 
@@ -34,10 +39,10 @@
                                 BULK ACTION <span class="caret"></span>
                             </a>
                             <div class="dropdown-menu" x-placement="bottom-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 40px, 0px);">
-                                <a class="dropdown-item" tabindex="-1" href="#">Activate products</a>
-                                <a class="dropdown-item" tabindex="-1" href="#">Deactivate products</a>
+                                <a class="dropdown-item" tabindex="-1" href="javascript:;" onclick="activateProducts()">Activate products</a>
+                                <a class="dropdown-item" tabindex="-1" href="javascript:;" onclick="deActivateProducts()">Deactivate products</a>
                                 <div class="dropdown-divider"></div>
-                                <a class="dropdown-item text-danger" tabindex="-1" href="#"  onclick="confirmation(event)">Delete products</a>
+                                <a class="dropdown-item text-danger" tabindex="-1" href="javascript:;"  onclick="removeProducts(event)">Remove products</a>
                             </div>
                         </span>
                         <!-- <a href="{{ route('admin.addform') }}" class="btn btn-default btn-flat ml-auto">BULK ACTION</a> -->
@@ -66,7 +71,7 @@
                                 <td>{{ $product->price }}</td>
                                 <td>
                                     <div class="custom-control custom-switch custom-switch-off-muted custom-switch-on-success">
-                                    <input type="checkbox" data-id="{{ $product->id }}" class="custom-control-input" id="customSwitch{{ $product->id }}" 
+                                    <input type="checkbox" data-id="{{ $product->id }}" class="custom-control-input" id="customSwitch{{ $product->id }}"
                                     {{ $product->is_active==1 ?'checked':'' }}
                                     >
                                     <label class="custom-control-label btn" for="customSwitch{{ $product->id }}"></label>
@@ -131,8 +136,6 @@
         $(document).on('change', 'input[type="checkbox"]', function() {
             var id=$(this).data('id');
             if(this.checked){
-                console.log(id+' On');
-
                 $.ajax({
                     type: 'post',
                     url: "{{ route('product.status',['id'=>$product->id]) }}",
@@ -178,7 +181,7 @@
                     }
                 });
             }
-            });
+        });
 
         // Alert before removing product
         function confirmation(ev){
@@ -188,6 +191,88 @@
                 window.location = urlToRedirect;
             })
         }
+
+        // Bulk activate products
+        function activateProducts(){
+            $.ajax({
+                type: 'post',
+                url: "{{ route('product.bulkStatus') }}",
+                data:{
+                    "_token": "{{ csrf_token() }}",
+                    id:JSON.stringify(items),
+                    active:1,
+                },
+                success:function(response){
+                    notie.alert({
+                        text: "Products activated!" ,
+                        type: 'success'
+                    }),
+                    location.reload(true);
+                },
+                error: function(){
+                    notie.alert({
+                        text: "Server error !" ,
+                        type: 'error'
+                    })
+                }
+            });
+        }
+
+        // Bulk de-activate products
+        function deActivateProducts(){
+            $.ajax({
+                type: 'post',
+                url: "{{ route('product.bulkStatus') }}",
+                data:{
+                    "_token": "{{ csrf_token() }}",
+                    id:JSON.stringify(items),
+                    active:0,
+                },
+                success:function(response){
+                    notie.alert({
+                        text: "Products de-activated!" ,
+                        type: 'success'
+                    }),
+                    location.reload(true);
+                },
+                error: function(){
+                    notie.alert({
+                        text: "Server error !" ,
+                        type: 'error'
+                    })
+                }
+            });
+        }
+
+        // Bulk remove products
+        function removeProducts(ev){
+            ev.preventDefault();
+            notie.confirm({ text: 'Are you sure?' }, function() {
+                $.ajax({
+                    type: 'post',
+                    url: "{{ route('product.bulkRemove') }}",
+                    data:{
+                        "_token": "{{ csrf_token() }}",
+                        id:JSON.stringify(items),
+                    },
+                    success:function(response){
+                        notie.alert({
+                            text: "Products removed!" ,
+                            type: 'success'
+                        }),
+                        location.reload(true);
+                    },
+                    error: function(){
+                        notie.alert({
+                            text: "Server error !" ,
+                            type: 'error'
+                        })
+                    }
+                });
+            })
+        }
+
+
     </script>
 
 @endsection

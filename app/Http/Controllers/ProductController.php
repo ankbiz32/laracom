@@ -190,12 +190,16 @@ class ProductController extends Controller
         return response()->json(['success'=>'Status updated!']);
     }
 
-    public function makeInActive($id)
+    public function bulkStatus(Request $request)
     {
-        Product::where('id',$id)->delete();
-        Stock::where('product_id',$id)->delete();
+        $ids=json_decode(request('id'),true);
+        foreach($ids as $id){
+            $product = Product::findOrFail($id);
+            $product->is_active=request('active');
+            $product->save();
+        }
 
-        return redirect()->route('admin.product')->with('success','Product removed !');
+        return response()->json(['success'=>'Status updated!']);
     }
 
     public function remove($id)
@@ -204,6 +208,17 @@ class ProductController extends Controller
         Stock::where('product_id',$id)->delete();
 
         return redirect()->route('admin.product')->with('success','Product removed !');
+    }
+
+    public function bulkRemove()
+    {
+        $ids=json_decode(request('id'),true);
+        foreach($ids as $id){
+            Product::where('id',$id)->delete();
+            Stock::where('product_id',$id)->delete();
+        }
+
+        return response()->json(['success'=>'Product removed !']);
     }
 
     public function listProducts()

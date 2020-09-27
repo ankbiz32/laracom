@@ -36,7 +36,9 @@ Route::post('/admin-product/add', 'ProductController@create')->name('product.cre
 Route::get('/admin-product/edit/{id}', 'ProductController@editform')->name('product.editform')->middleware(['auth','admin']);
 Route::patch('/admin-product/edit/{id}', 'ProductController@edit')->name('product.edit')->middleware(['auth','admin']);
 Route::get('/admin-product/remove/{id}', 'ProductController@remove')->name('product.remove')->middleware(['auth','admin']);
+Route::post('/admin-product/bulkRemove', 'ProductController@bulkRemove')->name('product.bulkRemove')->middleware(['auth','admin']);
 Route::post('/admin-product/status', 'ProductController@status')->name('product.status')->middleware(['auth','admin']);
+Route::post('/admin-product/bulkStatus', 'ProductController@bulkStatus')->name('product.bulkStatus')->middleware(['auth','admin']);
 
 Route::get('/admin-stock', 'StockController@index')->name('admin.stock')->middleware(['auth','admin']);
 Route::get('/admin-stock/show', 'StockController@show')->name('admin.stockshow')->middleware(['auth','admin']);
