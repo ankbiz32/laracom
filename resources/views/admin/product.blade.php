@@ -3,9 +3,19 @@
 @section ('css')
 <link rel="stylesheet" href="plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
 <link rel="stylesheet" href="plugins/datatables-select/css/select.bootstrap4.css">
+<link rel="stylesheet" href="plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
 <style>
     .custom-control-label.btn::after, .custom-switch.custom-switch-on-success .custom-control-input:checked~.custom-control-label::after{
         background:white;
+    }
+    .selector, .allSelector{
+        cursor:pointer
+    }
+    td.selector::after{
+        content:'⬜';
+    }
+    .selected .selector::after{
+        content:'☑';
     }
 </style>
 @endsection ('css')
@@ -52,7 +62,7 @@
                         <table class="table table-hover datatable">
                             <thead>
                             <tr>
-                                <th scope="col"></th>
+                                <th scope="col" class="allSelector">⬜</th>
                                 <th scope="col">ID</th>
                                 <th scope="col">Image</th>
                                 <th scope="col">Name</th>
@@ -99,6 +109,8 @@
     <script src="plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
     <script src="plugins/datatables-select/js/dataTables.select.min.js"></script>
     <script src="plugins/datatables-select/js/select.bootstrap4.min.js"></script>
+    <script src="plugins/datatables-buttons/js/dataTables.buttons.min.js"></script>
+    <script src="plugins/datatables-buttons/js/buttons.bootstrap4.min.js"></script>
     <script>
         var items = new Array();
 
@@ -106,7 +118,7 @@
         var table= $('.datatable').DataTable( {
             columnDefs: [ {
                 orderable: false,
-                className: 'select-checkbox',
+                className: 'selector',
                 targets:   0
             } ],
             select: {
@@ -116,7 +128,7 @@
             order: [[ 1, 'desc' ]]
         });
 
-        // Datatable checkbox operation
+        // Datatable individual checkbox operation
         table
             .on( 'select', function ( e, dt, type, indexes ) {
                 var rowData = table.rows( indexes ).data().toArray();
@@ -130,6 +142,27 @@
                 if(items.length<1){
                     $('.btn-bulk').hide();
                 }
+        });
+
+        // All select/deselect button
+        $(document).on('click', '.allSelector', function() {
+            if($(this).hasClass('all')){
+                $(this).removeClass('all');
+                $(this).html('⬜');
+                $('.btn-bulk').hide();
+                table.rows({ search: 'applied' }).deselect();
+                items=[];
+
+            }
+            else{
+                $(this).addClass('all');
+                $(this).html('☑');
+                table.rows({ search: 'applied' }).select();
+                items = $.map(table.rows('.selected').data(), function (items) {
+                    return items[1]
+                });
+            }
+
         });
 
         // Change product status on switching switch button
@@ -203,10 +236,6 @@
                     active:1,
                 },
                 success:function(response){
-                    notie.alert({
-                        text: "Products activated!" ,
-                        type: 'success'
-                    }),
                     location.reload(true);
                 },
                 error: function(){
@@ -229,10 +258,6 @@
                     active:0,
                 },
                 success:function(response){
-                    notie.alert({
-                        text: "Products de-activated!" ,
-                        type: 'success'
-                    }),
                     location.reload(true);
                 },
                 error: function(){
@@ -256,10 +281,6 @@
                         id:JSON.stringify(items),
                     },
                     success:function(response){
-                        notie.alert({
-                            text: "Products removed!" ,
-                            type: 'success'
-                        }),
                         location.reload(true);
                     },
                     error: function(){
@@ -271,8 +292,6 @@
                 });
             })
         }
-
-
     </script>
 
 @endsection

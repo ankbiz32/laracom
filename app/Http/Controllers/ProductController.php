@@ -198,7 +198,7 @@ class ProductController extends Controller
             $product->is_active=request('active');
             $product->save();
         }
-
+        $request->session()->flash('success', 'Status updated !');
         return response()->json(['success'=>'Status updated!']);
     }
 
@@ -210,7 +210,7 @@ class ProductController extends Controller
         return redirect()->route('admin.product')->with('success','Product removed !');
     }
 
-    public function bulkRemove()
+    public function bulkRemove(Request $request)
     {
         $ids=json_decode(request('id'),true);
         foreach($ids as $id){
@@ -218,6 +218,7 @@ class ProductController extends Controller
             Stock::where('product_id',$id)->delete();
         }
 
+        $request->session()->flash('success', 'Products removed !');
         return response()->json(['success'=>'Product removed !']);
     }
 

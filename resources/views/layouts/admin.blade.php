@@ -26,7 +26,7 @@
     .notie-container {
         z-index:100000;
     }
-      table.dataTable tbody td{
+    table.dataTable tr td, table.dataTable tr th{
         vertical-align: middle;
     }
     span.req{

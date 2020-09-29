@@ -24,7 +24,11 @@ Route::get('/order/{id}', 'AdminController@show_order')->name('admin.showorder')
 
 Route::get('/users', 'AdminController@user')->name('admin.user')->middleware(['auth','admin']);
 
-Route::get('/admin-categories', 'ProductController@listCategories')->name('admin.categories')->middleware(['auth','admin']);
+Route::get('/admin-categories', 'CategoryController@treeView')->name('admin.categories')->middleware(['auth','admin']);
+Route::post('/admin-categories/add', 'CategoryController@create')->name('category.create')->middleware(['auth','admin']);
+Route::post('/admin-categories/editInfo', 'CategoryController@editForm')->name('category.editForm')->middleware(['auth','admin']);
+Route::post('/admin-categories/edit', 'CategoryController@edit')->name('category.edit')->middleware(['auth','admin']);
+Route::post('/admin-categories/remove', 'CategoryController@remove')->name('category.remove')->middleware(['auth','admin']);
 
 Route::get('/admin-tags', 'ProductController@listTags')->name('admin.tags')->middleware(['auth','admin']);
 
