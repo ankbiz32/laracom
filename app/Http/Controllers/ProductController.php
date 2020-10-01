@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App;
 use Storage;
 use App\Product;
+use App\Category;
 use App\Stock;
 use App\Cart;
 use Illuminate\Http\Request;
@@ -109,7 +110,10 @@ class ProductController extends Controller
 
     public function form()
     {
-        return view('admin.addproduct');
+        $cats = new Category;
+        $categories=$cats->categories_dropdown;
+        dd($categories);
+        return view('admin.addproduct', compact ('categories'));
     }
 
     public function create(Request $request)
@@ -225,7 +229,6 @@ class ProductController extends Controller
     public function listProducts()
     {
         $products = Product::orderBy('id')->get();
-        //dd($products);
         return view('admin.product', compact ('products'));
     }
 

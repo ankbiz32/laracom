@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Sep 29, 2020 at 07:24 PM
+-- Generation Time: Oct 01, 2020 at 02:36 PM
 -- Server version: 10.4.13-MariaDB
 -- PHP Version: 7.4.8
 
@@ -43,12 +43,10 @@ CREATE TABLE `categories` (
 --
 
 INSERT INTO `categories` (`id`, `name`, `parent_id`, `img_src`, `meta_title`, `meta_description`, `created_at`, `updated_at`) VALUES
-(43, 'Clothes', 0, NULL, 'clothes', NULL, '2020-09-29 11:41:56', '2020-09-29 11:41:56'),
-(47, 'Shoes', 0, NULL, 'shoes', NULL, '2020-09-29 11:44:45', '2020-09-29 11:44:45'),
-(48, 'Appliances', 0, NULL, 'appliances', NULL, '2020-09-29 11:44:57', '2020-09-29 11:44:57'),
-(49, 'Watches', 0, NULL, 'watches', NULL, '2020-09-29 11:45:03', '2020-09-29 11:45:03'),
-(51, 'Chronograph', 49, NULL, 'chronograph', NULL, '2020-09-29 11:49:31', '2020-09-29 11:49:31'),
-(52, 'Analog', 49, NULL, 'analog', NULL, '2020-09-29 11:49:46', '2020-09-29 11:49:46');
+(61, 'Agro products', 0, NULL, 'agro-products', NULL, '2020-10-01 02:08:55', '2020-10-01 02:08:55'),
+(62, 'Health products', 0, NULL, 'health-products', NULL, '2020-10-01 02:09:06', '2020-10-01 02:09:06'),
+(63, 'Organic fertilizers', 61, NULL, 'organic-fertilizers', NULL, '2020-10-01 02:09:42', '2020-10-01 02:09:42'),
+(64, 'Immunity boosters', 62, NULL, 'immunity-boosters', NULL, '2020-10-01 02:09:56', '2020-10-01 02:09:56');
 
 -- --------------------------------------------------------
 
@@ -148,23 +146,20 @@ CREATE TABLE `password_resets` (
 CREATE TABLE `products` (
   `id` bigint(20) UNSIGNED NOT NULL,
   `category_id` int(255) NOT NULL,
-  `brand_id` int(255) NOT NULL,
+  `brand_id` int(255) DEFAULT NULL,
   `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `brand` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `price` int(11) NOT NULL,
   `image` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `sku` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `description` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
-  `gender` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `category` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `sku` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `quantity` int(11) NOT NULL DEFAULT 1,
   `has_discount` tinyint(4) NOT NULL DEFAULT 0,
-  `discount_type` int(10) NOT NULL,
-  `discount_rate` double NOT NULL,
+  `discount_type` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `discount_rate` double DEFAULT NULL,
+  `max_selling_qty` tinyint(4) NOT NULL,
   `is_featured` tinyint(4) NOT NULL DEFAULT 0,
   `is_todays_deal` tinyint(4) NOT NULL DEFAULT 0,
   `is_active` int(11) NOT NULL DEFAULT 1,
-  `max_selling_qty` tinyint(4) NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -173,26 +168,25 @@ CREATE TABLE `products` (
 -- Dumping data for table `products`
 --
 
-INSERT INTO `products` (`id`, `category_id`, `brand_id`, `name`, `brand`, `price`, `image`, `sku`, `description`, `gender`, `category`, `quantity`, `has_discount`, `discount_type`, `discount_rate`, `is_featured`, `is_todays_deal`, `is_active`, `max_selling_qty`, `created_at`, `updated_at`) VALUES
-(1, 0, 0, 'AIR JORDAN 1 X OFF-WHITE NRG \"OFF WHITE UNC\"', 'Nike', 1375, 'products/1.jpg', '', '', 'Female', 'Shoes', 1, 0, 0, 0, 0, 0, 1, 0, NULL, '2020-09-28 02:45:03'),
-(2, 0, 0, 'STUSSY X AIR ZOOM SPIRIDON CAGED \"PURE PLATINUM\"', 'Nike', 225, 'products/2.jpg', '', '', 'Unisex', 'Shoes', 12, 0, 0, 0, 0, 0, 1, 0, NULL, '2020-09-28 02:45:03'),
-(3, 0, 0, 'SUPREME X AIR FORCE 1 LOW \"BOX LOGO - WHITE\"', 'Nike', 275, 'products/3.jpg', '', '', 'Male', 'Shoes', 1, 0, 0, 0, 0, 0, 1, 0, NULL, '2020-09-28 02:45:03'),
-(4, 0, 0, 'SACAI X LDV WAFFLE \"BLACK NYLON\"', 'Nike', 190, 'products/4.jpg', '', '', 'Male', 'Shoes', 1, 0, 0, 0, 0, 0, 1, 0, NULL, '2020-09-28 02:41:52'),
-(5, 0, 0, 'AIR JORDAN 1 RETRO HIGH \"SHATTERED BACKBOARD\"', 'Nike', 980, 'products/5.jpg', '', '', 'Male', 'Shoes', 14, 0, 0, 0, 0, 0, 1, 0, NULL, '2020-09-28 02:45:03'),
-(6, 0, 0, 'YEEZY BOOST 350 V2 \"CREAM\"', 'Adidas', 780, 'products/6.jpg', '', '', 'Unisex', 'Shoes', 3, 0, 0, 0, 0, 0, 1, 0, NULL, '2020-09-28 02:41:51'),
-(7, 0, 0, 'YEEZY BOOST 350 V2\"YECHEIL NON-REFLECT\"', 'Adidas', 978, 'products/7.jpg', '', '', 'Male', 'Shoes', 5, 0, 0, 0, 0, 0, 1, 0, NULL, '2020-09-28 02:41:51'),
-(8, 0, 0, 'YEEZY BOOST 350 V2 \"FROZEN YELLOW\"', 'Adidas', 1100, 'products/8.jpg', '', '', 'Unisex', 'Shoes', 3, 0, 0, 0, 0, 0, 1, 0, NULL, '2020-09-28 02:41:51'),
-(9, 0, 0, 'AIR JORDAN 5 RETRO SP \"MUSLIN\"', 'Nike', 1499, 'products/9.jpg', '', '', 'Male', 'Shoes', 3, 0, 0, 0, 0, 0, 1, 0, NULL, '2020-09-28 02:45:03'),
-(10, 0, 0, 'AIR JORDAN 1 RETRO HIGH ZOOM \"RACER BLUE\"', 'Nike', 625, 'products/10.jpg', '', '', 'Male', 'Shoes', 5, 0, 0, 0, 0, 0, 1, 0, NULL, '2020-09-28 02:45:03'),
-(11, 0, 0, 'FENTY SLIDE \"PINK BOW \"', 'Puma', 399, 'products/11.jpg', '', '', 'Female', 'Shoes', 3, 0, 0, 0, 0, 0, 1, 0, NULL, '2020-09-28 02:41:51'),
-(12, 0, 0, 'WMNS RS-X TRACKS \"FAIR AQUA\"', 'Puma', 499, 'products/12.jpg', '', '', 'Female', 'Shoes', 3, 0, 0, 0, 0, 0, 1, 0, NULL, '2020-09-28 02:45:03'),
-(13, 0, 0, 'OLD SKOOL \'BLACK WHITE\' \"BLACK WHITE\"', 'Vans', 239, 'products/13.jpg', '', '', 'Unisex', 'Shoes', 6, 0, 0, 0, 0, 0, 1, 0, NULL, '2020-09-28 02:41:51'),
-(14, 0, 0, 'OLD SKOOL \"YACHT CLUB\"', 'Vans', 359, 'products/14.jpg', '', '', 'Unisex', 'Shoes', 5, 0, 0, 0, 0, 0, 1, 0, NULL, '2020-09-28 02:41:51'),
-(15, 0, 0, 'VANS OLD SKOOL \"RED CHECKERBOARD \"', 'Vans', 419, 'products/15.jpg', '', '', 'Unisex', 'Shoes', 5, 0, 0, 0, 0, 0, 1, 0, NULL, '2020-09-28 02:41:51'),
-(16, 0, 0, 'ALL STAR 70S HI \"MILK\"', 'Converse', 579, 'products/16.jpg', '', '', 'Unisex', 'Shoes', 5, 0, 0, 0, 0, 0, 1, 0, NULL, '2020-09-28 02:41:51'),
-(17, 0, 0, 'ALL-STAR 70S HI \"PLAY\"', 'Puma', 619, 'products/17.jpg', '', '', 'Unisex', 'Shoes', 3, 0, 0, 0, 0, 0, 1, 0, NULL, '2020-09-28 02:41:51'),
-(18, 0, 0, 'FEAR OF GOD CHUCK 70 HI \"NATURAL\"', 'Converse', 1259, 'products/18.jpg', '', '', 'Female', 'Shoes', 5, 0, 0, 0, 0, 0, 1, 0, NULL, '2020-09-28 02:41:51'),
-(23, 0, 0, 'Whatsapp', 'Nike', 999, 'products/sShCHttCz5sIzyvdUxzFc3NR7duDB8gDi77gcPE3.jpeg', '', '', 'Male', 'Shoes', 1, 0, 0, 0, 0, 0, 1, 0, '2020-09-26 01:02:26', '2020-09-28 02:41:51');
+INSERT INTO `products` (`id`, `category_id`, `brand_id`, `name`, `price`, `image`, `description`, `sku`, `quantity`, `has_discount`, `discount_type`, `discount_rate`, `max_selling_qty`, `is_featured`, `is_todays_deal`, `is_active`, `created_at`, `updated_at`) VALUES
+(1, 0, 0, 'AIR JORDAN 1 X OFF-WHITE NRG \"OFF WHITE UNC\"', 1375, 'products/1.jpg', '', '', 1, 0, '0', 0, 0, 0, 0, 1, NULL, '2020-10-01 02:45:49'),
+(2, 0, 0, 'STUSSY X AIR ZOOM SPIRIDON CAGED \"PURE PLATINUM\"', 225, 'products/2.jpg', '', '', 12, 0, '0', 0, 0, 0, 0, 1, NULL, '2020-10-01 02:45:49'),
+(3, 0, 0, 'SUPREME X AIR FORCE 1 LOW \"BOX LOGO - WHITE\"', 275, 'products/3.jpg', '', '', 1, 0, '0', 0, 0, 0, 0, 1, NULL, '2020-10-01 02:45:49'),
+(4, 0, 0, 'SACAI X LDV WAFFLE \"BLACK NYLON\"', 190, 'products/4.jpg', '', '', 1, 0, '0', 0, 0, 0, 0, 1, NULL, '2020-10-01 02:45:49'),
+(5, 0, 0, 'AIR JORDAN 1 RETRO HIGH \"SHATTERED BACKBOARD\"', 980, 'products/5.jpg', '', '', 14, 0, '0', 0, 0, 0, 0, 1, NULL, '2020-10-01 02:45:49'),
+(6, 0, 0, 'YEEZY BOOST 350 V2 \"CREAM\"', 780, 'products/6.jpg', '', '', 3, 0, '0', 0, 0, 0, 0, 1, NULL, '2020-10-01 02:45:49'),
+(7, 0, 0, 'YEEZY BOOST 350 V2\"YECHEIL NON-REFLECT\"', 978, 'products/7.jpg', '', '', 5, 0, '0', 0, 0, 0, 0, 1, NULL, '2020-10-01 02:45:49'),
+(8, 0, 0, 'YEEZY BOOST 350 V2 \"FROZEN YELLOW\"', 1100, 'products/8.jpg', '', '', 3, 0, '0', 0, 0, 0, 0, 1, NULL, '2020-10-01 02:45:49'),
+(9, 0, 0, 'AIR JORDAN 5 RETRO SP \"MUSLIN\"', 1499, 'products/9.jpg', '', '', 3, 0, '0', 0, 0, 0, 0, 1, NULL, '2020-10-01 02:45:49'),
+(10, 0, 0, 'AIR JORDAN 1 RETRO HIGH ZOOM \"RACER BLUE\"', 625, 'products/10.jpg', '', '', 5, 0, '0', 0, 0, 0, 0, 1, NULL, '2020-10-01 02:45:49'),
+(11, 0, 0, 'FENTY SLIDE \"PINK BOW \"', 399, 'products/11.jpg', '', '', 3, 0, '0', 0, 0, 0, 0, 1, NULL, '2020-10-01 02:45:49'),
+(12, 0, 0, 'WMNS RS-X TRACKS \"FAIR AQUA\"', 499, 'products/12.jpg', '', '', 3, 0, '0', 0, 0, 0, 0, 1, NULL, '2020-10-01 02:45:49'),
+(13, 0, 0, 'OLD SKOOL \'BLACK WHITE\' \"BLACK WHITE\"', 239, 'products/13.jpg', '', '', 6, 0, '0', 0, 0, 0, 0, 1, NULL, '2020-10-01 02:45:49'),
+(14, 0, 0, 'OLD SKOOL \"YACHT CLUB\"', 359, 'products/14.jpg', '', '', 5, 0, '0', 0, 0, 0, 0, 1, NULL, '2020-10-01 02:45:49'),
+(15, 0, 0, 'VANS OLD SKOOL \"RED CHECKERBOARD \"', 419, 'products/15.jpg', '', '', 5, 0, '0', 0, 0, 0, 0, 1, NULL, '2020-10-01 02:45:49'),
+(16, 0, 0, 'ALL STAR 70S HI \"MILK\"', 579, 'products/16.jpg', '', '', 5, 0, '0', 0, 0, 0, 0, 1, NULL, '2020-10-01 02:45:49'),
+(17, 0, 0, 'ALL-STAR 70S HI \"PLAY\"', 619, 'products/17.jpg', '', '', 3, 0, '0', 0, 0, 0, 0, 1, NULL, '2020-10-01 02:45:49'),
+(18, 0, 0, 'FEAR OF GOD CHUCK 70 HI \"NATURAL\"', 1259, 'products/18.jpg', '', '', 5, 0, '0', 0, 0, 0, 0, 1, NULL, '2020-10-01 02:45:49');
 
 -- --------------------------------------------------------
 
@@ -427,7 +421,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `categories`
 --
 ALTER TABLE `categories`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=53;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=74;
 
 --
 -- AUTO_INCREMENT for table `failed_jobs`

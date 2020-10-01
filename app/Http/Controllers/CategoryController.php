@@ -3,6 +3,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Category;
+use File;
 class CategoryController extends Controller {
 
     public function treeView(){
@@ -27,13 +28,12 @@ class CategoryController extends Controller {
             $html ='<ul>';
             foreach ($Category->childs as $arr) {
                 if(count($arr->childs)){
-                $html .='<li class="tree-view closed"><a href="javascript:;" class="tree-name text-md" data-id="'.$arr->id.'">'.$arr->name.'</a>';
-                        $html.= $this->childView($arr);
-                    }else{
-                        $html .='<li class="tree-view"><a href="javascript:;" class="tree-name text-md" data-id="'.$arr->id.'">'.$arr->name.'</a>';
-                        $html .="</li>";
-                    }
-
+                        $html .='<li class="tree-view closed"><a href="javascript:;" class="tree-name text-md" data-id="'.$arr->id.'">'.$arr->name.'</a>';
+                    $html.= $this->childView($arr);
+                }else{
+                    $html .='<li class="tree-view"><a href="javascript:;" class="tree-name text-md" data-id="'.$arr->id.'">'.$arr->name.'</a>';
+                    $html .="</li>";
+                }
             }
 
             $html .="</ul>";
@@ -42,7 +42,6 @@ class CategoryController extends Controller {
 
     public function create(Request $request)
     {
-        // dd($request);
         $this->validate(request(),[
             'image'=>'image',
             'name'=>'required|string'
@@ -61,12 +60,17 @@ class CategoryController extends Controller {
         }
         if(request('image'))
         {
-            $imagepath = $request->image->store('products','public');
-            $category->image=$imagepath;
+            $imagepath = $request->image->store('categories','public');
+            $category->img_src=$imagepath;
         }
 
         $category->save();
-        return redirect()->route('admin.categories')->with('success','Category added !');
+        if(request('parent_id')==0){
+            return redirect()->route('admin.categories')->with('success','Category added !');
+        }
+        else{
+            return redirect()->route('admin.categories')->with('success','Sub-category added !');
+        }
     }
 
     public function editForm(Request $request)
@@ -95,8 +99,8 @@ class CategoryController extends Controller {
         }
         if(request('image'))
         {
-            $imagepath = $request->image->store('products','public');
-            $category->image=$imagepath;
+            $imagepath = $request->image->store('categories','public');
+            $category->img_src=$imagepath;
         }
         $category->save();
         return redirect()->route('admin.categories')->with('success','Category updated !');
@@ -114,6 +118,19 @@ class CategoryController extends Controller {
             Category::where('id',$child->id)->delete();
         }
         return redirect()->route('admin.categories')->with('success','Category removed !');
+    }
+
+    public function removeImg($id)
+    {
+        $category = Category::findOrFail($id);
+        $name=explode('/',$category->img_src);
+        $filename = public_path($name[0].'\\'.$name[1]);
+        if(File::exists($filename)) {
+            File::delete($filename);
+        }
+        $category->img_src=NULL;
+        $category->save();
+        return redirect()->route('admin.categories')->with('success','Image removed !');
     }
 
 

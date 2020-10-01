@@ -204,7 +204,7 @@
                                                 @csrf
                                                 <input type="hidden" name="id" id="removeId">
                                                 <button type="button" class="ml-sm-auto text-sm-right text-danger btn link" onclick="confirmation(event)"><i class="fa fa-trash-alt fa-sm"></i> Remove this category</button>
-                                                <button type="button" data-pid="" class="btn text-primary link addNewSub">+ Add sub-category</button>
+                                                <button type="button" data-pid="" class="btn text-primary link addNewSub"><i class="fa fa-plus"></i> Add sub-category</button>
                                             </form>
                                         </div>
                                     </div>
@@ -240,6 +240,9 @@
                                                         @error('image')
                                                             <small class="text-danger">{{$message}}</small>
                                                         @enderror
+
+                                                        <img src="" id="currentImg" alt="Image" class="mt-2" height="40"> <br>
+                                                        <small id="currentImgMsg"></small>
                                                     </div>
                                                 </div>
                                             </div>
@@ -341,6 +344,15 @@
                 function(data, status){
                     $('#parent_id').val(data[0].parent_id);
                     $('#nameE').val(data[0].name);
+                    if(data[0].img_src!=null){
+                        $('#currentImg').attr('src',data[0].img_src);
+                        $('#currentImg').fadeIn();
+                        $('#currentImgMsg').html('<a href="admin-categories/remove/'+data[0].id+'" class="link text-danger">Remove image</a>');
+                    }
+                    else{
+                        $('#currentImg').hide();
+                        $('#currentImgMsg').html('No image found for this category');
+                    }
                     $('#meta_titleE').val(data[0].meta_title);
                     $('#meta_descriptionE').val(data[0].meta_description);
                     $('#forCategory').html('for "'+data[0].name+'"');

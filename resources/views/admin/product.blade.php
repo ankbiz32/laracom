@@ -18,7 +18,7 @@
         content:'☑';
     }
 </style>
-@endsection ('css')
+@endsection
 
 
 @section ('content')

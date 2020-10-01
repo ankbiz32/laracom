@@ -29,6 +29,7 @@ Route::post('/admin-categories/add', 'CategoryController@create')->name('categor
 Route::post('/admin-categories/editInfo', 'CategoryController@editForm')->name('category.editForm')->middleware(['auth','admin']);
 Route::post('/admin-categories/edit', 'CategoryController@edit')->name('category.edit')->middleware(['auth','admin']);
 Route::post('/admin-categories/remove', 'CategoryController@remove')->name('category.remove')->middleware(['auth','admin']);
+Route::get('/admin-categories/remove/{id}', 'CategoryController@removeImg')->name('category.removeImg')->middleware(['auth','admin']);
 
 Route::get('/admin-tags', 'ProductController@listTags')->name('admin.tags')->middleware(['auth','admin']);
 
