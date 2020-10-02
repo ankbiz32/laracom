@@ -3,6 +3,15 @@
 @section('css')
     <link rel="stylesheet" href="{{URL::to('/')}}/plugins/select2/css/select2.min.css">
     <link rel="stylesheet" href="{{URL::to('/')}}/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css">
+    <style>
+        .select2-selection__choice{
+            background-color:#007bff !important;
+            border:none !important;
+        }
+        .select2-selection__choice span{
+            color:white !important;
+        }
+    </style>
 @endsection
 
 @section ('content')
@@ -164,7 +173,7 @@
                                                     <div class="input-group-prepend">
                                                         <strong class="input-group-text">₹</strong>
                                                     </div>
-                                                    <input id="price" type="text" class="form-control @error('price') is-invalid @enderror" name="price" value="{{ old('price')  }}" required autocomplete="price" autofocus>
+                                                    <input id="price" type="number" class="form-control @error('price') is-invalid @enderror" name="price" value="{{ old('price')  }}" required autocomplete="price" autofocus>
                                                 </div>
                                                 @error('price')
                                                     <small class="text-danger">{{$message}}</small>
@@ -177,12 +186,15 @@
                                         <div class="form-group row">
                                             <label class="col-sm-2 col-form-label" for="category">{{ __('Category') }}<span class="req"> *</span></label>
                                             <div class="col-sm-10">
-                                                <select name="category" id="addproductcategory" class="form-control select2" style="width: 100%;" required>
-                                                    <option value="">Select category</option>
-                                                    @foreach($categories as $c)
-                                                    <option value="{{ $c->id }}">{{ $c->name }}</option>
-
-                                                    @endforeach
+                                                <select name="category[]" id="addproductcategory" multiple class="form-control select2" style="width: 100%;" required>
+                                                    @if($categories)
+                                                        <option value="" disabled>Select categories</option>
+                                                        @foreach($categories as $c)
+                                                        <option value="{{ $c->id }}">{{ $c->full_name }}</option>
+                                                        @endforeach
+                                                    @else
+                                                        <option value="" disabled>No categories found. Add some categories first.</option>
+                                                    @endif
                                                 </select>
                                             </div>
                                         </div>
@@ -205,10 +217,13 @@
 
                                     <div class="col">
                                         <div class="form-group row">
-                                            <label class="col-sm-2 col-form-label" for="image">Max selling qty<span class="req"> *</span></label>
+                                            <label class="col-sm-2 col-form-label" for="max_selling_qty">Max order qty <span class="req"> *</span></label>
                                             <div class="input-group col-sm-10">
-                                                <input type="text" class="form-control">
+                                                <input type="number" id="max_order_qty" value="{{ old('max_order_qty') }}" name="max_order_qty" class="form-control @error('max_order_qty') is-invalid @enderror">
                                             </div>
+                                            @error('name')
+                                                <small class="text-danger">{{$message}}</small>
+                                            @enderror
                                         </div>
                                     </div>
 
@@ -243,10 +258,83 @@
                                     Options like size, color etc.
                                 </div>
                                 <div class="tab-pane fade" id="vert-tabs-discount" role="tabpanel" aria-labelledby="vert-tabs-discount-tab">
-                                    Discounts
+                                    <div class="col">
+                                        <div class="form-group row">
+                                            <div class="col-sm-10">
+                                                    <label class="form-check-label mr-2" for="has_discount"><strong>Product has discount</strong></label>
+                                                    <div class="custom-control custom-switch d-inline">
+                                                        <input type="checkbox" class="custom-control-input" name="has_discount" id="has_discount">
+                                                        <label class="custom-control-label btn" for="has_discount"></label>
+                                                    </div>
+                                                    @error('has_discount')
+                                                        <small class="text-danger">{{$message}}</small>
+                                                    @enderror
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col discOptions mt-5" style="display:none">
+                                        <div class="form-group row">
+                                            <label class="col-sm-3 col-form-label" for="discount_type">{{ __('Discount type') }} <span class="req"> *</span></label>
+                                            <div class="col-sm-9">
+                                                <div class="input-group ">
+                                                    <select name="discount_type" id="discount_type" class="form-control @error('discount_type') is-invalid @enderror">
+                                                        <option value="PERCENT">PERCENT OFF</option>
+                                                        <option value="FLAT">FLAT RATE</option>
+                                                    </select>
+                                                </div>
+                                                @error('discount_type')
+                                                    <small class="text-danger">{{$message}}</small>
+                                                @enderror
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col discOptions" style="display:none">
+                                        <div class="form-group row">
+                                            <label class="col-sm-3 col-form-label" for="discount_rate">{{ __('Discount rate') }} <span class="req"> *</span></label>
+                                            <div class="col-sm-9">
+                                                <div class="input-group ">
+                                                    <input id="discount_rate" type="number" class="form-control @error('discount_rate') is-invalid @enderror" name="discount_rate" step="0.01" value="{{ old('discount_rate')  }}">
+                                                </div>
+                                                <small>* Enter discount percent OR discounted product price</small>
+                                                @error('discount_rate')
+                                                    <small class="text-danger">{{$message}}</small>
+                                                @enderror
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                                 <div class="tab-pane fade" id="vert-tabs-inventory" role="tabpanel" aria-labelledby="vert-tabs-inventory-tab">
-                                    Inventory - SKU , stock
+
+
+                                    <div class="col">
+                                        <div class="form-group row">
+                                            <label class="col-sm-3 col-form-label" for="sku">{{ __('Product SKU') }} :</label>
+                                            <div class="col-sm-9">
+                                                <div class="input-group ">
+                                                    <input id="sku" type="text" class="form-control @error('sku') is-invalid @enderror" name="sku" value="{{ old('sku')  }}">
+                                                </div>
+                                                @error('sku')
+                                                    <small class="text-danger">{{$message}} </small>
+                                                @enderror
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col">
+                                        <div class="form-group row">
+                                            <label class="col-sm-3 col-form-label" for="in_stock">{{ __('Stock availability') }} :</label>
+                                            <div class="col-sm-9">
+                                                <div class="input-group ">
+                                                    <select name="in_stock" id="in_stock" class="form-control @error('in_stock') is-invalid @enderror">
+                                                        <option value="1">In stock</option>
+                                                        <option value="0">Out of stock</option>
+                                                    </select>
+                                                </div>
+                                                @error('in_stock')
+                                                    <small class="text-danger">{{$message}}</small>
+                                                @enderror
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                                 <div class="tab-pane fade" id="vert-tabs-location" role="tabpanel" aria-labelledby="vert-tabs-location-tab">
                                     Countries, where the product will be available
@@ -273,8 +361,29 @@
     <script>
         $(document).ready(function () {
             bsCustomFileInput.init();
+            $("#has_discount").change(function(){
+                if ($(this).is(':checked')) {
+                   $('.discOptions').fadeIn();
+                    $('#discount_type').attr('required','');
+                    $('#discount_rate').attr('required','')
+                }else{
+                   $('.discOptions').fadeOut();
+                    $('#discount_type').removeAttr('required');
+                    $('#discount_rate').removeAttr('required')
+                }
+            });
+
+            $("#discount_type").change(function(){
+                var selected = $(this).children("option:selected").val();
+                if(selected==''){
+
+                }else{
+
+                }
+            });
+
         });
 
-        $('.select2').select2()
+        $('.select2').select2();
     </script>
 @endsection

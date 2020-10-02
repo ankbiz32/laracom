@@ -111,8 +111,8 @@ class ProductController extends Controller
     public function form()
     {
         $cats = new Category;
-        $categories=$cats->categories_dropdown;
-        dd($categories);
+        $categories=$this->categories_dropdown();
+        // dd($categories);
         return view('admin.addproduct', compact ('categories'));
     }
 
@@ -231,6 +231,45 @@ class ProductController extends Controller
         $products = Product::orderBy('id')->get();
         return view('admin.product', compact ('products'));
     }
+
+	public function categories_dropdown()
+    {
+        $result = DB::table('categories')
+                     ->orderBy('name','DESC')
+                     ->get();
+        if(count($result))
+        {
+			foreach($result as $k=>$row){
+				$result[$k]->full_name = substr_replace($this->get_parent_name($row->id),"", -3);
+
+			}
+            $result=$result->toArray();
+			usort($result, array("App\Http\Controllers\ProductController","cmp"));
+			return $result;
+        }
+        else
+        {
+            return null;
+        }
+    }
+
+	public function cmp($a, $b){
+		return strcmp($a->full_name, $b->full_name);
+	}
+
+	public function get_parent_name($id=0) {
+        $query = DB::table('categories')
+                    ->where('id', $id)
+                    ->first();
+                    // dd($query);
+
+		if ($query) {
+			return $this->get_parent_name($query->parent_id).$query->name . ' > ';
+		}
+		else {
+			return false;
+		}
+	}
 
 
 }
