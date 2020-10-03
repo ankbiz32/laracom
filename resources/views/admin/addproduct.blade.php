@@ -186,7 +186,7 @@
                                         <div class="form-group row">
                                             <label class="col-sm-2 col-form-label" for="category">{{ __('Category') }}<span class="req"> *</span></label>
                                             <div class="col-sm-10">
-                                                <select name="category[]" id="addproductcategory" multiple class="form-control select2" style="width: 100%;" required>
+                                                <select name="category[]" id="addproductcategory" multiple class="form-control select2" style="width: 100%;">
                                                     @if($categories)
                                                         <option value="" disabled>Select categories</option>
                                                         @foreach($categories as $c)
@@ -226,10 +226,25 @@
                                             @enderror
                                         </div>
                                     </div>
-
                                 </div>
+
                                 <div class="tab-pane fade" id="vert-tabs-profile" role="tabpanel" aria-labelledby="vert-tabs-profile-tab">
-                                    Additional images.
+                                    <div class="col">
+                                        <div class="form-group row">
+                                            <label class="col-sm-2 col-form-label" for="customMultiFile">Additional Images</label>
+                                            <div class="col-sm-10">
+                                                <div class="custom-file">
+                                                    <input type="file" class="custom-file-input @error('multi_img') is-invalid @enderror" id="customMultiFile" name="multi_img[]" accept=".jpg, .jpeg, .png, .bmp, .svg" multiple required>
+                                                    <label class="custom-file-label" for="customMultiFile">Choose file</label>
+                                                </div>
+                                                <small>( Multiple images can be uploaded )</small>
+                                                @error('multi_img')
+                                                    <small class="text-danger">{{$message}}</small>
+                                                @enderror
+                                            </div>
+                                        </div>
+                                    </div>
+
                                 </div>
                                 <div class="tab-pane fade" id="vert-tabs-messages" role="tabpanel" aria-labelledby="vert-tabs-messages-tab">
                                     <div class="col">
@@ -361,6 +376,7 @@
     <script>
         $(document).ready(function () {
             bsCustomFileInput.init();
+
             $("#has_discount").change(function(){
                 if ($(this).is(':checked')) {
                    $('.discOptions').fadeIn();
@@ -381,6 +397,7 @@
 
                 }
             });
+
 
         });
 

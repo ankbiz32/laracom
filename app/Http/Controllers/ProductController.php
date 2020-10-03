@@ -120,23 +120,34 @@ class ProductController extends Controller
     {
         // dd($request);
         $this->validate(request(),[
-            'image'=>'required|image',
             'name'=>'required|string',
-            'brand'=>'required|in:Nike,Adidas,New Balance,Asics,Puma,Skechers,Fila,Bata,Burberry,Converse',
             'price'=>'required|integer',
-            'gender'=>'required|in:Male,Female,Unisex',
-            'category'=>'required|in:Shoes'
+            // 'category_id'=>'required',
+            'image'=>'required|image',
+            'max_order_qty'=>'required|integer'
         ]);
 
         $imagepath = $request->image->store('products','public');
 
         $product = new Product();
         $product->name=request('name');
-        $product->brand=request('brand');
         $product->price=request('price');
-        $product->gender=request('gender');
-        $product->category=request('category');
+        $product->category_id=json_encode(request('category_id'));
+        $product->max_order_qty=request('max_order_qty');
         $product->image=$imagepath;
+
+        if($request->hasfile('multi_img'))
+         {
+            foreach(request('multi_img') as $img)
+            {
+                $multiimagepath = $img->store('products','public');
+                $images[] = $multiimagepath;
+            }
+         }
+
+        $product->additional_images=json_encode($images);
+
+        dd($request,$product);
 
         $product->save();
         return redirect()->route('admin.product')->with('success','Product added !');

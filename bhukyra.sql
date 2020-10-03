@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 02, 2020 at 02:59 PM
+-- Generation Time: Oct 03, 2020 at 10:06 AM
 -- Server version: 10.4.13-MariaDB
 -- PHP Version: 7.4.8
 
@@ -188,6 +188,20 @@ INSERT INTO `products` (`id`, `category_id`, `brand_id`, `name`, `price`, `image
 (16, 0, 0, 'ALL STAR 70S HI \"MILK\"', 579, 'products/16.jpg', '', '', 5, 1, 0, '0', 0, 0, 0, 0, 1, NULL, '2020-10-01 02:45:49'),
 (17, 0, 0, 'ALL-STAR 70S HI \"PLAY\"', 619, 'products/17.jpg', '', '', 3, 1, 0, '0', 0, 0, 0, 0, 1, NULL, '2020-10-01 02:45:49'),
 (18, 0, 0, 'FEAR OF GOD CHUCK 70 HI \"NATURAL\"', 1259, 'products/18.jpg', '', '', 5, 1, 0, '0', 0, 0, 0, 0, 1, NULL, '2020-10-01 02:45:49');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `product_images`
+--
+
+CREATE TABLE `product_images` (
+  `id` int(11) NOT NULL,
+  `product_id` int(11) NOT NULL,
+  `img_src` varchar(500) NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
 
@@ -388,6 +402,12 @@ ALTER TABLE `products`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `product_images`
+--
+ALTER TABLE `product_images`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `profiles`
 --
 ALTER TABLE `profiles`
@@ -453,6 +473,12 @@ ALTER TABLE `orders`
 --
 ALTER TABLE `products`
   MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=35;
+
+--
+-- AUTO_INCREMENT for table `product_images`
+--
+ALTER TABLE `product_images`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `profiles`
