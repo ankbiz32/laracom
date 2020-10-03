@@ -175,6 +175,7 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
         \Torann\GeoIP\GeoIPServiceProvider::class,
+        Yajra\DataTables\DataTablesServiceProvider::class,
 
     ],
 
@@ -228,6 +229,7 @@ return [
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
         'GeoIP' => \Torann\GeoIP\Facades\GeoIP::class,
+        'DataTables' => Yajra\DataTables\Facades\DataTables::class,
 
     ],
 

@@ -11,6 +11,7 @@ use App\Cart;
 use Illuminate\Http\Request;
 use DB;
 use Session;
+use DataTables;
 
 class ProductController extends Controller
 {
@@ -281,6 +282,23 @@ class ProductController extends Controller
 			return false;
 		}
 	}
+
+    public function listTags(Request $request)
+    {
+        if ($request->ajax()) {
+            $result = DB::table('tags')->get();
+            return Datatables::of($result)
+                ->addIndexColumn()
+                ->addColumn('action', function($row){
+                    $btn = '<a href="'.$row->id.'" class="edit btn btn-info m-1">EDIT</a> <a href="javascript:void(0)" class="delete btn btn-danger m-1">REMOVE</a>';
+                    return $btn;
+                })
+                ->rawColumns(['action'])
+                ->make(true);
+        }
+        return view('admin.tags');
+
+    }
 
 
 }

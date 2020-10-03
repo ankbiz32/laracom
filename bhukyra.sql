@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 03, 2020 at 10:06 AM
+-- Generation Time: Oct 03, 2020 at 02:51 PM
 -- Server version: 10.4.13-MariaDB
 -- PHP Version: 7.4.8
 
@@ -332,6 +332,31 @@ INSERT INTO `stocks` (`id`, `product_id`, `name`, `quantity`, `created_at`, `upd
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `tags`
+--
+
+CREATE TABLE `tags` (
+  `id` int(11) NOT NULL,
+  `tag` varchar(100) NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `modified_at` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `tags`
+--
+
+INSERT INTO `tags` (`id`, `tag`, `created_at`, `modified_at`) VALUES
+(1, 'health product', '2020-10-03 11:46:35', '2020-10-03 11:46:35'),
+(2, 'protien', '2020-10-03 11:46:35', '2020-10-03 11:46:35'),
+(3, 'shoes', '2020-10-03 11:47:15', '2020-10-03 11:47:15'),
+(4, 'canvas shoes', '2020-10-03 11:47:15', '2020-10-03 11:47:15'),
+(5, 'fertilizer', '2020-10-03 11:47:29', '2020-10-03 11:47:29'),
+(6, 'organic', '2020-10-03 11:47:29', '2020-10-03 11:47:29');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `users`
 --
 
@@ -428,6 +453,12 @@ ALTER TABLE `stocks`
   ADD KEY `stocks_product_id_index` (`product_id`);
 
 --
+-- Indexes for table `tags`
+--
+ALTER TABLE `tags`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `users`
 --
 ALTER TABLE `users`
@@ -497,6 +528,12 @@ ALTER TABLE `reminders`
 --
 ALTER TABLE `stocks`
   MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=58;
+
+--
+-- AUTO_INCREMENT for table `tags`
+--
+ALTER TABLE `tags`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT for table `users`
