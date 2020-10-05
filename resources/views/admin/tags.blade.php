@@ -43,19 +43,7 @@
             <div class="container-fluid">
                 <div class="col-12">
                     <div class="row col mb-4">
-                        <a href="{{ route('admin.addform') }}" class="btn btn-primary">+ ADD TAG</a>
-                        <span class="dropdown ml-auto">
-                            <a class="dropdown-toggle btn btn-secondary btn-bulk" style="display: none;" data-toggle="dropdown" href="#" aria-expanded="false">
-                                BULK ACTION <span class="caret"></span>
-                            </a>
-                            <div class="dropdown-menu" x-placement="bottom-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 40px, 0px);">
-                                <a class="dropdown-item" tabindex="-1" href="javascript:;" onclick="activateProducts()">Activate products</a>
-                                <a class="dropdown-item" tabindex="-1" href="javascript:;" onclick="deActivateProducts()">Deactivate products</a>
-                                <div class="dropdown-divider"></div>
-                                <a class="dropdown-item text-danger" tabindex="-1" href="javascript:;"  onclick="removeProducts(event)">Remove products</a>
-                            </div>
-                        </span>
-                        <!-- <a href="{{ route('admin.addform') }}" class="btn btn-default btn-flat ml-auto">BULK ACTION</a> -->
+                        <a href="javascript:;" data-toggle="modal" data-target="#addTagModal" class="btn btn-primary">+ ADD TAG</a>
                     </div>
                     <div class="card card-body">
                         <div class="table-responsive">
@@ -77,6 +65,63 @@
                 </div>
         </section>
     </div>
+
+    <!--Add Modal -->
+    <div class="modal fade" id="addTagModal" tabindex="-1" role="dialog" aria-labelledby="addTagModal" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+        <form action="admin-tags" method="POST">
+        @csrf
+        <div class="modal-header">
+            <h5 class="modal-title" id="addTagModalTitle">+ Add new tag</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            <div class="input-group">
+                <label class="col-form-label mr-3">Tag name:</label>
+                <input type="text" name="tag" class="form-control" placeholder="Enter new tag name here" required>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button type="submit" class="btn btn-primary">Save</button>
+        </div>
+        </form>
+        </div>
+    </div>
+    </div>
+
+    <!--Edit Modal -->
+    <div class="modal fade" id="editTagModal" tabindex="-1" role="dialog" aria-labelledby="editTagModal" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+        <form method="POST" action="{{ route('admin-tag.editTag') }}">
+        @csrf
+        <div class="modal-header">
+            <h5 class="modal-title" id="editTagModalTitle">Edit tag</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            <input type="hidden" name="id" id="editTagId" class="form-control" required>
+            <div class="input-group mt-2">
+                <label class="col-form-label mr-3">Tag name:</label>
+                <input type="text" name="tag" id="editTagName" class="form-control" required>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button type="submit" class="btn btn-primary">Update</button>
+        </div>
+        </form>
+        </div>
+    </div>
+    </div>
+
+
 @endsection
 
 
@@ -91,14 +136,24 @@
 
 
 <script type="text/javascript">
-  $(function () {
+
+// Alert before removing tag
+function confirmation(ev){
+    notie.confirm({ text: 'Are you sure?' }, function() {
+        var tg= ev.target.dataset.rid;
+        $('form[data-formId="'+tg+'"]').submit();
+    })
+}
+
+$(function () {
 
     var table = $('.yajra-datatable').DataTable({
         processing: true,
         serverSide: true,
-        ajax: "{{ route('admin.tags') }}",
+        ajax: "{{ route('admin-tags.index') }}",
         columns: [
-            {data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: true, searchable: true},
+            // {data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: true, searchable: true},
+            {data: 'id', name: 'id', orderable: true, searchable: true},
             {data: 'tag', name: 'tag', orderable: true, searchable: true},
             {data: 'created_at', name: 'created_at', orderable: true, searchable: true},
             {
@@ -107,10 +162,22 @@
                 orderable: true,
                 searchable: true
             },
-        ]
+        ],
+        order: [[ 0, 'desc' ]]
     });
 
-  });
+    $('#editTagModal').on('show.bs.modal', function (event) {
+        var button = $(event.relatedTarget);
+        var id = button.data('id');
+        var tag = button.data('tag');
+        var modal = $(this);
+        modal.find('.modal-title').text('Edit tag "' + tag + '"');
+        modal.find('.modal-body input[name="id"]').val(id);
+        modal.find('.modal-body input[name="tag"]').val(tag)
+    })
+
+});
+
 </script>
 
 

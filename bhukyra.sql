@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 03, 2020 at 02:51 PM
+-- Generation Time: Oct 05, 2020 at 02:29 PM
 -- Server version: 10.4.13-MariaDB
 -- PHP Version: 7.4.8
 
@@ -145,21 +145,22 @@ CREATE TABLE `password_resets` (
 
 CREATE TABLE `products` (
   `id` bigint(20) UNSIGNED NOT NULL,
-  `category_id` int(255) NOT NULL,
+  `category_id` text COLLATE utf8mb4_unicode_ci NOT NULL,
   `brand_id` int(255) DEFAULT NULL,
   `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `price` int(11) NOT NULL,
   `image` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `description` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
+  `description` longtext COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `sku` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `quantity` int(11) NOT NULL DEFAULT 1,
   `in_stock` tinyint(4) NOT NULL DEFAULT 1,
   `has_discount` tinyint(4) NOT NULL DEFAULT 0,
   `discount_type` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `discount_rate` double DEFAULT NULL,
-  `max_order_qty` tinyint(4) NOT NULL,
+  `max_order_qty` smallint(4) NOT NULL,
   `is_featured` tinyint(4) NOT NULL DEFAULT 0,
   `is_todays_deal` tinyint(4) NOT NULL DEFAULT 0,
+  `tags` text COLLATE utf8mb4_unicode_ci NOT NULL,
   `is_active` int(11) NOT NULL DEFAULT 1,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
@@ -169,25 +170,26 @@ CREATE TABLE `products` (
 -- Dumping data for table `products`
 --
 
-INSERT INTO `products` (`id`, `category_id`, `brand_id`, `name`, `price`, `image`, `description`, `sku`, `quantity`, `in_stock`, `has_discount`, `discount_type`, `discount_rate`, `max_order_qty`, `is_featured`, `is_todays_deal`, `is_active`, `created_at`, `updated_at`) VALUES
-(1, 0, 0, 'AIR JORDAN 1 X OFF-WHITE NRG \"OFF WHITE UNC\"', 1375, 'products/1.jpg', '', '', 1, 1, 0, '0', 0, 0, 0, 0, 1, NULL, '2020-10-01 02:45:49'),
-(2, 0, 0, 'STUSSY X AIR ZOOM SPIRIDON CAGED \"PURE PLATINUM\"', 225, 'products/2.jpg', '', '', 12, 1, 0, '0', 0, 0, 0, 0, 1, NULL, '2020-10-01 02:45:49'),
-(3, 0, 0, 'SUPREME X AIR FORCE 1 LOW \"BOX LOGO - WHITE\"', 275, 'products/3.jpg', '', '', 1, 1, 0, '0', 0, 0, 0, 0, 1, NULL, '2020-10-01 02:45:49'),
-(4, 0, 0, 'SACAI X LDV WAFFLE \"BLACK NYLON\"', 190, 'products/4.jpg', '', '', 1, 1, 0, '0', 0, 0, 0, 0, 1, NULL, '2020-10-01 02:45:49'),
-(5, 0, 0, 'AIR JORDAN 1 RETRO HIGH \"SHATTERED BACKBOARD\"', 980, 'products/5.jpg', '', '', 14, 1, 0, '0', 0, 0, 0, 0, 1, NULL, '2020-10-01 02:45:49'),
-(6, 0, 0, 'YEEZY BOOST 350 V2 \"CREAM\"', 780, 'products/6.jpg', '', '', 3, 1, 0, '0', 0, 0, 0, 0, 1, NULL, '2020-10-01 02:45:49'),
-(7, 0, 0, 'YEEZY BOOST 350 V2\"YECHEIL NON-REFLECT\"', 978, 'products/7.jpg', '', '', 5, 1, 0, '0', 0, 0, 0, 0, 1, NULL, '2020-10-01 02:45:49'),
-(8, 0, 0, 'YEEZY BOOST 350 V2 \"FROZEN YELLOW\"', 1100, 'products/8.jpg', '', '', 3, 1, 0, '0', 0, 0, 0, 0, 1, NULL, '2020-10-01 02:45:49'),
-(9, 0, 0, 'AIR JORDAN 5 RETRO SP \"MUSLIN\"', 1499, 'products/9.jpg', '', '', 3, 1, 0, '0', 0, 0, 0, 0, 1, NULL, '2020-10-01 02:45:49'),
-(10, 0, 0, 'AIR JORDAN 1 RETRO HIGH ZOOM \"RACER BLUE\"', 625, 'products/10.jpg', '', '', 5, 1, 0, '0', 0, 0, 0, 0, 1, NULL, '2020-10-01 02:45:49'),
-(11, 0, 0, 'FENTY SLIDE \"PINK BOW \"', 399, 'products/11.jpg', '', '', 3, 1, 0, '0', 0, 0, 0, 0, 1, NULL, '2020-10-01 02:45:49'),
-(12, 0, 0, 'WMNS RS-X TRACKS \"FAIR AQUA\"', 499, 'products/12.jpg', '', '', 3, 1, 0, '0', 0, 0, 0, 0, 1, NULL, '2020-10-01 02:45:49'),
-(13, 0, 0, 'OLD SKOOL \'BLACK WHITE\' \"BLACK WHITE\"', 239, 'products/13.jpg', '', '', 6, 1, 0, '0', 0, 0, 0, 0, 1, NULL, '2020-10-01 02:45:49'),
-(14, 0, 0, 'OLD SKOOL \"YACHT CLUB\"', 359, 'products/14.jpg', '', '', 5, 1, 0, '0', 0, 0, 0, 0, 1, NULL, '2020-10-01 02:45:49'),
-(15, 0, 0, 'VANS OLD SKOOL \"RED CHECKERBOARD \"', 419, 'products/15.jpg', '', '', 5, 1, 0, '0', 0, 0, 0, 0, 1, NULL, '2020-10-01 02:45:49'),
-(16, 0, 0, 'ALL STAR 70S HI \"MILK\"', 579, 'products/16.jpg', '', '', 5, 1, 0, '0', 0, 0, 0, 0, 1, NULL, '2020-10-01 02:45:49'),
-(17, 0, 0, 'ALL-STAR 70S HI \"PLAY\"', 619, 'products/17.jpg', '', '', 3, 1, 0, '0', 0, 0, 0, 0, 1, NULL, '2020-10-01 02:45:49'),
-(18, 0, 0, 'FEAR OF GOD CHUCK 70 HI \"NATURAL\"', 1259, 'products/18.jpg', '', '', 5, 1, 0, '0', 0, 0, 0, 0, 1, NULL, '2020-10-01 02:45:49');
+INSERT INTO `products` (`id`, `category_id`, `brand_id`, `name`, `price`, `image`, `description`, `sku`, `quantity`, `in_stock`, `has_discount`, `discount_type`, `discount_rate`, `max_order_qty`, `is_featured`, `is_todays_deal`, `tags`, `is_active`, `created_at`, `updated_at`) VALUES
+(1, '0', 0, 'AIR JORDAN 1 X OFF-WHITE NRG \"OFF WHITE UNC\"', 1375, 'products/1.jpg', '', '', 1, 1, 0, '0', 0, 0, 0, 0, '', 1, NULL, '2020-10-01 02:45:49'),
+(2, '0', 0, 'STUSSY X AIR ZOOM SPIRIDON CAGED \"PURE PLATINUM\"', 225, 'products/2.jpg', '', '', 12, 1, 0, '0', 0, 0, 0, 0, '', 1, NULL, '2020-10-01 02:45:49'),
+(3, '0', 0, 'SUPREME X AIR FORCE 1 LOW \"BOX LOGO - WHITE\"', 275, 'products/3.jpg', '', '', 1, 1, 0, '0', 0, 0, 0, 0, '', 1, NULL, '2020-10-01 02:45:49'),
+(4, '0', 0, 'SACAI X LDV WAFFLE \"BLACK NYLON\"', 190, 'products/4.jpg', '', '', 1, 1, 0, '0', 0, 0, 0, 0, '', 1, NULL, '2020-10-01 02:45:49'),
+(5, '0', 0, 'AIR JORDAN 1 RETRO HIGH \"SHATTERED BACKBOARD\"', 980, 'products/5.jpg', '', '', 14, 1, 0, '0', 0, 0, 0, 0, '', 1, NULL, '2020-10-01 02:45:49'),
+(6, '0', 0, 'YEEZY BOOST 350 V2 \"CREAM\"', 780, 'products/6.jpg', '', '', 3, 1, 0, '0', 0, 0, 0, 0, '', 1, NULL, '2020-10-01 02:45:49'),
+(7, '0', 0, 'YEEZY BOOST 350 V2\"YECHEIL NON-REFLECT\"', 978, 'products/7.jpg', '', '', 5, 1, 0, '0', 0, 0, 0, 0, '', 1, NULL, '2020-10-01 02:45:49'),
+(8, '0', 0, 'YEEZY BOOST 350 V2 \"FROZEN YELLOW\"', 1100, 'products/8.jpg', '', '', 3, 1, 0, '0', 0, 0, 0, 0, '', 1, NULL, '2020-10-01 02:45:49'),
+(9, '0', 0, 'AIR JORDAN 5 RETRO SP \"MUSLIN\"', 1499, 'products/9.jpg', '', '', 3, 1, 0, '0', 0, 0, 0, 0, '', 1, NULL, '2020-10-01 02:45:49'),
+(10, '0', 0, 'AIR JORDAN 1 RETRO HIGH ZOOM \"RACER BLUE\"', 625, 'products/10.jpg', '', '', 5, 1, 0, '0', 0, 0, 0, 0, '', 1, NULL, '2020-10-01 02:45:49'),
+(11, '0', 0, 'FENTY SLIDE \"PINK BOW \"', 399, 'products/11.jpg', '', '', 3, 1, 0, '0', 0, 0, 0, 0, '', 1, NULL, '2020-10-01 02:45:49'),
+(12, '0', 0, 'WMNS RS-X TRACKS \"FAIR AQUA\"', 499, 'products/12.jpg', '', '', 3, 1, 0, '0', 0, 0, 0, 0, '', 1, NULL, '2020-10-01 02:45:49'),
+(13, '0', 0, 'OLD SKOOL \'BLACK WHITE\' \"BLACK WHITE\"', 239, 'products/13.jpg', '', '', 6, 1, 0, '0', 0, 0, 0, 0, '', 1, NULL, '2020-10-01 02:45:49'),
+(14, '0', 0, 'OLD SKOOL \"YACHT CLUB\"', 359, 'products/14.jpg', '', '', 5, 1, 0, '0', 0, 0, 0, 0, '', 1, NULL, '2020-10-01 02:45:49'),
+(15, '0', 0, 'VANS OLD SKOOL \"RED CHECKERBOARD \"', 419, 'products/15.jpg', '', '', 5, 1, 0, '0', 0, 0, 0, 0, '', 1, NULL, '2020-10-01 02:45:49'),
+(16, '0', 0, 'ALL STAR 70S HI \"MILK\"', 579, 'products/16.jpg', '', '', 5, 1, 0, '0', 0, 0, 0, 0, '', 1, NULL, '2020-10-01 02:45:49'),
+(17, '0', 0, 'ALL-STAR 70S HI \"PLAY\"', 619, 'products/17.jpg', '', '', 3, 1, 0, '0', 0, 0, 0, 0, '', 1, NULL, '2020-10-01 02:45:49'),
+(18, '0', 0, 'FEAR OF GOD CHUCK 70 HI \"NATURAL\"', 1259, 'products/18.jpg', '', '', 5, 1, 0, '0', 0, 0, 0, 0, '', 1, NULL, '2020-10-01 02:45:49'),
+(36, 'null', NULL, 'Test product', 499, 'products/97r3f05MhXXVXoLh65j8zE4hVMuYeGjO5FhCJk8H.jpeg', NULL, NULL, 1, 1, 0, NULL, NULL, 499, 0, 0, '[\"protien\",\"shoes\",\"test1\",\"test2\"]', 1, '2020-10-05 06:45:33', '2020-10-05 06:45:33');
 
 -- --------------------------------------------------------
 
@@ -339,20 +341,19 @@ CREATE TABLE `tags` (
   `id` int(11) NOT NULL,
   `tag` varchar(100) NOT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
-  `modified_at` timestamp NOT NULL DEFAULT current_timestamp()
+  `updated_at` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `tags`
 --
 
-INSERT INTO `tags` (`id`, `tag`, `created_at`, `modified_at`) VALUES
-(1, 'health product', '2020-10-03 11:46:35', '2020-10-03 11:46:35'),
+INSERT INTO `tags` (`id`, `tag`, `created_at`, `updated_at`) VALUES
+(1, 'health products', '2020-10-03 11:46:35', '2020-10-05 01:55:45'),
 (2, 'protien', '2020-10-03 11:46:35', '2020-10-03 11:46:35'),
 (3, 'shoes', '2020-10-03 11:47:15', '2020-10-03 11:47:15'),
-(4, 'canvas shoes', '2020-10-03 11:47:15', '2020-10-03 11:47:15'),
-(5, 'fertilizer', '2020-10-03 11:47:29', '2020-10-03 11:47:29'),
-(6, 'organic', '2020-10-03 11:47:29', '2020-10-03 11:47:29');
+(18, 'test1', '2020-10-05 06:45:33', '2020-10-05 06:45:33'),
+(19, 'test2', '2020-10-05 06:45:33', '2020-10-05 06:45:33');
 
 -- --------------------------------------------------------
 
@@ -456,7 +457,8 @@ ALTER TABLE `stocks`
 -- Indexes for table `tags`
 --
 ALTER TABLE `tags`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `tag` (`tag`);
 
 --
 -- Indexes for table `users`
@@ -503,13 +505,13 @@ ALTER TABLE `orders`
 -- AUTO_INCREMENT for table `products`
 --
 ALTER TABLE `products`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=35;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=38;
 
 --
 -- AUTO_INCREMENT for table `product_images`
 --
 ALTER TABLE `product_images`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `profiles`
@@ -533,7 +535,7 @@ ALTER TABLE `stocks`
 -- AUTO_INCREMENT for table `tags`
 --
 ALTER TABLE `tags`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
 
 --
 -- AUTO_INCREMENT for table `users`

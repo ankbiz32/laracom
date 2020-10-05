@@ -31,7 +31,8 @@ Route::post('/admin-categories/edit', 'CategoryController@edit')->name('category
 Route::post('/admin-categories/remove', 'CategoryController@remove')->name('category.remove')->middleware(['auth','admin']);
 Route::get('/admin-categories/remove/{id}', 'CategoryController@removeImg')->name('category.removeImg')->middleware(['auth','admin']);
 
-Route::get('/admin-tags', 'ProductController@listTags')->name('admin.tags')->middleware(['auth','admin']);
+Route::post('/admin-tags/editTag', 'TagController@editTag')->name('admin-tag.editTag')->middleware(['auth','admin']);
+Route::resource('admin-tags', 'TagController');
 
 Route::get('/admin-transactions', 'ProductController@lisTransactions')->name('admin.transactions')->middleware(['auth','admin']);
 

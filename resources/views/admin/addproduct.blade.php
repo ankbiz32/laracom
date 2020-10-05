@@ -3,6 +3,7 @@
 @section('css')
     <link rel="stylesheet" href="{{URL::to('/')}}/plugins/select2/css/select2.min.css">
     <link rel="stylesheet" href="{{URL::to('/')}}/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css">
+    <link rel="stylesheet" href="{{URL::to('/')}}/plugins/tags/bootstrap-tagsinput.css">
     <style>
         .select2-selection__choice{
             background-color:#007bff !important;
@@ -35,106 +36,6 @@
 
         <section class="content">
             <div class="container-fluid">
-                <div class="col-12">
-                    <!-- <div class="card card-body">
-                        <form method="POST" action="{{ route('product.create') }}" enctype="multipart/form-data">
-                            @csrf
-                            <div class="row ">
-
-                                <div class="col-sm-6">
-                                    <label for="name" class="">{{ __('Name') }}</label>
-                                    <div class="form-group">
-                                        <div>
-                                            <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name') }}" required autocomplete="name" autofocus>
-                                            @error('name')
-                                                <span class="invalid-feedback" role="alert">
-                                                    <strong>{{ $message }}</strong>
-                                                </span>
-                                            @enderror
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="col-sm-6">
-                                    <label for="price" class="">{{ __('Price') }}</label>
-                                    <div class="form-group">
-                                        <div>
-                                            <input id="price" type="text" class="form-control @error('price') is-invalid @enderror" name="price" value="{{ old('price')  }}" required autocomplete="price" autofocus>
-                                            @error('price')
-                                                <span class="invalid-feedback" role="alert">
-                                                    <strong>{{ $message }}</strong>
-                                                </span>
-                                            @enderror
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="col-sm-6">
-                                    <label for="brand" class="">{{ __('Brand') }}</label>
-                                    <div class="form-group">
-                                        <div>
-                                            <select name="brand" id="addproductbrand" class="form-control">
-                                                <option selected="true" value="" disabled hidden>Choose product brand</option>
-                                                <option value="Nike">Nike</option>
-                                                <option value="Adidas">Adidas</option>
-                                                <option value="New Balance">New Balance</option>
-                                                <option value="Asics">Asics</option>
-                                                <option value="Puma">Puma</option>
-                                                <option value="Skechers">Skechers</option>
-                                                <option value="Fila">Fila</option>
-                                                <option value="Bata">Bata</option>
-                                                <option value="Burberry">Burberry</option>
-                                                <option value="Converse">Converse</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="col-sm-6">
-                                    <label for="gender" class="">{{ __('Gender') }}</label>
-                                    <div class="form-group">
-                                        <div>
-                                            <select name="gender" id="addproductgender" class="form-control">
-                                                <option selected="true" value="" disabled hidden>Choose product brand</option>
-                                                <option value="Male">Male</option>
-                                                <option value="Female">Female</option>
-                                                <option value="Unisex">Unisex</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="col-sm-6">
-                                    <label for="category" class="">{{ __('Category') }}</label>
-                                    <div class="form-group">
-                                        <div>
-                                            <select name="category" id="addproductcategory" class="form-control">
-                                                <option value="Shoes">Shoes</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="col-sm-6">
-                                    <div class="form-group">
-                                        <label for="image" class="">Product Image</label>
-                                        <input type="file" class="form-control" id="image" name="image">
-                                        @error('image')
-
-                                        <div style="color:red; font-weight:bold; font-size:0.7rem;">{{ $message }}</div>
-
-                                        @enderror
-                                    </div>
-                                </div>
-                            </div>
-
-                            <button type="submit" class="btn btn-primary m-2">ADD PRODUCT</button>
-                            <a href="{{URL::to('/admin-product')}}" class="btn btn-default m-2">CANCEL</a>
-
-                        </form>
-                    </div> -->
-                </div>
-
                 <div class="card card-body px-sm-3 px-2">
                 <form method="POST" action="{{ route('product.create') }}" enctype="multipart/form-data">
                     @csrf
@@ -219,11 +120,27 @@
                                         <div class="form-group row">
                                             <label class="col-sm-2 col-form-label" for="max_selling_qty">Max order qty <span class="req"> *</span></label>
                                             <div class="input-group col-sm-10">
-                                                <input type="number" id="max_order_qty" value="{{ old('max_order_qty') }}" name="max_order_qty" class="form-control @error('max_order_qty') is-invalid @enderror">
+                                                <input type="number" id="max_order_qty" value="{{ old('max_order_qty') }}" name="max_order_qty" class="form-control @error('max_order_qty') is-invalid @enderror" required>
                                             </div>
                                             @error('name')
                                                 <small class="text-danger">{{$message}}</small>
                                             @enderror
+                                        </div>
+                                    </div>
+
+                                    <div class="col">
+                                        <div class="form-group row">
+                                            <label class="col-sm-2 col-form-label" for="tags">{{ __('Tags') }}<span class="req"> *</span></label>
+                                            <div class="col-sm-10">
+                                                <select name="tags[]" id="tags" multiple class="form-control" style="width: 100%;" required>
+                                                    @if($tags)
+                                                        <option value="" disabled>Select tags</option>
+                                                        @foreach($tags as $t)
+                                                        <option value="{{ $t->tag }}">{{ $t->tag }}</option>
+                                                        @endforeach
+                                                    @endif
+                                                </select>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -234,7 +151,7 @@
                                             <label class="col-sm-2 col-form-label" for="customMultiFile">Additional Images</label>
                                             <div class="col-sm-10">
                                                 <div class="custom-file">
-                                                    <input type="file" class="custom-file-input @error('multi_img') is-invalid @enderror" id="customMultiFile" name="multi_img[]" accept=".jpg, .jpeg, .png, .bmp, .svg" multiple required>
+                                                    <input type="file" class="custom-file-input @error('multi_img') is-invalid @enderror" id="customMultiFile" name="multi_img[]" accept=".jpg, .jpeg, .png, .bmp, .svg" multiple>
                                                     <label class="custom-file-label" for="customMultiFile">Choose file</label>
                                                 </div>
                                                 <small>( Multiple images can be uploaded )</small>
@@ -373,6 +290,7 @@
 @section('scripts')
     <script src="{{URL::to('/')}}/plugins/bs-custom-file-input/bs-custom-file-input.min.js"></script>
     <script src="{{URL::to('/')}}/plugins/select2/js/select2.full.min.js"></script>
+    <script src="{{URL::to('/')}}/plugins/tags/bootstrap-tagsinput.js"></script>
     <script>
         $(document).ready(function () {
             bsCustomFileInput.init();
@@ -402,5 +320,12 @@
         });
 
         $('.select2').select2();
+        $('#tags').select2({
+            tags:true
+        });
+
+        $('#tags-input').tagsinput({
+            confirmKeys: [13, 188]
+        });
     </script>
 @endsection

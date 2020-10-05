@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App;
 use Storage;
 use App\Product;
+use App\Tag;
 use App\Category;
 use App\Stock;
 use App\Cart;
@@ -112,20 +113,20 @@ class ProductController extends Controller
     public function form()
     {
         $cats = new Category;
+        $tags = Tag::get();
         $categories=$this->categories_dropdown();
-        // dd($categories);
-        return view('admin.addproduct', compact ('categories'));
+        return view('admin.addproduct', compact (['categories','tags']));
     }
 
     public function create(Request $request)
     {
-        // dd($request);
         $this->validate(request(),[
             'name'=>'required|string',
             'price'=>'required|integer',
-            // 'category_id'=>'required',
-            'image'=>'required|image',
-            'max_order_qty'=>'required|integer'
+            'category'=>'required',
+            'tags'=>'required',
+            'max_order_qty'=>'required|integer',
+            'image'=>'required|image'
         ]);
 
         $imagepath = $request->image->store('products','public');
@@ -133,7 +134,8 @@ class ProductController extends Controller
         $product = new Product();
         $product->name=request('name');
         $product->price=request('price');
-        $product->category_id=json_encode(request('category_id'));
+        $product->category_id=json_encode(request('category'));
+        $product->tags=json_encode(request('tags'));
         $product->max_order_qty=request('max_order_qty');
         $product->image=$imagepath;
 
@@ -146,11 +148,21 @@ class ProductController extends Controller
             }
          }
 
-        $product->additional_images=json_encode($images);
-
-        dd($request,$product);
-
+        // $product->additional_images=json_encode($images);
+        // dd($request,$product);
         $product->save();
+
+        if(isset($images)){
+            foreach($images as $im){
+                DB::table('product_images')->insert(
+                    ['img_src' => $im, 'product_id' => $product->id]
+                );
+            }
+        }
+
+        foreach(request('tags') as $tag){
+            Tag::firstOrCreate(['tag' => $tag]);
+        }
         return redirect()->route('admin.product')->with('success','Product added !');
     }
 
@@ -221,7 +233,7 @@ class ProductController extends Controller
     public function remove($id)
     {
         Product::where('id',$id)->delete();
-        Stock::where('product_id',$id)->delete();
+        DB::table('product_images')->where('product_id', '=', $id)->delete();
 
         return redirect()->route('admin.product')->with('success','Product removed !');
     }
@@ -244,6 +256,8 @@ class ProductController extends Controller
         return view('admin.product', compact ('products'));
     }
 
+
+    // FUNCTIONS FOR CATEGORIES DROPDOWN WITH PARENT NAME
 	public function categories_dropdown()
     {
         $result = DB::table('categories')
@@ -282,23 +296,5 @@ class ProductController extends Controller
 			return false;
 		}
 	}
-
-    public function listTags(Request $request)
-    {
-        if ($request->ajax()) {
-            $result = DB::table('tags')->get();
-            return Datatables::of($result)
-                ->addIndexColumn()
-                ->addColumn('action', function($row){
-                    $btn = '<a href="'.$row->id.'" class="edit btn btn-info m-1">EDIT</a> <a href="javascript:void(0)" class="delete btn btn-danger m-1">REMOVE</a>';
-                    return $btn;
-                })
-                ->rawColumns(['action'])
-                ->make(true);
-        }
-        return view('admin.tags');
-
-    }
-
 
 }
