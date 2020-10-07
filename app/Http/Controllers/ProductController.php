@@ -6,6 +6,7 @@ use App;
 use Storage;
 use App\Product;
 use App\Tag;
+use App\Brand;
 use App\Category;
 use App\Stock;
 use App\Cart;
@@ -19,12 +20,11 @@ class ProductController extends Controller
     public function index()
     {
         $products = Product::get();
-        $genders = Product::select('gender')->groupBy('gender')->get();
-        $brands = Product::select('brand')->groupBy('brand')->get();
-        $categories = Product::select('category')->groupBy('category')->get();
+        $brands = Brand::get();
+        $categories = Category::select('name')->groupBy('name')->get();
         $maxPrice = Product::select('price')->max('price');
         $minPrice = Product::select('price')->min('price');
-        return view('products.index',compact(['brands','genders','categories','maxPrice','minPrice','products']));
+        return view('products.index',compact(['brands','categories','maxPrice','minPrice','products']));
 
     }
 
@@ -32,10 +32,9 @@ class ProductController extends Controller
     {
         if($request->ajax())
         {
-            $products= Product::where('quantity','>',0);
+            $products= Product::where('is_active','=',1);
             $query = json_decode($request->get('query'));
             $price = json_decode($request->get('price'));
-            $gender = json_decode($request->get('gender'));
             $brand = json_decode($request->get('brand'));
 
             if(!empty($query))
@@ -46,13 +45,9 @@ class ProductController extends Controller
             {
                 $products= $products->where('price','<=',$price);
             }
-            if(!empty($gender))
-            {
-                $products= $products->whereIn('gender',$gender);
-            }
             if(!empty($brand))
             {
-                $products= $products->whereIn('brand',$brand);
+                $products= $products->whereIn('brand_id',$brand);
             }
             $products=$products->get();
 
@@ -71,7 +66,7 @@ class ProductController extends Controller
                                     <div class="product-info">
 
                                     <div class="info-1"><img src="'.asset($product->image).'" alt=""></div>
-                                    <div class="info-4"><h5>'.$product->brand.'</h5></div>
+                                    <div class="info-4"><h5>'.$product->brand_id.'</h5></div>
                                     <div class="info-2"><h4>'.$product->name.'</h4></div>
                                     <div class="info-3"><h5>RM '.$product->price.'</h5></div>
                                     </div>
@@ -101,21 +96,16 @@ class ProductController extends Controller
 
     public function show(Product $product)
     {
-        $sizes = Stock::where('product_id','=',$product->id)
-                     ->get([
-                            'name',
-                            'quantity',
-                        ]);
-
-        return view('products.show', compact ('product','sizes'));
+        return view('products.show', compact ('product'));
     }
 
     public function form()
     {
         $cats = new Category;
-        $tags = Tag::get();
         $categories=$this->categories_dropdown();
-        return view('admin.addproduct', compact (['categories','tags']));
+        $tags = Tag::get();
+        $brands = Brand::get();
+        return view('admin.addproduct', compact (['categories','tags','brands']));
     }
 
     public function create(Request $request)
@@ -124,6 +114,7 @@ class ProductController extends Controller
             'name'=>'required|string',
             'price'=>'required|integer',
             'category'=>'required',
+            'brand'=>'required',
             'tags'=>'required',
             'max_order_qty'=>'required|integer',
             'image'=>'required|image'
@@ -135,31 +126,46 @@ class ProductController extends Controller
         $product->name=request('name');
         $product->price=request('price');
         $product->category_id=json_encode(request('category'));
-        $product->tags=json_encode(request('tags'));
-        $product->max_order_qty=request('max_order_qty');
+        $product->brand_id=request('brand');
         $product->image=$imagepath;
+        $product->max_order_qty=request('max_order_qty');
+        $product->tags=json_encode(request('tags'));
+        $product->url_slug=str_slug(request('name'), '-');
+        $product->short_descr=request('short_descr');
+        $product->full_descr=request('full_descr');
+        $product->meta_title=request('meta_title');
+        $product->meta_descr=request('meta_descr');
+        $product->sku=request('sku');
+        $product->in_stock=request('in_stock');
 
-        if($request->hasfile('multi_img'))
-         {
-            foreach(request('multi_img') as $img)
-            {
-                $multiimagepath = $img->store('products','public');
-                $images[] = $multiimagepath;
-            }
-         }
-
-        // $product->additional_images=json_encode($images);
-        // dd($request,$product);
-        $product->save();
-
-        if(isset($images)){
-            foreach($images as $im){
-                DB::table('product_images')->insert(
-                    ['img_src' => $im, 'product_id' => $product->id]
-                );
-            }
+        if(request('has_discount'))
+        {
+            $product->has_discount=1;
+            $product->discount_type=request('discount_type');
+            $product->discount_rate=request('discount_rate');
+        }
+        else{
+            $product->has_discount=0;
+            $product->discount_type='';
         }
 
+        $product->save();
+
+
+        // Additional images are uploaded & saved in diff table
+        if($request->hasfile('multi_img'))
+        {
+           foreach(request('multi_img') as $img)
+           {
+               $multiimagepath = $img->store('products','public');
+               DB::table('product_images')->insert(
+                   ['img_src' => $multiimagepath, 'product_id' => $product->id]
+               );
+           }
+        }
+
+
+        // Additional tags are saved in diff table
         foreach(request('tags') as $tag){
             Tag::firstOrCreate(['tag' => $tag]);
         }

@@ -8,6 +8,7 @@ use App\Profile;
 use App\Reminder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use DataTables;
 
 class AdminController extends Controller
 {
@@ -54,11 +55,26 @@ class AdminController extends Controller
         return view('admin.dashboard',compact('latest','totaluser','totalorder','totalproduct','totalgross','reminder'));
     }
 
-    public function order()
+    public function order(Request $request)
     {
-        $orders=Order::orderBy('created_at','DESC')->get();
 
-        return view('admin.order',compact('orders'));
+        if ($request->ajax()) {
+            $result = Order::orderBy('created_at','DESC')->get();
+            return Datatables::of($result)
+                ->addIndexColumn()
+                ->addColumn('check', '<input type="checkbox" class="rowSelector" data-id="{{ $id }}">')
+                ->addColumn('action', function($row){
+                    $btn = '
+                            <a href="'.route('admin.showorder',['id'=>$row->id]).'" title="View Order" class="btn btn-sm btn-warning m-1"><i class="fa fa-eye"></i></a>
+
+                            <a href="javascript:void(0)" data-toggle="modal" data-target="#editOrderModal" data-id="'.$row->id.'" class="edit btn btn-sm btn-info m-1">CHANGE STATUS</a>
+                        ';
+                    return $btn;
+                })
+                ->rawColumns(['action', 'check'])
+                ->make(true);
+        }
+        return view('admin.order');
     }
 
     public function show_order($id)

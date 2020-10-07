@@ -1,5 +1,13 @@
     @extends('layouts.admin')
 
+    @section ('css')
+        <!-- JQVMap -->
+        <link rel="stylesheet" href="{{URL::to('/')}}/plugins/jqvmap/jqvmap.min.css">
+        <!-- summernote -->
+        <link rel="stylesheet" href="{{URL::to('/')}}/plugins/summernote/summernote-bs4.css">
+    @endsection
+
+
     @section ('content')
 
     <div class="content-wrapper">
@@ -397,6 +405,18 @@
 
     @endsection
 
+
     @section ('scripts')
+        <!-- ChartJS -->
+        <script src="{{URL::to('/')}}/plugins/chart.js/Chart.min.js"></script>
+        <!-- Sparkline -->
+        <script src="{{URL::to('/')}}/plugins/sparklines/sparkline.js"></script>
+        <!-- JQVMap -->
+        <script src="{{URL::to('/')}}/plugins/jqvmap/jquery.vmap.min.js"></script>
+        <script src="{{URL::to('/')}}/plugins/jqvmap/maps/jquery.vmap.usa.js"></script>
+        <!-- Summernote -->
+        <script src="{{URL::to('/')}}/plugins/summernote/summernote-bs4.min.js"></script>
+
+        <script src="{{URL::to('/')}}/dist/js/demo.js"></script>
         <script src="dist/js/pages/dashboard.js"></script>
     @endsection

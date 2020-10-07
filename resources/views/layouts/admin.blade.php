@@ -11,14 +11,10 @@
   <link rel="stylesheet" href="{{URL::to('/')}}/plugins/fontawesome-free/css/all.min.css">
   <!-- Ionicons -->
   <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
-  <!-- JQVMap -->
-  <link rel="stylesheet" href="{{URL::to('/')}}/plugins/jqvmap/jqvmap.min.css">
   <!-- Theme style -->
   <link rel="stylesheet" href="{{URL::to('/')}}/dist/css/adminlte.min.css">
   <!-- overlayScrollbars -->
   <link rel="stylesheet" href="{{URL::to('/')}}/plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
-  <!-- summernote -->
-  <link rel="stylesheet" href="{{URL::to('/')}}/plugins/summernote/summernote-bs4.css">
   <!-- Google Font: Source Sans Pro -->
   <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="https://unpkg.com/notie/dist/notie.min.css">
@@ -151,7 +147,7 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="{{ route('admin.product') }}" class="nav-link">
+                    <a href="{{ route('admin-brands.index') }}" class="nav-link">
                     <i class="far fa-circle nav-icon"></i>
                     <p>Brands</p>
                     </a>
@@ -320,22 +316,10 @@
 </script>
 <!-- Bootstrap 4 -->
 <script src="{{URL::to('/')}}/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
-<!-- ChartJS -->
-<script src="{{URL::to('/')}}/plugins/chart.js/Chart.min.js"></script>
-<!-- Sparkline -->
-<script src="{{URL::to('/')}}/plugins/sparklines/sparkline.js"></script>
-<!-- JQVMap -->
-<script src="{{URL::to('/')}}/plugins/jqvmap/jquery.vmap.min.js"></script>
-<script src="{{URL::to('/')}}/plugins/jqvmap/maps/jquery.vmap.usa.js"></script>
-<!-- Summernote -->
-<script src="{{URL::to('/')}}/plugins/summernote/summernote-bs4.min.js"></script>
 <!-- overlayScrollbars -->
 <script src="{{URL::to('/')}}/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
 <!-- AdminLTE App -->
 <script src="{{URL::to('/')}}/dist/js/adminlte.js"></script>
-
-<script src="{{URL::to('/')}}/dist/js/demo.js"></script>
-
 <script src="https://unpkg.com/notie"></script>
 @yield('scripts')
 

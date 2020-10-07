@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Tag;
+use App\Brand;
 use Illuminate\Http\Request;
 use DataTables;
 
-class TagController extends Controller
+class BrandController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -16,14 +16,13 @@ class TagController extends Controller
     public function index(Request $request)
     {
         if ($request->ajax()) {
-            $result = Tag::get();
+            $result = Brand::get();
             return Datatables::of($result)
                 ->addIndexColumn()
-                ->addColumn('check', '<input type="checkbox" data-id="{{ $id }}">')
                 ->addColumn('action', function($row){
                     $btn = '
-                            <a href="javascript:void(0)" data-toggle="modal" data-target="#editTagModal" data-id="'.$row->id.'" data-tag="'.$row->tag.'" class="edit btn btn-info m-1">EDIT</a>
-                            <form action="'.route('admin-tags.destroy', $row->id).'" data-formId="'.$row->id.'" class="d-inline" method="POST">
+                            <a href="javascript:void(0)" data-toggle="modal" data-target="#edit" data-id="'.$row->id.'" data-name="'.$row->name.'" class="edit btn btn-info m-1">EDIT</a>
+                            <form action="'.route('admin-brands.destroy', $row->id).'" data-formId="'.$row->id.'" class="d-inline" method="POST">
                                 <input type="hidden" name="_method" value="DELETE">
                                 <input type="hidden" name="_token" value="'.csrf_token().'">
                                 <button type="button" onclick="confirmation(event)" data-rid="'.$row->id.'" class="btn btn-danger m-1">REMOVE</button>
@@ -31,10 +30,10 @@ class TagController extends Controller
                         ';
                     return $btn;
                 })
-                ->rawColumns(['action', 'check'])
+                ->rawColumns(['action'])
                 ->make(true);
         }
-        return view('admin.tags');
+        return view('admin.brands');
     }
 
     /**
@@ -56,20 +55,30 @@ class TagController extends Controller
     public function store(Request $request)
     {
         $this->validate(request(),[
-            'tag'=>'required|string',
+            'name'=>'required|string',
+            'img_src'=>'image'
         ]);
 
-        Tag::firstOrCreate(['tag' => request('tag')]);
-        return redirect()->route('admin-tags.index')->with('success','Tag added !');
+        $brand = new Brand();
+        $brand->name=request('name');
+
+        if($request->hasfile('img_src'))
+         {
+            $imagepath = $request->img_src->store('brands','public');
+            $brand->img_src=$imagepath;
+         }
+
+        $brand->save();
+        return redirect()->route('admin-brands.index')->with('success','Brand added !');
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Tag  $tag
+     * @param  \App\Brand  $brand
      * @return \Illuminate\Http\Response
      */
-    public function show(Tag $tag)
+    public function show(Brand $brand)
     {
         //
     }
@@ -77,10 +86,10 @@ class TagController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Tag  $tag
+     * @param  \App\Brand  $brand
      * @return \Illuminate\Http\Response
      */
-    public function edit(Tag $tag)
+    public function edit(Brand $brand)
     {
         //
     }
@@ -89,10 +98,10 @@ class TagController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Tag  $tag
+     * @param  \App\Brand  $brand
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Tag $tag)
+    public function update(Request $request, Brand $brand)
     {
         //
     }
@@ -101,28 +110,36 @@ class TagController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Tag  $tag
+     * @param  \App\Brand  $brand
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
     {
-        $shark = Tag::find($id);
+        $shark = Brand::find($id);
         $shark->delete();
-        return redirect()->route('admin-tags.index')->with('success','Tag deleted !');
+        return redirect()->route('admin-brands.index')->with('success','Brand deleted !');
     }
 
-    public function editTag(Request $request)
+    public function editBrand(Request $request)
     {
         // dd($request);
         $this->validate(request(),[
-            'tag'=>'required|string',
+            'name'=>'required|string',
+            'img_src'=>'image',
             'id'=>'required'
         ]);
 
-        $tag = Tag::findOrFail(request('id'));
+        $brand = Brand::findOrFail(request('id'));
 
-        $tag->tag=request('tag');
-        $tag->save();
-        return redirect()->route('admin-tags.index')->with('success','Tag updated !');
+        $brand->name=request('name');
+
+        if(request('img_src'))
+        {
+            $imagepath = $request->img_src->store('brands','public');
+            $brand->img_src=$imagepath;
+        }
+
+        $brand->save();
+        return redirect()->route('admin-brands.index')->with('success','Brand updated !');
     }
 }

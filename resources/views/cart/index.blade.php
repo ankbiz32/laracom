@@ -6,11 +6,11 @@
         <div class="container p-0 filled-cart">
             <div class="mr-2 ml-2">
                 <h3>YOUR CART</h3>
-                <hr> 
+                <hr>
             </div>
-           
+
             <div class="row mr-2 ml-2">
-                
+
                 <div class="col-lg-8 col-sm-12 pt-2 pr-4 pl-4">
                     <div class="row">
                         @foreach ($products as $product)
@@ -19,12 +19,11 @@
                                     <img src="{{ asset($product['item']['image']) }}" alt="">
                                 </div>
                                 <div class="item-detail mr-auto d-flex flex-column justify-content-center">
-                                    <div class="info-2"><h5>{{ $product['item']['name'] }}</h5> </div> 
-                                    <div class="info-3"><h6>Size: {{ $product['size'] }}</h6></div>
+                                    <div class="info-2"><h5>{{ $product['item']['name'] }}</h5> </div>
                                     <div class="info-4"><h6>Quantity: {{ $product['quantity'] }}</h6></div>
                                     <div class="info-5">
                                         <a href="{{ route('cart.remove',['id'=>key($products)]) }}" class="remove-cart">
-                                            <i class="fa fa-trash"></i> 
+                                            <i class="fa fa-trash"></i>
                                         </a>
                                     </div>
                                 </div>

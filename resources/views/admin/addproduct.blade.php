@@ -4,6 +4,7 @@
     <link rel="stylesheet" href="{{URL::to('/')}}/plugins/select2/css/select2.min.css">
     <link rel="stylesheet" href="{{URL::to('/')}}/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css">
     <link rel="stylesheet" href="{{URL::to('/')}}/plugins/tags/bootstrap-tagsinput.css">
+        <link rel="stylesheet" href="{{URL::to('/')}}/plugins/summernote/summernote-bs4.css">
     <style>
         .select2-selection__choice{
             background-color:#007bff !important;
@@ -11,6 +12,16 @@
         }
         .select2-selection__choice span{
             color:white !important;
+        }
+        .custom-switch .custom-control-label::after{
+            background:white !important;
+            box-shadow: 1px 1px 5px #00000088;
+        }
+        .select2-container--default .select2-selection--single , .select2-selection--multiple {
+            border: 1px solid #ddd !important;
+        }
+        .select2-selection__arrow {
+            top:0.12rem !important;
         }
     </style>
 @endsection
@@ -40,10 +51,11 @@
                 <form method="POST" action="{{ route('product.create') }}" enctype="multipart/form-data">
                     @csrf
                     <div class="row">
-                        <div class="col-4 col-sm-3 bg-light py-4 pl-4 pr-0">
+                        <div class="mx-3 mx-sm-0 col-sm-3 bg-light py-4 pl-4 pr-0">
                             <div class="nav flex-column nav-tabs h-100" id="vert-tabs-tab" role="tablist" aria-orientation="vertical">
                             <a class="nav-link active py-2" id="vert-tabs-home-tab" data-toggle="pill" href="#vert-tabs-home" role="tab" aria-controls="vert-tabs-home" aria-selected="true">General</a>
                             <a class="nav-link py-2" id="vert-tabs-profile-tab" data-toggle="pill" href="#vert-tabs-profile" role="tab" aria-controls="vert-tabs-profile" aria-selected="false">Images</a>
+                            <a class="nav-link py-2" id="vert-tabs-description-tab" data-toggle="pill" href="#vert-tabs-description" role="tab" aria-controls="vert-tabs-description" aria-selected="false">Description</a>
                             <a class="nav-link @error('meta_title') text-danger @enderror py-2" id="vert-tabs-messages-tab" data-toggle="pill" href="#vert-tabs-messages" role="tab" aria-controls="vert-tabs-messages" aria-selected="false">SEO</a>
                             <a class="nav-link py-2" id="vert-tabs-settings-tab" data-toggle="pill" href="#vert-tabs-settings" role="tab" aria-controls="vert-tabs-settings" aria-selected="false">Options</a>
                             <a class="nav-link py-2" id="vert-tabs-discount-tab" data-toggle="pill" href="#vert-tabs-discount" role="tab" aria-controls="vert-tabs-discount" aria-selected="false">Discount</a>
@@ -51,7 +63,7 @@
                             <a class="nav-link py-2" id="vert-tabs-location-tab" data-toggle="pill" href="#vert-tabs-location" role="tab" aria-controls="vert-tabs-location" aria-selected="false">Marketplace</a>
                             </div>
                         </div>
-                        <div class="col-8 col-sm-7 ml-sm-4">
+                        <div class="col-sm-7 ml-sm-4">
                             <div class="tab-content pt-4" id="vert-tabs-tabContent">
                                 <div class="tab-pane text-left fade show active" id="vert-tabs-home" role="tabpanel" aria-labelledby="vert-tabs-home-tab">
                                     <div class="col">
@@ -95,6 +107,24 @@
                                                         @endforeach
                                                     @else
                                                         <option value="" disabled>No categories found. Add some categories first.</option>
+                                                    @endif
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col">
+                                        <div class="form-group row">
+                                            <label class="col-sm-2 col-form-label" for="category">{{ __('Brand') }}<span class="req"> *</span></label>
+                                            <div class="col-sm-10">
+                                                <select name="brand" id="addBrand" class="form-control select2" style="width: 100%;" required>
+                                                    @if($brands)
+                                                        <option value="" disabled>Select brand</option>
+                                                        @foreach($brands as $b)
+                                                        <option value="{{ $b->id }}">{{ $b->name }}</option>
+                                                        @endforeach
+                                                    @else
+                                                        <option value="" disabled>No categories found. Add some brands first.</option>
                                                     @endif
                                                 </select>
                                             </div>
@@ -161,14 +191,44 @@
                                             </div>
                                         </div>
                                     </div>
-
                                 </div>
+
+
+                                <div class="tab-pane fade" id="vert-tabs-description" role="tabpanel" aria-labelledby="vert-tabs-description-tab">
+                                    <div class="col">
+                                        <div class="form-group row">
+                                            <label class="col-sm-2 col-form-label" for="price">Short description</label>
+                                            <div class="col-sm-10">
+                                            <textarea name="short_descr" id="short_descr" class="form-control @error('short_descr') is-invalid @enderror" rows="3" maxlength="200"></textarea>
+                                                @error('short_descr')
+                                                    <span class="invalid-feedback" role="alert">
+                                                        <strong>{{ $message }}</strong>
+                                                    </span>
+                                                @enderror
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col">
+                                        <div class="form-group row">
+                                            <label class="col-sm-2 col-form-label" for="price">Full description</label>
+                                            <div class="col-sm-10">
+                                            <textarea name="full_descr" id="full_descr" class="form-control @error('full_descr') is-invalid @enderror" rows="5"></textarea>
+                                                @error('full_descr')
+                                                    <span class="invalid-feedback" role="alert">
+                                                        <strong>{{ $message }}</strong>
+                                                    </span>
+                                                @enderror
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
                                 <div class="tab-pane fade" id="vert-tabs-messages" role="tabpanel" aria-labelledby="vert-tabs-messages-tab">
                                     <div class="col">
                                         <div class="form-group row">
                                             <label class="col-sm-2 col-form-label" for="price">Meta title :</label>
                                             <div class="col-sm-10">
-                                                <input type="text" class="form-control @error('meta_title') is-invalid @enderror">
+                                                <input type="text" name="meta_title" class="form-control @error('meta_title') is-invalid @enderror">
                                                 @error('meta_title')
                                                     <span class="invalid-feedback" role="alert">
                                                         <strong>{{ $message }}</strong>
@@ -181,11 +241,12 @@
                                         <div class="form-group row">
                                             <label class="col-sm-2 col-form-label" for="price">Meta Description :</label>
                                             <div class="col-sm-10">
-                                                <textarea rows="6" class="form-control"></textarea>
+                                                <textarea rows="6" name="meta_descr" class="form-control" maxlength="500"></textarea>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
+
                                 <div class="tab-pane fade" id="vert-tabs-settings" role="tabpanel" aria-labelledby="vert-tabs-settings-tab">
                                     Options like size, color etc.
                                 </div>
@@ -291,9 +352,15 @@
     <script src="{{URL::to('/')}}/plugins/bs-custom-file-input/bs-custom-file-input.min.js"></script>
     <script src="{{URL::to('/')}}/plugins/select2/js/select2.full.min.js"></script>
     <script src="{{URL::to('/')}}/plugins/tags/bootstrap-tagsinput.js"></script>
+    <script src="{{URL::to('/')}}/plugins/summernote/summernote-bs4.min.js"></script>
     <script>
         $(document).ready(function () {
+
             bsCustomFileInput.init();
+
+            $('#full_descr').summernote({
+                height: 200,
+            });
 
             $("#has_discount").change(function(){
                 if ($(this).is(':checked')) {

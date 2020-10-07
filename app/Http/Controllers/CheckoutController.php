@@ -7,7 +7,6 @@ use Session;
 use Auth;
 use App\Cart;
 use App\Order;
-use App\Stock;
 use DB;
 
 class CheckoutController extends Controller
@@ -45,14 +44,8 @@ class CheckoutController extends Controller
         $oldCart = Session::get('cart');
         $cart = new Cart($oldCart);
 
-        foreach ($cart->items as $order) {
-            Stock::where('product_id',$order['product_id'])
-                    ->where('name',$order['size'])
-                    ->decrement('quantity');
-        }
-
-
         $order = new Order();
+        $order->amount = $cart->totalPrice;
         $order->cart = serialize($cart);
         $order->address = $request->input('address');
         $order->name = $request->input('name');

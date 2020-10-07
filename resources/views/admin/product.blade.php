@@ -17,6 +17,10 @@
     .selected .selector::after{
         content:'☑';
     }
+    .custom-switch .custom-control-label::after{
+        background:white !important;
+        box-shadow: 1px 1px 5px #00000088;
+    }
 </style>
 @endsection
 

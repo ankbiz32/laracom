@@ -23,19 +23,16 @@
                                     <div class="detail-1">
                                         <h5>{{ $item['item']['name'] }}</h5>
                                     </div>
-                                    <div class="detail-2">
-                                        <h6>Size: {{ $item['size'] }}</h6>
-                                    </div>
                                     <div class="detail-3">
                                         <h6>Quantity: {{ $item['quantity'] }}</h6>
                                     </div>
                                     <div class="detail-4">
                                         <h6>Price: RM   {{ $item['price'] }}</h6>
                                     </div>
-                                </div> 
+                                </div>
                             </div>
                         @endforeach
-                    </div>                      
+                    </div>
                 </div>
                 <div class="col-sm-12 col-md-4 col-lg-4 d-flex flex-column justify-content-center mx-auto order-info">
                     <div class="row d-flex   ">
@@ -70,8 +67,9 @@
                 </div>
             </div>
         </div>
-        
+
     @endif
 
 
 @endsection
+

@@ -34,6 +34,9 @@ Route::get('/admin-categories/remove/{id}', 'CategoryController@removeImg')->nam
 Route::post('/admin-tags/editTag', 'TagController@editTag')->name('admin-tag.editTag')->middleware(['auth','admin']);
 Route::resource('admin-tags', 'TagController');
 
+Route::post('/admin-brands/editBrand', 'BrandController@editBrand')->name('admin-brand.editBrand')->middleware(['auth','admin']);
+Route::resource('admin-brands', 'BrandController');
+
 Route::get('/admin-transactions', 'ProductController@lisTransactions')->name('admin.transactions')->middleware(['auth','admin']);
 
 Route::get('/admin-product', 'ProductController@listProducts')->name('admin.product')->middleware(['auth','admin']);
@@ -46,14 +49,6 @@ Route::post('/admin-product/bulkRemove', 'ProductController@bulkRemove')->name('
 Route::post('/admin-product/status', 'ProductController@status')->name('product.status')->middleware(['auth','admin']);
 Route::post('/admin-product/bulkStatus', 'ProductController@bulkStatus')->name('product.bulkStatus')->middleware(['auth','admin']);
 
-Route::get('/admin-stock', 'StockController@index')->name('admin.stock')->middleware(['auth','admin']);
-Route::get('/admin-stock/show', 'StockController@show')->name('admin.stockshow')->middleware(['auth','admin']);
-Route::get('/admin-stock/remove/{id}', 'StockController@remove')->name('admin.removestock')->middleware(['auth','admin']);
-Route::get('/admin-stock/edit/{id}', 'StockController@editform')->name('admin.editform')->middleware(['auth','admin']);
-Route::patch('/admin-stock/edit/{id}', 'StockController@editstock')->name('admin.editstock')->middleware(['auth','admin']);
-
-Route::get('/admin-stock/add', 'StockController@addform')->name('admin.addstockform')->middleware(['auth','admin']);
-Route::post('/admin-stock/add', 'StockController@addstock')->name('admin.addstock')->middleware(['auth','admin']);
 
 Route::get('/product','ProductController@index')->name('product.index');
 Route::get('/product/filter','ProductController@filter')->name('product.filter');
