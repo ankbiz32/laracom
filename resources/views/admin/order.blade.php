@@ -49,6 +49,21 @@
         <section class="content">
             <div class="container-fluid">
                 <div class="col-12">
+                    <div class="row col mb-4">
+                        <span class="dropdown ml-auto">
+                            <a class="dropdown-toggle btn btn-secondary btn-bulk" style="display:none ;" data-toggle="dropdown" href="javascript:;" aria-expanded="false">
+                                 UPDATE SELECTED ORDERS STATUS<span class="caret"></span>
+                            </a>
+                            <div class="dropdown-menu" x-placement="bottom-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 40px, 0px);">
+                                <a class="dropdown-item" tabindex="-1" href="javascript:;" onclick="updateOrder('ORDERED')">ORDERED</a>
+                                <a class="dropdown-item" tabindex="-1" href="javascript:;" onclick="updateOrder('ACCEPTED')">ACCEPTED</a>
+                                <a class="dropdown-item" tabindex="-1" href="javascript:;" onclick="updateOrder('SHIPPED')">SHIPPED</a>
+                                <a class="dropdown-item" tabindex="-1" href="javascript:;" onclick="updateOrder('DELIVERED')">DELIVERED</a>
+                                <a class="dropdown-item" tabindex="-1" href="javascript:;" onclick="updateOrder('REJECTED')">REJECTED</a>
+                            </div>
+                        </span>
+                        <!-- <a href="{{ route('admin.addform') }}" class="btn btn-default btn-flat ml-auto">BULK ACTION</a> -->
+                    </div>
                     <div class="card card-body">
                         <div class="table-responsive">
                         <table class="table table-hover yajra-datatable">
@@ -79,10 +94,10 @@
     <div class="modal fade" id="editOrderModal" tabindex="-1" role="dialog" aria-labelledby="editOrderModal" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
-        <form method="POST" action="{{ route('admin-tag.editTag') }}">
+        <form method="POST" action="{{ route('admin.updateorder') }}">
         @csrf
         <div class="modal-header">
-            <h5 class="modal-title" id="editTagModalTitle">Change order status</h5>
+            <h5 class="modal-title" id="editTagModalTitle">Update order status</h5>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
             </button>
@@ -95,17 +110,17 @@
             <div class="form-group mt-2">
                 <label class="">Change status to :</label>
                 <select name="order_status" class="form-control" id="order_status" required>
-                    <option value="">-- Select status --</option>
-                    <option value="ORDERED">Ordered</option>
-                    <option value="ACCEPTED">Accepted</option>
-                    <option value="REJECTED">Rejected</option>
-                    <option value="SHIPPED">Shipped</option>
-                    <option value="DELIVERED">Delivered</option>
+                    <option value="" hidden>-- Select status --</option>
+                    <option value="ORDERED">ORDERED</option>
+                    <option value="ACCEPTED">ACCEPTED</option>
+                    <option value="SHIPPED">SHIPPED</option>
+                    <option value="DELIVERED">DELIVERED</option>
+                    <option value="REJECTED">REJECTED</option>
                 </select>
             </div>
         </div>
         <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
             <button type="submit" class="btn btn-primary">Update</button>
         </div>
         </form>
@@ -129,7 +144,7 @@
 
 <script type="text/javascript">
 
-
+var items= new Array();
 $(function () {
 
     var table = $('.yajra-datatable').DataTable({
@@ -179,14 +194,34 @@ $(function () {
     $(document).on('click', '.allSelector', function() {
         if ($(this).is(':checked')) {
             $('.rowSelector').prop( "checked", true );
-            $('.btn-bulk').hide();
+            getSelected();
         }
         else{
             $('.rowSelector').prop( "checked", false );
+            getSelected();
+        }
+    });
+
+    // Individual select/deselect button
+    $(document).on('click', '.rowSelector', function() {
+        getSelected();
+    });
+
+    function getSelected(){
+        items= [];
+        $("input:checkbox[class=rowSelector]:checked").each(function () {
+            val= $(this).data("id");
+            items.push(val);
+        });
+        if(items.length==0){
+            $('.btn-bulk').hide();
+        }
+        else{
             $('.btn-bulk').show();
         }
+    }
 
-    });
+
 
     $('#editOrderModal').on('show.bs.modal', function (event) {
         var button = $(event.relatedTarget);
@@ -196,6 +231,29 @@ $(function () {
     })
 
 });
+
+function updateOrder(stat){
+    notie.confirm({ text: 'Change status to '+stat+' ?' }, function() {
+        $.ajax({
+            type: 'post',
+            url: "{{ route('admin.updateorderbulk') }}",
+            data:{
+                "_token": "{{ csrf_token() }}",
+                ids:JSON.stringify(items),
+                stat:stat,
+            },
+            success:function(response){
+                location.reload(true);
+            },
+            error: function(){
+                notie.alert({
+                    text: "Server error !" ,
+                    type: 'error'
+                })
+            }
+        });
+    });
+}
 
 </script>
 

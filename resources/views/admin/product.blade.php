@@ -276,7 +276,7 @@
         // Bulk remove products
         function removeProducts(ev){
             ev.preventDefault();
-            notie.confirm({ text: 'Are you sure?' }, function() {
+            notie.confirm({ text: 'Remove selected products ?' }, function() {
                 $.ajax({
                     type: 'post',
                     url: "{{ route('product.bulkRemove') }}",

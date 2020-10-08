@@ -57,7 +57,6 @@
                         <table class="table table-hover yajra-datatable">
                             <thead>
                             <tr>
-                                <th scope="col"></th>
                                 <th scope="col">ID</th>
                                 <th scope="col">Tag</th>
                                 <th scope="col">Created</th>
@@ -161,7 +160,6 @@ $(function () {
         ajax: "{{ route('admin-tags.index') }}",
         columns: [
             // {data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: true, searchable: true},
-            {data: 'check', name: 'check', orderable: true, searchable: true},
             {data: 'id', name: 'id', orderable: true, searchable: true},
             {data: 'tag', name: 'tag', orderable: true, searchable: true},
             {

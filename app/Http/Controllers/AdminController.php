@@ -67,7 +67,7 @@ class AdminController extends Controller
                     $btn = '
                             <a href="'.route('admin.showorder',['id'=>$row->id]).'" title="View Order" class="btn btn-sm btn-warning m-1"><i class="fa fa-eye"></i></a>
 
-                            <a href="javascript:void(0)" data-toggle="modal" data-target="#editOrderModal" data-id="'.$row->id.'" class="edit btn btn-sm btn-info m-1">CHANGE STATUS</a>
+                            <a href="javascript:void(0)" data-toggle="modal" data-target="#editOrderModal" data-id="'.$row->id.'" class="edit btn btn-sm btn-info m-1">UPDATE STATUS</a>
                         ';
                     return $btn;
                 })
@@ -87,6 +87,34 @@ class AdminController extends Controller
             return $order;
         });
         return view('admin.showorder',compact('order','ids'));
+    }
+
+    public function update_order(Request $request)
+    {
+        $this->validate(request(),[
+            'id'=>'required',
+            'order_status'=>'required'
+        ]);
+        $order= Order::find(request('id'));
+        $order->order_status = request('order_status');
+        if( $order->save()){
+            return redirect()->route('admin.order')->with('success','Order status updated !');
+        }
+        else{
+            return redirect()->route('admin.order')->with('error','Error! Try again');
+        }
+    }
+
+    public function update_order_bulk(Request $request)
+    {
+        $ids=json_decode(request('ids'),true);
+        foreach($ids as $id){
+            $order = Order::findOrFail($id);
+            $order->order_status=request('stat');
+            $order->save();
+        }
+        $request->session()->flash('success', 'Status updated !');
+        return response()->json(['success'=>'Status updated!']);
     }
 
     public function user()

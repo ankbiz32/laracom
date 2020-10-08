@@ -20,6 +20,8 @@ Route::get('/dashboard', 'AdminController@index')->name('admin.index')->middlewa
 Route::patch('/dashboard', 'AdminController@updatereminder')->name('admin.reminder')->middleware(['auth','admin']);
 
 Route::get('/order', 'AdminController@order')->name('admin.order')->middleware(['auth','admin']);
+Route::post('/order', 'AdminController@update_order')->name('admin.updateorder')->middleware(['auth','admin']);
+Route::post('/order/bulkupdate', 'AdminController@update_order_bulk')->name('admin.updateorderbulk')->middleware(['auth','admin']);
 Route::get('/order/{id}', 'AdminController@show_order')->name('admin.showorder')->middleware(['auth','admin']);
 
 Route::get('/users', 'AdminController@user')->name('admin.user')->middleware(['auth','admin']);

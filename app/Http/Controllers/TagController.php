@@ -19,7 +19,6 @@ class TagController extends Controller
             $result = Tag::get();
             return Datatables::of($result)
                 ->addIndexColumn()
-                ->addColumn('check', '<input type="checkbox" data-id="{{ $id }}">')
                 ->addColumn('action', function($row){
                     $btn = '
                             <a href="javascript:void(0)" data-toggle="modal" data-target="#editTagModal" data-id="'.$row->id.'" data-tag="'.$row->tag.'" class="edit btn btn-info m-1">EDIT</a>
