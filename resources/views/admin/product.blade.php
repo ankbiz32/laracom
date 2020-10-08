@@ -76,7 +76,7 @@
                             </tr>
                             </thead>
                             <tbody>
-                            @if($products)
+                            @if(isset($products))
                                 @foreach ($products as $product)
                                 <tr>
                                     <td></td>
