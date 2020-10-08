@@ -8,7 +8,6 @@ use App\Product;
 use App\Tag;
 use App\Brand;
 use App\Category;
-use App\Stock;
 use App\Cart;
 use Illuminate\Http\Request;
 use DB;
@@ -249,7 +248,6 @@ class ProductController extends Controller
         $ids=json_decode(request('id'),true);
         foreach($ids as $id){
             Product::where('id',$id)->delete();
-            Stock::where('product_id',$id)->delete();
         }
 
         $request->session()->flash('success', 'Products removed !');
