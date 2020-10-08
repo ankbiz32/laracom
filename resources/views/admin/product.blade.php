@@ -76,27 +76,29 @@
                             </tr>
                             </thead>
                             <tbody>
-                            @foreach ($products as $product)
-                            <tr>
-                                <td></td>
-                                <td scope="row">{{ $product->id }}</td>
-                                <td><img style="height:60px;" src="{{ asset($product->image) }}" alt=""></td>
-                                <td>{{ $product->name }}</td>
-                                <td>{{ $product->price }}</td>
-                                <td>
-                                    <div class="custom-control custom-switch custom-switch-off-muted custom-switch-on-success">
-                                    <input type="checkbox" data-id="{{ $product->id }}" class="custom-control-input" id="customSwitch{{ $product->id }}"
-                                    {{ $product->is_active==1 ?'checked':'' }}
-                                    >
-                                    <label class="custom-control-label btn" for="customSwitch{{ $product->id }}"></label>
-                                    </div>
-                                </td>
-                                <td>
-                                    <a href="{{ route('product.editform',['id'=>$product->id]) }}" class="btn btn-info m-1">EDIT</a>
-                                    <a href="{{ route('product.remove',['id'=>$product->id]) }}" onclick="confirmation(event)" class="btn btn-danger m-1">REMOVE</a>
-                                </td>
-                            </tr>
-                            @endforeach
+                            @if($products)
+                                @foreach ($products as $product)
+                                <tr>
+                                    <td></td>
+                                    <td scope="row">{{ $product->id }}</td>
+                                    <td><img style="height:60px;" src="{{ asset($product->image) }}" alt=""></td>
+                                    <td>{{ $product->name }}</td>
+                                    <td>{{ $product->price }}</td>
+                                    <td>
+                                        <div class="custom-control custom-switch custom-switch-off-muted custom-switch-on-success">
+                                        <input type="checkbox" data-id="{{ $product->id }}" class="custom-control-input" id="customSwitch{{ $product->id }}"
+                                        {{ $product->is_active==1 ?'checked':'' }}
+                                        >
+                                        <label class="custom-control-label btn" for="customSwitch{{ $product->id }}"></label>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <a href="{{ route('product.editform',['id'=>$product->id]) }}" class="btn btn-info m-1">EDIT</a>
+                                        <a href="{{ route('product.remove',['id'=>$product->id]) }}" onclick="confirmation(event)" class="btn btn-danger m-1">REMOVE</a>
+                                    </td>
+                                </tr>
+                                @endforeach
+                            @endif
                             </tbody>
                         </table>
                         </div>
