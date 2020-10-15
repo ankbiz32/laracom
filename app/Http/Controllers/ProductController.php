@@ -8,6 +8,7 @@ use App\Product;
 use App\Tag;
 use App\Brand;
 use App\Attribute;
+use App\AttributeDetail;
 use App\Category;
 use App\Cart;
 use Illuminate\Http\Request;
@@ -36,6 +37,7 @@ class ProductController extends Controller
             $query = json_decode($request->get('query'));
             $price = json_decode($request->get('price'));
             $brand = json_decode($request->get('brand'));
+            $attribute_detail_id = json_decode($request->get('attribute_detail_id'));
 
             if(!empty($query))
             {

@@ -505,6 +505,7 @@ $(document).on("change keyup",".attribute_id",function(){
 	var itemNo = $(this).attr("data-no");
 	var attribute_id = $(this).val();
 	var validSelection = true;
+    alert(itemNo);
 	
 	$("#attribute_detail_id"+itemNo).html('<option value="">Select Options</option>');
 	$('#attribute_detail_id'+itemNo+'').trigger('change');
@@ -520,13 +521,13 @@ $(document).on("change keyup",".attribute_id",function(){
     if(validSelection){
 		$.ajax({
 		type: "POST",
-		url: "{{ route('admin-products.filter') }}",
+		url: "{{ route('product.filter') }}",
 		data:{
 			"attribute_id":attribute_id
 		},
 		cache: false,
 		success: function(resp) {
-			//alert(JSON.stringify(resp));
+			alert(JSON.stringify(resp));
 			if(resp.status == '200'){
 				$("#attribute_detail_id"+itemNo).html('<option value="">Select Option</option>'+resp.data);
 				$('#attribute_detail_id'+itemNo+'').trigger('change');
