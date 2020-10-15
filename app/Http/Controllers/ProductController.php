@@ -12,6 +12,7 @@ use App\AttributeDetail;
 use App\Category;
 use App\Cart;
 use Illuminate\Http\Request;
+use Validator,Redirect,Response;
 use DB;
 use Session;
 use DataTables;
@@ -27,6 +28,29 @@ class ProductController extends Controller
         $minPrice = Product::select('price')->min('price');
         return view('products.index',compact(['brands','categories','maxPrice','minPrice','products']));
 
+    }
+    
+    public function getAttributeDetailsList(Request $request)
+    {
+        if($request->ajax())
+        {
+            $attribute_id = json_decode($request->get('attribute_id'));
+            //echo json_encode($attribute_id);
+            //exit;
+            //$attributeDetailsList= AttributeDetail::where('attribute_id','=',1);
+            $attributeDetailsList = AttributeDetail::get()->where('attribute_id',$attribute_id);
+            if(!empty($attributeDetailsList)){
+                $strOpts = "";
+                foreach($attributeDetailsList as $row){
+                    $strOpts.='<option value="'.$row->id.'">'.$row->name.'</option>';
+                }
+               $response = array("status"=>200,"data"=>$strOpts);
+               echo json_encode($response, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+               exit;
+               
+            }
+            
+        }
     }
 
     public function filter(Request $request)
@@ -89,7 +113,7 @@ class ProductController extends Controller
                 ';
             }
             $data = array(
-                'table_data'    =>$output
+                'table_data'  =>$output
             );
             echo json_encode($data);
 
@@ -107,8 +131,10 @@ class ProductController extends Controller
         $categories=$this->categories_dropdown();
         $tags = Tag::get();
         $brands = Brand::get();
-        $attributes = Attribute::all();
-        return view('admin.addproduct', compact (['categories','tags','brands','attributes']));
+        $attributes = Attribute::get(["name","id"]);
+        $attribute_details = AttributeDetail::get(["name","id"]);
+
+        return view('admin.addproduct', compact (['categories','tags','brands','attributes','attribute_details']));
     }
 
     public function create(Request $request)

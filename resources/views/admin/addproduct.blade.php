@@ -248,96 +248,70 @@
                                 </div>
 
                                 <div class="tab-pane fade" id="vert-tabs-settings" role="tabpanel" aria-labelledby="vert-tabs-settings-tab">
-    <div class="form-row">
-        <div class="col-md-3" style="margin-bottom:15px;">
-        <a href="javascript:void(0);" class="btn btn-info btn-sm btn_add_attribute" onclick="addAttribute();"><i class="fa fa-plus"></i> Add Attributes</a>
-        </div>
-    </div>
+                                    <div class="form-row">
+                                        <div class="col-md-3" style="margin-bottom:15px;">
+                                        <a href="javascript:void(0);" class="btn btn-info btn-sm btn_add_attribute" onclick="addAttribute();"><i class="fa fa-plus"></i> Add Attributes</a>
+                                        </div>
+                                    </div>
 
-<div class="attributesDiv">
-<?php
-if(!empty($_POST["attribute_id"])){
-foreach($_POST["attribute_id"] as $k=>$v){
-?>
-<div class="form-row attribute_row<?php echo $k; ?>">
-<div class="col-md-4">
-<div class="position-relative form-group">
-<label for="attribute_id<?php echo $k; ?>" class="">Attribute</label>
-<select class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }}" name="dropdown">
-    @foreach($attributes as $attributes)
-    <tr>
-    <td>{{ $attributes->name }}</td>
-    </tr>
-    <option value="{{ $attributes->id }}">{{ $attributes->name }}</option>
-    @endforeach
-</select>
-
-
-
-
-<select id="attribute_id<?php echo $k; ?>" name="attribute_id[<?php echo $k; ?>]" class="form-control-sm form-control select2 attribute_id" data-placeholder="Select Attribute" data-no="<?php echo $k; ?>" >
-<option value=""></option>
-<?php if(!empty($attributes)){
-foreach($attributes as $row){ ?> 
-<option value="<?php echo $row->id;?>" <?php echo ($v==$row->id)?'selected="selected"':'';?>><?php echo $row->name;?></option> 
-<?php 
-} 
-}
-?>
-</select>
-
-
-
-<label id="attribute_id<?php echo $k; ?>-error" class="error" for="attribute_id<?php echo $k; ?>"></label>
-</div>
-</div>
-
-<div class="col-md-4">
-<div class="position-relative form-group">
-<?php 
-$attributeDetailsList = $this->attribute_detail_model->attribute_details_dropdown(array("attribute_id"=>$v,"is_deleted"=>BOOL_FALSE),"name","ASC");
-?>
-<label for="attribute_detail_id<?php echo $k; ?>" class="">Attribute Options</label>
-<select id="attribute_detail_id<?php echo $k; ?>" name="attribute_detail_id[<?php echo $k; ?>]" class="form-control-sm form-control select2 attribute_detail_id" data-placeholder="Select Option" data-no="<?php echo $k; ?>" >
-<option value=""></option>
-<?php if(!empty($attributeDetailsList)){
-foreach($attributeDetailsList as $row){ ?> 
-<option value="<?php echo $row->id;?>" <?php echo ($_POST["attribute_detail_id"][$k]==$row->id)?'selected="selected"':'';?>><?php echo $row->name;?></option> 
-<?php 
-} 
-}
-?>
-</select>
-<label id="attribute_detail_id<?php echo $k; ?>-error" class="error" for="attribute_detail_id<?php echo $k; ?>"></label>
-</div>
-</div>
-<div class="col-md-2" style="margin-top:30px;">
-<a href="javascript:void(0);" class="btn btn-danger btn-sm" onclick="removeAttributeDiv('attribute_row<?php echo $k; ?>');"><i class="fa fa-trash"></i></a>
-</div>
-</div>
-<?php
-}
-}
-?>
-</div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+                                    <div class="attributesDiv">
+                                    <?php
+                                    if(!empty($_POST["attribute_id"])){
+                                    foreach($_POST["attribute_id"] as $k=>$v){
+                                    ?>
+                                    <div class="form-row attribute_row<?php echo $k; ?>">
+                                    <div class="col-md-4">
+                                    <div class="position-relative form-group">
+                                    <label for="attribute_id<?php echo $k; ?>" class="">Attribute</label>
+                                    <select class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }}" name="dropdown">
+                                        @foreach($attributes as $attributes)
+                                        <tr>
+                                        <td>{{ $attributes->name }}</td>
+                                        </tr>
+                                        <option value="{{ $attributes->id }}">{{ $attributes->name }}</option>
+                                        @endforeach
+                                    </select>
+                                    <select id="attribute_id<?php echo $k; ?>" name="attribute_id[<?php echo $k; ?>]" class="form-control-sm form-control select2 attribute_id" data-placeholder="Select Attribute" data-no="<?php echo $k; ?>" >
+                                    <option value=""></option>
+                                    <?php if(!empty($attributes)){
+                                    foreach($attributes as $row){ ?> 
+                                    <option value="<?php echo $row->id;?>" <?php echo ($v==$row->id)?'selected="selected"':'';?>><?php echo $row->name;?></option> 
+                                    <?php 
+                                    } 
+                                    }
+                                    ?>
+                                    </select>
+                                    <label id="attribute_id<?php echo $k; ?>-error" class="error" for="attribute_id<?php echo $k; ?>"></label>
+                                    </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                    <div class="position-relative form-group">
+                                    <?php 
+                                    $attributeDetailsList = $this->attribute_detail_model->attribute_details_dropdown(array("attribute_id"=>$v,"is_deleted"=>BOOL_FALSE),"name","ASC");
+                                    ?>
+                                    <label for="attribute_detail_id<?php echo $k; ?>" class="">Attribute Options</label>
+                                    <select id="attribute_detail_id<?php echo $k; ?>" name="attribute_detail_id[<?php echo $k; ?>]" class="form-control-sm form-control select2 attribute_detail_id" data-placeholder="Select Option" data-no="<?php echo $k; ?>" >
+                                    <option value=""></option>
+                                    <?php if(!empty($attributeDetailsList)){
+                                    foreach($attributeDetailsList as $row){ ?> 
+                                    <option value="<?php echo $row->id;?>" <?php echo ($_POST["attribute_detail_id"][$k]==$row->id)?'selected="selected"':'';?>><?php echo $row->name;?></option> 
+                                    <?php 
+                                    } 
+                                    }
+                                    ?>
+                                    </select>
+                                    <label id="attribute_detail_id<?php echo $k; ?>-error" class="error" for="attribute_detail_id<?php echo $k; ?>"></label>
+                                    </div>
+                                    </div>
+                                    <div class="col-md-2" style="margin-top:30px;">
+                                    <a href="javascript:void(0);" class="btn btn-danger btn-sm" onclick="removeAttributeDiv('attribute_row<?php echo $k; ?>');"><i class="fa fa-trash"></i></a>
+                                    </div>
+                                    </div>
+                                    <?php
+                                    }
+                                    }
+                                    ?>
+                                    </div>
                                 </div>
                                 <div class="tab-pane fade" id="vert-tabs-discount" role="tabpanel" aria-labelledby="vert-tabs-discount-tab">
                                     <div class="col">
@@ -429,7 +403,6 @@ foreach($attributeDetailsList as $row){ ?>
                             <a href="{{URL::to('/admin-product')}}" class="btn btn-default mr-2 mr-sm-0">CANCEL</a>
                         </div>
                     </div>
-
                 </form>
                 </div>
         </section>
@@ -471,8 +444,6 @@ foreach($attributeDetailsList as $row){ ?>
 
                 }
             });
-
-
         });
 
         $('.select2').select2();
@@ -499,44 +470,47 @@ foreach($attributeDetailsList as $row){ ?>
             }
         }
 
-$(document).on("change keyup",".attribute_id",function(){
+        $(document).on("change keyup",".attribute_id",function(){
 
-	var cId = $(this).attr("id");
-	var itemNo = $(this).attr("data-no");
-	var attribute_id = $(this).val();
-	var validSelection = true;
-    alert(itemNo);
-	
-	$("#attribute_detail_id"+itemNo).html('<option value="">Select Options</option>');
-	$('#attribute_detail_id'+itemNo+'').trigger('change');
-	
-	$(".attribute_id").each(function(i,row){
-		if($(row).val() && $(row).val()==attribute_id && $(row).attr("id")!=cId){
-			alert("Already Selected");
-			validSelection = false;
-			$('#'+cId+'').val(null).trigger('change');
-		}
-	});
+var cId = $(this).attr("id");
+var itemNo = $(this).attr("data-no");
+var attribute_id = $(this).val();
+var validSelection = true;
+//alert(itemNo);
 
-    if(validSelection){
-		$.ajax({
-		type: "POST",
-		url: "{{ route('product.filter') }}",
-		data:{
-			"attribute_id":attribute_id
-		},
-		cache: false,
-		success: function(resp) {
-			alert(JSON.stringify(resp));
-			if(resp.status == '200'){
-				$("#attribute_detail_id"+itemNo).html('<option value="">Select Option</option>'+resp.data);
-				$('#attribute_detail_id'+itemNo+'').trigger('change');
-			}
-		} 
-		});
-	}
-	
-	
+$("#attribute_detail_id"+itemNo).html('<option value="">Select Options</option>');
+$('#attribute_detail_id'+itemNo+'').trigger('change');
+
+$(".attribute_id").each(function(i,row){
+    if($(row).val() && $(row).val()==attribute_id && $(row).attr("id")!=cId){
+        alert("Already Selected");
+        validSelection = false;
+        $('#'+cId+'').val(null).trigger('change');
+    }
+});
+
+if(validSelection){
+    //alert(attribute_id);
+    $.ajax({
+    type: "GET",
+    url: "{{ route('product.getAttributeDetailsList') }}",
+    contentType: "application/json",
+    dataType: "json",
+    data:{
+        "attribute_id":attribute_id
+    },
+    cache: false,
+    success: function(resp) {
+       // alert(JSON.stringify(resp));
+        if(resp.status == '200'){
+            $("#attribute_detail_id"+itemNo).html('<option value="">Select Option</option>'+resp.data);
+            $('#attribute_detail_id'+itemNo+'').trigger('change');
+        }
+    } 
+    });
+}
+
+
 });
     </script>
 @endsection

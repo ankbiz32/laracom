@@ -54,7 +54,7 @@ Route::post('/admin-product/bulkStatus', 'ProductController@bulkStatus')->name('
 
 Route::get('/product','ProductController@index')->name('product.index');
 Route::get('/product/filter','ProductController@filter')->name('product.filter');
-
+Route::get('/product/getAttributeDetailsList','ProductController@getAttributeDetailsList')->name('product.getAttributeDetailsList');
 Route::get('/product/{product}','ProductController@show')->name('product.show');
 
 /*--Attribute--*/
