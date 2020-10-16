@@ -50,4 +50,16 @@ class ProductAttribute extends Model
         'attribute_detail_id' => 'nullable|integer',
         
     ];
+
+    public function attribute(){
+        return $this->belongsTo(Attribute::class, 'attribute_id');
+    }
+
+    public function attributeDetail(){
+        return $this->belongsTo(AttributeDetail::class, 'attribute_detail_id');
+    }
+
+    public function product(){
+        return $this->belongsTo(Product::class, 'product_id');
+    }
 }

@@ -472,45 +472,47 @@
 
         $(document).on("change keyup",".attribute_id",function(){
 
-var cId = $(this).attr("id");
-var itemNo = $(this).attr("data-no");
-var attribute_id = $(this).val();
-var validSelection = true;
-//alert(itemNo);
+            
+            var itemNo = $(this).attr("data-no");
+            var attribute_id = $(this).val();
+            var validSelection = true;
+            //alert(itemNo);
 
-$("#attribute_detail_id"+itemNo).html('<option value="">Select Options</option>');
-$('#attribute_detail_id'+itemNo+'').trigger('change');
-
-$(".attribute_id").each(function(i,row){
-    if($(row).val() && $(row).val()==attribute_id && $(row).attr("id")!=cId){
-        alert("Already Selected");
-        validSelection = false;
-        $('#'+cId+'').val(null).trigger('change');
-    }
-});
-
-if(validSelection){
-    //alert(attribute_id);
-    $.ajax({
-    type: "GET",
-    url: "{{ route('product.getAttributeDetailsList') }}",
-    contentType: "application/json",
-    dataType: "json",
-    data:{
-        "attribute_id":attribute_id
-    },
-    cache: false,
-    success: function(resp) {
-       // alert(JSON.stringify(resp));
-        if(resp.status == '200'){
-            $("#attribute_detail_id"+itemNo).html('<option value="">Select Option</option>'+resp.data);
+            $("#attribute_detail_id"+itemNo).html('<option value="">Select Options</option>');
             $('#attribute_detail_id'+itemNo+'').trigger('change');
-        }
-    } 
-    });
-}
 
+           
 
-});
+            //if(validSelection){
+                //alert(attribute_id);
+                $.ajax({
+                type: "GET",
+                url: "{{ route('product.getAttributeDetailsList') }}",
+                contentType: "application/json",
+                dataType: "json",
+                data:{
+                    "attribute_id":attribute_id
+                },
+                cache: false,
+                success: function(resp) {
+                // alert(JSON.stringify(resp));
+                    if(resp.status == '200'){
+                        $("#attribute_detail_id"+itemNo).html('<option value="">Select Option</option>'+resp.data);
+                        $('#attribute_detail_id'+itemNo+'').trigger('change');
+                    }
+                } 
+                });
+            //}
+        });
+        $(document).on("change keyup",".attribute_detail_id",function(){
+            var cId = $(this).attr("id");
+            var attribute_id = $(this).val();
+            $(".attribute_detail_id").each(function(i,row){
+                if($(row).val() && $(row).val()==attribute_id && $(row).attr("id")!=cId){
+                    alert("Already Selected");
+                    $('#'+cId+'').val(null).trigger('change');
+                }
+            });
+        });   
     </script>
 @endsection
