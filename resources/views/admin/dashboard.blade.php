@@ -116,7 +116,7 @@
                     </div>
 
                     <!-- Recent Orders -->
-                    <div class="card">
+                    <!-- <div class="card">
                         <div class="card-header border-transparent">
                             <h3 class="card-title">Latest Orders</h3>
 
@@ -129,7 +129,6 @@
                             </button>
                             </div>
                         </div>
-                        <!-- /.card-header -->
                         <div class="card-body p-0">
                             <div class="table-responsive">
                             <table class="table m-0">
@@ -177,18 +176,15 @@
                                 </tbody>
                             </table>
                             </div>
-                            <!-- /.table-responsive -->
                         </div>
-                        <!-- /.card-body -->
                         <div class="card-footer clearfix">
                             <a href="javascript:void(0)" class="btn btn-sm btn-info float-left">Place New Order</a>
                             <a href="{{ route('admin.order') }}" class="btn btn-sm btn-secondary float-right">View All Orders</a>
                         </div>
-                        <!-- /.card-footer -->
-                    </div>
+                    </div> -->
 
                     <!-- Morris chart - Sales -->
-                    <div class="card">
+                    <!-- <div class="card">
                         <div class="card-header">
                             <h3 class="card-title">
                             <i class="fas fa-chart-pie mr-1"></i>
@@ -216,13 +212,13 @@
                             </div>
                             </div>
                         </div>
-                    </div>
+                    </div> -->
                 </section>
 
                 <section class="col-lg-5 connectedSortable">
 
                     <!-- Recent Products -->
-                    <div class="card">
+                    <!-- <div class="card">
                         <div class="card-header">
                             <h3 class="card-title">Recently Added Products</h3>
 
@@ -249,7 +245,6 @@
                                 </span>
                                 </div>
                             </li>
-                            <!-- /.item -->
                             <li class="item">
                                 <div class="product-img">
                                 <img src="dist/img/default-150x150.png" alt="Product Image" class="img-size-50">
@@ -262,7 +257,6 @@
                                 </span>
                                 </div>
                             </li>
-                            <!-- /.item -->
                             <li class="item">
                                 <div class="product-img">
                                 <img src="dist/img/default-150x150.png" alt="Product Image" class="img-size-50">
@@ -278,7 +272,6 @@
                                 </span>
                                 </div>
                             </li>
-                            <!-- /.item -->
                             <li class="item">
                                 <div class="product-img">
                                 <img src="dist/img/default-150x150.png" alt="Product Image" class="img-size-50">
@@ -291,22 +284,20 @@
                                 </span>
                                 </div>
                             </li>
-                            <!-- /.item -->
                             </ul>
                         </div>
                         <div class="card-footer text-center">
                             <a href="{{ route('admin.product') }}" class="uppercase">View All Products</a>
                         </div>
-                    </div>
+                    </div> -->
 
                     <!--Visitors Map card -->
-                    <div class="card bg-gradient-primary">
+                    <!-- <div class="card bg-gradient-primary">
                         <div class="card-header border-0">
                             <h3 class="card-title">
                             <i class="fas fa-map-marker-alt mr-1"></i>
                             Visitors
                             </h3>
-                            <!-- card tools -->
                             <div class="card-tools">
                             <button type="button"
                                     class="btn btn-primary btn-sm daterange"
@@ -322,36 +313,30 @@
                                 <i class="fas fa-minus"></i>
                             </button>
                             </div>
-                            <!-- /.card-tools -->
                         </div>
                         <div class="card-body">
                             <div id="world-map" style="height: 250px; width: 100%;"></div>
                         </div>
-                        <!-- /.card-body-->
                         <div class="card-footer bg-transparent">
                             <div class="row">
                             <div class="col-4 text-center">
                                 <div id="sparkline-1"></div>
                                 <div class="text-white">Visitors</div>
                             </div>
-                            <!-- ./col -->
                             <div class="col-4 text-center">
                                 <div id="sparkline-2"></div>
                                 <div class="text-white">Online</div>
                             </div>
-                            <!-- ./col -->
                             <div class="col-4 text-center">
                                 <div id="sparkline-3"></div>
                                 <div class="text-white">Sales</div>
                             </div>
-                            <!-- ./col -->
                             </div>
-                            <!-- /.row -->
                         </div>
-                    </div>
+                    </div> -->
 
                     <!-- solid sales graph -->
-                    <div class="card bg-gradient-info">
+                    <!-- <div class="card bg-gradient-info">
                         <div class="card-header border-0">
                             <h3 class="card-title">
                             <i class="fas fa-th mr-1"></i>
@@ -378,25 +363,21 @@
 
                                 <div class="text-white">Mail-Orders</div>
                             </div>
-                            <!-- ./col -->
                             <div class="col-4 text-center">
                                 <input type="text" class="knob" data-readonly="true" value="50" data-width="60" data-height="60"
                                     data-fgColor="#39CCCC">
 
                                 <div class="text-white">Online</div>
                             </div>
-                            <!-- ./col -->
                             <div class="col-4 text-center">
                                 <input type="text" class="knob" data-readonly="true" value="30" data-width="60" data-height="60"
                                     data-fgColor="#39CCCC">
 
                                 <div class="text-white">In-Store</div>
                             </div>
-                            <!-- ./col -->
                             </div>
-                            <!-- /.row -->
                         </div>
-                    </div>
+                    </div> -->
                 </section>
             </div>
         </div>

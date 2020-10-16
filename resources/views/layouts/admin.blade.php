@@ -147,6 +147,12 @@
                     </a>
                 </li>
                 <li class="nav-item">
+                    <a href="{{ route('admin.attribute') }}" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Attribute</p>
+                    </a>
+                </li>
+                <li class="nav-item">
                     <a href="{{ route('admin-brands.index') }}" class="nav-link">
                     <i class="far fa-circle nav-icon"></i>
                     <p>Brands</p>
