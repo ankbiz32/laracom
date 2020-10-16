@@ -1,5 +1,4 @@
 @extends('layouts.admin')
-
 @section ('css')
 <link rel="stylesheet" href="plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
 <link rel="stylesheet" href="plugins/datatables-select/css/select.bootstrap4.css">
@@ -76,7 +75,6 @@
                             </tr>
                             </thead>
                             <tbody>
-                            @if(isset($products))
                                 @foreach ($products as $product)
                                 <tr>
                                     <td></td>
@@ -98,7 +96,6 @@
                                     </td>
                                 </tr>
                                 @endforeach
-                            @endif
                             </tbody>
                         </table>
                         </div>
@@ -177,7 +174,7 @@
             if(this.checked){
                 $.ajax({
                     type: 'post',
-                    url: "{{ route('product.status',['id'=>$product->id]) }}",
+                    url: "{{ route('product.status',['id'=>"+id+"]) }}",
                     data:{
                         "_token": "{{ csrf_token() }}",
                         id:id,
@@ -200,7 +197,7 @@
             else{
                 $.ajax({
                     type: 'post',
-                    url: "{{ route('product.status',['id'=>$product->id]) }}",
+                    url: "{{ route('product.status',['id'=>"+id+"]) }}",
                     data:{
                         "_token": "{{ csrf_token() }}",
                         id:id,
@@ -221,6 +218,7 @@
                 });
             }
         });
+
 
         // Alert before removing product
         function confirmation(ev){
