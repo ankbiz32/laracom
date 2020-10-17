@@ -117,7 +117,45 @@ class AdminController extends Controller
         return response()->json(['success'=>'Status updated!']);
     }
 
-    public function user()
+    public function user(Request $request)
+    {
+        if ($request->ajax()) {
+            $result=DB::table('users')->leftjoin('profiles','users.id','=','profiles.user_id')->get();
+            return Datatables::of($result)
+                ->addIndexColumn()
+                ->addColumn('check', '<input type="checkbox" class="rowSelector" data-id="{{ $id }}">')
+                ->addColumn('status', function($row){
+                    $btns = '
+                            <div class="custom-control custom-switch custom-switch-off-muted custom-switch-on-success">
+                                <input type="checkbox" data-id="'.$row->id.'" class="custom-control-input" id="customSwitch'.$row->id.'"
+                        ';
+
+                    if($row->is_active==1){
+                        $btns .= ' checked>';
+                    }
+                    else{
+                        $btns .= '>';
+                    }
+
+                    $btns .= '
+                                <label class="custom-control-label btn" for="customSwitch'.$row->id.'"></label>
+                            </div>
+                        ';
+                    return $btns;
+                })
+                ->addColumn('action', function($row){
+                    $btn = '
+                            <a href="javascript:void(0)" data-toggle="modal" data-target="#editOrderModal" data-id="'.$row->id.'" class="edit btn btn-sm btn-info m-1">CHANGE ROLE</a>
+                        ';
+                    return $btn;
+                })
+                ->rawColumns(['action', 'check', 'status'])
+                ->make(true);
+        }
+        return view('admin.user');
+    }
+
+    public function userRoles()
     {
         $users=DB::table('users')->leftjoin('profiles','users.id','=','profiles.user_id')->get();
         return view('admin.user',compact('users'));
@@ -137,5 +175,53 @@ class AdminController extends Controller
             return redirect()->route('admin.index')->with('error','Error! Try again');
         }
     }
+
+
+    public function userStatus(Request $request)
+    {
+        $user = User::findOrFail(request('id'));
+            $user->is_active=request('active');
+            $user->save();
+
+        return response()->json(['success'=>'Status updated!']);
+    }
+
+    public function userBulkStatus(Request $request)
+    {
+        $ids=json_decode(request('id'),true);
+        foreach($ids as $id){
+            $user = User::findOrFail($id);
+            $user->is_active=request('active');
+            $user->save();
+        }
+        $request->session()->flash('success', 'Status updated !');
+        return response()->json(['success'=>'Status updated!']);
+    }
+
+    public function userSingleRole(Request $request)
+    {
+        $user = User::findOrFail(request('id'));
+        $user->role=request('role');
+
+        if( $user->save()){
+            return redirect()->route('admin.user')->with('success','User role updated !');
+        }
+        else{
+            return redirect()->route('admin.user')->with('error','Error! Try again');
+        }
+    }
+
+    public function userBulkRole(Request $request)
+    {
+        $ids=json_decode(request('id'),true);
+        foreach($ids as $id){
+            $user = User::findOrFail($id);
+            $user->role=request('role');
+            $user->save();
+        }
+        $request->session()->flash('success', 'Role updated !');
+        return response()->json(['success'=>'Role updated!']);
+    }
+
 }
 

@@ -221,13 +221,13 @@
                 </a>
                 <ul class="nav nav-treeview">
                 <li class="nav-item">
-                    <a href="" class="nav-link active">
+                    <a href="{{ route('admin.user') }}" class="nav-link active">
                     <i class="far fa-circle nav-icon"></i>
                     <p>Users</p>
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="" class="nav-link">
+                    <a href="{{ route('admin.role') }}" class="nav-link">
                     <i class="far fa-circle nav-icon"></i>
                     <p>Roles</p>
                     </a>

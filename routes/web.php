@@ -25,6 +25,11 @@ Route::post('/order/bulkupdate', 'AdminController@update_order_bulk')->name('adm
 Route::get('/order/{id}', 'AdminController@show_order')->name('admin.showorder')->middleware(['auth','admin']);
 
 Route::get('/users', 'AdminController@user')->name('admin.user')->middleware(['auth','admin']);
+Route::post('/users/status', 'AdminController@userStatus')->name('user.status')->middleware(['auth','admin']);
+Route::post('/users/bulk-status', 'AdminController@userBulkStatus')->name('user.bulkStatus')->middleware(['auth','admin']);
+Route::post('/users/role', 'AdminController@userSingleRole')->name('user.role')->middleware(['auth','admin']);
+Route::post('/users/bulk-role', 'AdminController@userBulkRole')->name('user.updateRoleBulk')->middleware(['auth','admin']);
+Route::get('/user-roles', 'AdminController@userRoles')->name('admin.role')->middleware(['auth','admin']);
 
 Route::get('/admin-categories', 'CategoryController@treeView')->name('admin.categories')->middleware(['auth','admin']);
 Route::post('/admin-categories/add', 'CategoryController@create')->name('category.create')->middleware(['auth','admin']);
