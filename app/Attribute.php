@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use App\AttributeDetail;
+use App\ProductAttribute;
 
 class Attribute extends Model
 {
@@ -41,5 +42,9 @@ class Attribute extends Model
 
     public function attributeDetail(){
         return $this->hasMany(AttributeDetail::class, 'attribute_id');
+    }
+
+    public function productAttribute(){
+        return $this->hasMany(ProductAttribute::class, 'attribute_id');
     }
 }

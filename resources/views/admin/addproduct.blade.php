@@ -274,10 +274,10 @@
                                     <select id="attribute_id<?php echo $k; ?>" name="attribute_id[<?php echo $k; ?>]" class="form-control-sm form-control select2 attribute_id" data-placeholder="Select Attribute" data-no="<?php echo $k; ?>" >
                                     <option value=""></option>
                                     <?php if(!empty($attributes)){
-                                    foreach($attributes as $row){ ?> 
-                                    <option value="<?php echo $row->id;?>" <?php echo ($v==$row->id)?'selected="selected"':'';?>><?php echo $row->name;?></option> 
-                                    <?php 
-                                    } 
+                                    foreach($attributes as $row){ ?>
+                                    <option value="<?php echo $row->id;?>" <?php echo ($v==$row->id)?'selected="selected"':'';?>><?php echo $row->name;?></option>
+                                    <?php
+                                    }
                                     }
                                     ?>
                                     </select>
@@ -286,17 +286,17 @@
                                     </div>
                                     <div class="col-md-4">
                                     <div class="position-relative form-group">
-                                    <?php 
+                                    <?php
                                     $attributeDetailsList = $this->attribute_detail_model->attribute_details_dropdown(array("attribute_id"=>$v,"is_deleted"=>BOOL_FALSE),"name","ASC");
                                     ?>
                                     <label for="attribute_detail_id<?php echo $k; ?>" class="">Attribute Options</label>
                                     <select id="attribute_detail_id<?php echo $k; ?>" name="attribute_detail_id[<?php echo $k; ?>]" class="form-control-sm form-control select2 attribute_detail_id" data-placeholder="Select Option" data-no="<?php echo $k; ?>" >
                                     <option value=""></option>
                                     <?php if(!empty($attributeDetailsList)){
-                                    foreach($attributeDetailsList as $row){ ?> 
-                                    <option value="<?php echo $row->id;?>" <?php echo ($_POST["attribute_detail_id"][$k]==$row->id)?'selected="selected"':'';?>><?php echo $row->name;?></option> 
-                                    <?php 
-                                    } 
+                                    foreach($attributeDetailsList as $row){ ?>
+                                    <option value="<?php echo $row->id;?>" <?php echo ($_POST["attribute_detail_id"][$k]==$row->id)?'selected="selected"':'';?>><?php echo $row->name;?></option>
+                                    <?php
+                                    }
                                     }
                                     ?>
                                     </select>
@@ -472,45 +472,47 @@
 
         $(document).on("change keyup",".attribute_id",function(){
 
-var cId = $(this).attr("id");
-var itemNo = $(this).attr("data-no");
-var attribute_id = $(this).val();
-var validSelection = true;
-//alert(itemNo);
 
-$("#attribute_detail_id"+itemNo).html('<option value="">Select Options</option>');
-$('#attribute_detail_id'+itemNo+'').trigger('change');
+            var itemNo = $(this).attr("data-no");
+            var attribute_id = $(this).val();
+            var validSelection = true;
+            //alert(itemNo);
 
-$(".attribute_id").each(function(i,row){
-    if($(row).val() && $(row).val()==attribute_id && $(row).attr("id")!=cId){
-        alert("Already Selected");
-        validSelection = false;
-        $('#'+cId+'').val(null).trigger('change');
-    }
-});
-
-if(validSelection){
-    //alert(attribute_id);
-    $.ajax({
-    type: "GET",
-    url: "{{ route('product.getAttributeDetailsList') }}",
-    contentType: "application/json",
-    dataType: "json",
-    data:{
-        "attribute_id":attribute_id
-    },
-    cache: false,
-    success: function(resp) {
-       // alert(JSON.stringify(resp));
-        if(resp.status == '200'){
-            $("#attribute_detail_id"+itemNo).html('<option value="">Select Option</option>'+resp.data);
+            $("#attribute_detail_id"+itemNo).html('<option value="">Select Options</option>');
             $('#attribute_detail_id'+itemNo+'').trigger('change');
-        }
-    } 
-    });
-}
 
 
-});
+
+            //if(validSelection){
+                //alert(attribute_id);
+                $.ajax({
+                type: "GET",
+                url: "{{ route('product.getAttributeDetailsList') }}",
+                contentType: "application/json",
+                dataType: "json",
+                data:{
+                    "attribute_id":attribute_id
+                },
+                cache: false,
+                success: function(resp) {
+                // alert(JSON.stringify(resp));
+                    if(resp.status == '200'){
+                        $("#attribute_detail_id"+itemNo).html('<option value="">Select Option</option>'+resp.data);
+                        $('#attribute_detail_id'+itemNo+'').trigger('change');
+                    }
+                }
+                });
+            //}
+        });
+        $(document).on("change keyup",".attribute_detail_id",function(){
+            var cId = $(this).attr("id");
+            var attribute_id = $(this).val();
+            $(".attribute_detail_id").each(function(i,row){
+                if($(row).val() && $(row).val()==attribute_id && $(row).attr("id")!=cId){
+                    alert("Already Selected");
+                    $('#'+cId+'').val(null).trigger('change');
+                }
+            });
+        });
     </script>
 @endsection

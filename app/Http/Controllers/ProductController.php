@@ -9,6 +9,7 @@ use App\Tag;
 use App\Brand;
 use App\Attribute;
 use App\AttributeDetail;
+use App\ProductAttribute;
 use App\Category;
 use App\Cart;
 use Illuminate\Http\Request;
@@ -27,9 +28,8 @@ class ProductController extends Controller
         $maxPrice = Product::select('price')->max('price');
         $minPrice = Product::select('price')->min('price');
         return view('products.index',compact(['brands','categories','maxPrice','minPrice','products']));
-
     }
-    
+
     public function getAttributeDetailsList(Request $request)
     {
         if($request->ajax())
@@ -38,7 +38,7 @@ class ProductController extends Controller
             //echo json_encode($attribute_id);
             //exit;
             //$attributeDetailsList= AttributeDetail::where('attribute_id','=',1);
-            $attributeDetailsList = AttributeDetail::get()->where('attribute_id',$attribute_id);
+            $attributeDetailsList = AttributeDetail::all()->where('attribute_id',$attribute_id);
             if(!empty($attributeDetailsList)){
                 $strOpts = "";
                 foreach($attributeDetailsList as $row){
@@ -47,9 +47,7 @@ class ProductController extends Controller
                $response = array("status"=>200,"data"=>$strOpts);
                echo json_encode($response, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
                exit;
-               
             }
-            
         }
     }
 
@@ -77,7 +75,6 @@ class ProductController extends Controller
             }
             $products=$products->get();
 
-
             $total_row = $products->count();
             if($total_row>0)
             {
@@ -99,7 +96,6 @@ class ProductController extends Controller
                                 </div>
                             </a>
                         </div>
-
                     </div>
                     ';
                 }
@@ -116,7 +112,6 @@ class ProductController extends Controller
                 'table_data'  =>$output
             );
             echo json_encode($data);
-
         }
     }
 
@@ -180,6 +175,24 @@ class ProductController extends Controller
 
         $product->save();
 
+        $attribute_ids = $request->input("attribute_id");
+        $attribute_detail_ids = $request->input("attribute_detail_id");
+        //echo "<pre>";
+        //print_r($attribute_ids);
+        //print_r($attribute_detail_ids);
+        //exit;
+        if(!empty($attribute_ids)){
+            foreach($attribute_ids as $k=>$v){
+                if(!empty($v) and !empty($attribute_detail_ids[$k])){
+                    $product_attribute = new ProductAttribute;
+                    $product_attribute->product_id = $product->id;
+                    $product_attribute->attribute_id=$v;
+                    $product_attribute->attribute_detail_id=$attribute_detail_ids[$k];
+                    $product_attribute->save();
+                }
+            }
+        }
+
 
         // Additional images are uploaded & saved in diff table
         if($request->hasfile('multi_img'))
@@ -198,6 +211,8 @@ class ProductController extends Controller
         foreach(request('tags') as $tag){
             Tag::firstOrCreate(['tag' => $tag]);
         }
+
+
         return redirect()->route('admin.product')->with('success','Product added !');
     }
 
