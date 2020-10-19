@@ -509,7 +509,7 @@
                             <div class="col-lg-12">
                                 <div class="inner-slide">
                                     <div class="slide-content">
-                                        <h2>Rose water</h2>
+                                        <h2><strong>Rose water</strong></h2>
                                         <p class="short-desc">Rose water is a liquid made from water and rose petals.
                                             It is used as a perfume due to its sweet scent,
                                              but it has medicinal and culinary values, as well.</p>
@@ -532,7 +532,7 @@
                             <div class="col-lg-12">
                                 <div class="inner-slide">
                                     <div class="slide-content">
-                                        <h2>Gold Charged Rose Water</h2>
+                                        <h2><strong>Gold Charged Rose Water</strong></h2>
                                         <p class="short-desc">Rose water contains numerous, powerful antioxidants.
                                             Recent research has found that it can help relax the
                                             central nervous system.</p>
@@ -555,7 +555,7 @@
                             <div class="col-lg-12">
                                 <div class="inner-slide">
                                     <div class="slide-content">
-                                        <h2>Kamal Hair Oil</h2>
+                                        <h2><strong>Kamal Hair Oil</strong></h2>
                                         <p class="short-desc">This hairoil is known to maintain the haircolor inspite of aging.
                                             It is especially curated with the herbs of choice by the
                                             legendary Vaidya Kamalabai Joshi herself.</p>
