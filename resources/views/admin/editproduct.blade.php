@@ -1,3 +1,6 @@
+<?php
+use App\AttributeDetail;
+?>
 @extends('layouts.admin')
 @section('css')
     <link rel="stylesheet" href="{{URL::to('/')}}/plugins/select2/css/select2.min.css">
@@ -76,6 +79,8 @@
                         </div>
                         <div class="col-8 col-sm-7 ml-sm-4">
                             <div class="tab-content" id="vert-tabs-tabContent">
+                            <input type ="hidden" id="id" name ="id" value ="{{$product->id}}">
+
                                 <div class="tab-pane text-left fade show active" id="vert-tabs-home" role="tabpanel" aria-labelledby="vert-tabs-home-tab">
                                     <div class="col">
                                         <div class="form-group row">
@@ -280,76 +285,28 @@
                                 </div>
 
                                 <div class="tab-pane fade" id="vert-tabs-settings" role="tabpanel" aria-labelledby="vert-tabs-settings-tab">
-                                    <div class="form-row">
-                                        <div class="col-md-3" style="margin-bottom:15px;">
-                                        <a href="javascript:void(0);" class="btn btn-info btn-sm btn_add_attribute" onclick="addAttribute();"><i class="fa fa-plus"></i> Add Attributes</a>
-                                        </div>
-                                    </div>
-
                                     <div class="attributeDiv">
-                                    @if(!empty($product->productAttribute))
-                                    <?php $i = 0; ?>
-                                    @foreach($product->productAttribute as $k=>$v)
-                                    @if($i >= 0)
-                                    <div class="form-row attribute_row<?php echo $k; ?>">
-                                    <input type ="hidden" id="attribute_id<?php echo $k; ?>" name ="Attribute[{{$k}}][attribute_id]" value ="{{$v->id}}">
-
-                                        <div class="col-md-4">
-                                            <div class="position-relative form-group">
-                                                <label for="attribute_id<?php echo $k; ?>" class="">Attribute</label>
-                                                <select id="attribute_id<?php echo $k; ?>" name="attribute_id[<?php echo $k; ?>]" class="form-control-sm form-control select2 attribute_id" data-placeholder="Select Attribute" data-no="<?php echo $k; ?>" >
-                                                <option value=""></option>
-                                                <?php if(!empty($attributes)){
-                                                foreach($attributes as $row){ ?>
-                                                    <option value="<?php echo $row->id;?>"<?php echo ($v->attribute_id==$row->id)?'selected="selected"':'';?> ><?php echo $row->name;?></option> 
-                                                <?php 
-                                                } 
-                                                }
-                                                ?>
-                                                </select>
-                                                <label id="attribute_id<?php echo $k; ?>-error" class="error" for="attribute_id<?php echo $k; ?>"></label>
+                                        <div class="form-row">
+                                            <div class="col-md-3" style="margin-bottom:15px;">
+                                                <a href="javascript:void(0);" class="btn btn-info btn-sm" onclick="addAttribute();"><i class="fa fa-plus"></i> Add Option</a>
                                             </div>
                                         </div>
-                                        <div class="col-md-4">
-                                            <div class="position-relative form-group">
-                                                <label for="attribute_detail_id<?php echo $k; ?>" class="">Attribute Options</label>
-                                                <select id="attribute_detail_id<?php echo $k; ?>" name="attribute_detail_id[<?php echo $k; ?>]" class="form-control-sm form-control select2 attribute_detail_id" data-placeholder="Select Option" data-no="<?php echo $k; ?>" >
-                                                <option value=""></option>
-                                                <?php if(!empty($attributeDetailsList)){
-                                                foreach($attributeDetailsList as $row){ ?> 
-                                                <option value="<?php echo $row->id;?>"<?php echo ($v->attribute_id==$row->id)?'selected="selected"':'';?> ><?php echo $row->name;?></option> 
-                                                <?php 
-                                                } 
-                                                }
-                                                ?>
-                                                </select>
-                                                <label id="attribute_detail_id<?php echo $k; ?>-error" class="error" for="attribute_detail_id<?php echo $k; ?>"></label>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-2" style="margin-top:30px;">
-                                            <a href="javascript:void(0);" class="btn btn-danger btn-sm" onclick="removeAttributeDiv('attribute_row{{$k}}','{{$v->id}}');"><i class="fa fa-trash"></i></a>
-                                        </div>
-                                    </div>
-                                    @endif
-                                    <?php $i++; ?>
-                                    @endforeach
-                                    @endif
-                                    </div>
 
-                                    <div class="attributesDiv">
-                                        <?php
-                                        if(!empty($_POST["attribute_id"])){
-                                        foreach($_POST["attribute_id"] as $k=>$v){
-                                        ?>
+                                        @if(!empty($product->productAttribute))
+                                        <?php $i = 0; ?>
+                                        @foreach($product->productAttribute as $k=>$v)
+                                        @if($i >= 0)
                                         <div class="form-row attribute_row<?php echo $k; ?>">
+                                            <input type ="hidden" id="attri_id<?php echo $k; ?>" name ="Attribute[{{$k}}][attri_id]" value ="{{$v->id}}">
+
                                             <div class="col-md-4">
                                                 <div class="position-relative form-group">
                                                     <label for="attribute_id<?php echo $k; ?>" class="">Attribute</label>
-                                                    <select id="attribute_id<?php echo $k; ?>" name="attribute_id[<?php echo $k; ?>]" class="form-control-sm form-control select2 attribute_id" data-placeholder="Select Attribute" data-no="<?php echo $k; ?>" >
+                                                    <select id="attribute_id<?php echo $k; ?>" name="Attribute[{{$k}}][attribute_id]" class="form-control-sm form-control select2 attribute_id" data-placeholder="Select Attribute" data-no="<?php echo $k; ?>" >
                                                     <option value=""></option>
                                                     <?php if(!empty($attributes)){
-                                                    foreach($attributes as $row){ ?> 
-                                                    <option value="<?php echo $row->id;?>" <?php echo ($v==$row->id)?'selected="selected"':'';?>><?php echo $row->name;?></option> 
+                                                    foreach($attributes as $row){ ?>
+                                                        <option value="<?php echo $row->id;?>"<?php echo ($v->attribute_id==$row->id)?'selected="selected"':'';?> ><?php echo $row->name;?></option> 
                                                     <?php 
                                                     } 
                                                     }
@@ -361,14 +318,14 @@
                                             <div class="col-md-4">
                                                 <div class="position-relative form-group">
                                                     <?php 
-                                                    $attributeDetailsList = $this->attribute_detail_model->attribute_details_dropdown(array("attribute_id"=>$v,"is_deleted"=>BOOL_FALSE),"name","ASC");
+                                                    $attributeDetailsList = AttributeDetail::all()->where('attribute_id',$v->attribute_id);
                                                     ?>
                                                     <label for="attribute_detail_id<?php echo $k; ?>" class="">Attribute Options</label>
-                                                    <select id="attribute_detail_id<?php echo $k; ?>" name="attribute_detail_id[<?php echo $k; ?>]" class="form-control-sm form-control select2 attribute_detail_id" data-placeholder="Select Option" data-no="<?php echo $k; ?>" >
+                                                    <select id="attribute_detail_id<?php echo $k; ?>" name="Attribute[{{$k}}][attribute_detail_id]" class="form-control-sm form-control select2 attribute_detail_id" data-placeholder="Select Option" data-no="<?php echo $k; ?>" >
                                                     <option value=""></option>
                                                     <?php if(!empty($attributeDetailsList)){
                                                     foreach($attributeDetailsList as $row){ ?> 
-                                                    <option value="<?php echo $row->id;?>" <?php echo ($_POST["attribute_detail_id"][$v]==$row->id)?'selected="selected"':'';?>><?php echo $row->name;?></option> 
+                                                    <option value="<?php echo $row->id;?>" <?php echo ($v->attribute_detail_id==$row->id)?'selected="selected"':'';?> ><?php echo $row->name;?></option> 
                                                     <?php 
                                                     } 
                                                     }
@@ -378,13 +335,14 @@
                                                 </div>
                                             </div>
                                             <div class="col-md-2" style="margin-top:30px;">
-                                                <a href="javascript:void(0);" class="btn btn-danger btn-sm" onclick="removeAttributeDiv('attribute_row<?php echo $k; ?>');"><i class="fa fa-trash"></i></a>
+                                                <a href="javascript:void(0);" class="btn btn-danger btn-sm" onclick="removeAttributeDiv('attribute_row{{$k}}','{{$v->id}}');"><i class="fa fa-trash"></i></a>
                                             </div>
                                         </div>
-                                        <?php
-                                        }
-                                        }
-                                        ?>
+                                        @endif
+                                        @endforeach
+                                        <?php $i++; ?>
+                                        @endif
+                                    
                                     </div>
                                 </div>
                                 <div class="tab-pane fade" id="vert-tabs-discount" role="tabpanel" aria-labelledby="vert-tabs-discount-tab">
@@ -393,7 +351,7 @@
                                             <div class="col-sm-10">
                                                     <label class="form-check-label mr-2" for="has_discount"><strong>Product has discount</strong></label>
                                                     <div class="custom-control custom-switch d-inline">
-                                                        <input type="checkbox" class="custom-control-input" name="has_discount" value="{{ old('has_discount') ?? $product->has_discount  }}" id="has_discount">
+                                                        <input type="checkbox" class="custom-control-input" name="has_discount" id="has_discount">
                                                         <label class="custom-control-label btn" for="has_discount"></label>
                                                     </div>
                                                     @error('has_discount')
@@ -402,16 +360,14 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col discOptions mt-5" style="display:none">
+                                    <div class="col discOptions mt-5" {{ $product->has_discount == 0 ? 'style="display:none"' : '' }}>
                                         <div class="form-group row">
                                             <label class="col-sm-3 col-form-label" for="discount_type">{{ __('Discount type') }} <span class="req"> *</span></label>
                                             <div class="col-sm-9">
                                                 <div class="input-group ">
                                                     <select name="discount_type" id="discount_type" class="form-control @error('discount_type') is-invalid @enderror">
-                                                    
-                                                        <option value="PERCENT" <?php echo (("discount_type")=='PERCENT')?'selected="selected"':'';?>>PERCENT OFF</option>
-                                                        <option value="FLAT" <?php echo (("discount_type")=='FLAT')?'selected="selected"':'';?>>FLAT RATE</option>
-                                                        
+                                                        <option value="PERCENT" {{ old('discount_type', $product->discount_type) == 'PERCENT' ? 'selected' : '' }}>PERCENT OFF</option>
+                                                        <option value="FLAT" {{ old('discount_type', $product->discount_type) == 'FLAT' ? 'selected' : '' }}>FLAT RATE</option>
                                                     </select>
                                                 </div>
                                                 @error('discount_type')
@@ -420,7 +376,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col discOptions" style="display:none">
+                                    <div class="col discOptions" {{ $product->has_discount == 0 ? 'style="display:none"' : '' }}>
                                         <div class="form-group row">
                                             <label class="col-sm-3 col-form-label" for="discount_rate">{{ __('Discount rate') }} <span class="req"> *</span></label>
                                             <div class="col-sm-9">
@@ -457,8 +413,8 @@
                                             <div class="col-sm-9">
                                                 <div class="input-group ">
                                                     <select name="in_stock" id="in_stock" class="form-control @error('in_stock') is-invalid @enderror">
-                                                        <option value="1" <?php echo (("in_stock")=='1')?'selected="selected"':'';?>>In stock</option>
-                                                        <option value="0" <?php echo (("in_stock")=='0')?'selected="selected"':'';?>>Out of stock</option>
+                                                        <option value="1" {{ old('in_stock', $product->in_stock) == '1' ? 'selected' : '' }}>In stock</option>
+                                                        <option value="0" {{ old('in_stock', $product->in_stock) == '0' ? 'selected' : '' }}>Out of stock</option>
                                                     </select>
                                                 </div>
                                                 @error('in_stock')
@@ -533,9 +489,8 @@
         });
 
         function addAttribute(){
-            var tsp = Date.now();
-            var l = $(".attribute_id").length;
-            $(".attributesDiv").append('<div class="form-row attribute_row'+tsp+'"><div class="col-md-4"><div class="position-relative form-group"><label for="attribute_id'+tsp+'" class="">Attribute</label><select id="attribute_id'+tsp+'" name="attribute_id['+tsp+']" class="form-control-sm form-control attribute_id" data-placeholder="Select Attribute" data-no="'+tsp+'"><option value=""></option><?php if(!empty($attributes)){ foreach($attributes as $row){ ?> <option value="{{ $row->id}}">{{ $row->name }}</option> <?php } }?></select><label id="attribute_id'+tsp+'-error" class="error" for="attribute_id'+tsp+'"></label></div></div><div class="col-md-4"><div class="position-relative form-group"><label for="attribute_detail_id'+tsp+'" class="">Attribute Options</label><select id="attribute_detail_id'+tsp+'" name="attribute_detail_id['+tsp+']" class="form-control-sm form-control attribute_detail_id" data-placeholder="Select Option"  data-no="'+tsp+'" ></select><label id="attribute_detail_id'+tsp+'-error" class="error" for="attribute_detail_id'+tsp+'"></label></div></div><div class="col-md-2" style="margin-top:30px;"><a href="javascript:void(0);" class="btn btn-danger btn-sm" onclick="removeAttributeDiv(\'attribute_row'+tsp+'\');"><i class="fa fa-trash"></i></a></div></div>');
+            var tsp = Date.now();        
+            $(".attributeDiv").append('<div class="form-row attribute_row'+tsp+'"><input type = "hidden" id="attri_id_'+tsp+'" name = "Attribute['+tsp+'][attri_id]" value =""><div class="col-md-4"><div class="position-relative form-group"><label for="attribute_id'+tsp+'" class="">Attribute</label><select id="attribute_id'+tsp+'" name="Attribute['+tsp+'][attribute_id]" class="form-control-sm form-control attribute_id" data-placeholder="Select Attribute" data-no="'+tsp+'"><option value=""></option><?php if(!empty($attributes)){ foreach($attributes as $row){ ?> <option value="{{ $row->id}}">{{ $row->name }}</option> <?php } }?></select><label id="attribute_id'+tsp+'-error" class="error" for="attribute_id'+tsp+'"></label></div></div><div class="col-md-4"><div class="position-relative form-group"><label for="attribute_detail_id'+tsp+'" class="">Attribute Options</label><select id="attribute_detail_id'+tsp+'" name="Attribute['+tsp+'][attribute_detail_id]" class="form-control-sm form-control attribute_detail_id" data-placeholder="Select Option"  data-no="'+tsp+'" ></select><label id="attribute_detail_id'+tsp+'-error" class="error" for="attribute_detail_id'+tsp+'"></label></div></div><div class="col-md-2"><div class="position-relative form-group mt-30" style="margin-top:30px;"><a href="javascript:void(0);" class="btn btn-danger btn-sm" onclick="removeAttributeDiv(\'attribute_row'+tsp+'\');"><i class="fa fa-trash"></i></a></div></div></div>');
             $('#attribute_id'+tsp+'').select2();
             $('#attribute_detail_id'+tsp+'').select2();
         }
@@ -543,34 +498,32 @@
         function removeAttributeDiv(divId,prdId){
             //alert(divId+''+prdId);
             var r = confirm("Are you sure?");
-                if(r){
-                    if(prdId==''){
-                    $("."+divId+"").remove();
-                    }else{
-                    $.ajax({
-                    type: "GET",
-                    url: "{{ route('product.getProductAttributeDeleted') }}",
-                    contentType: "application/json",
-                    dataType: "json",
-                    data:{
-                    "attribute_id":prdId
-                    },
-                    cache: false,
-                    success: function(resp) {
-                    // alert(JSON.stringify(resp));
-                    if(resp.status == '200'){
-                    $("."+divId+"").remove();
-                    }
-                    } 
-                    });
-                    }
-                    $("."+divId).remove();
+            if(r){
+                if(prdId==''){
+                $("."+divId+"").remove();
+                }else{
+                $.ajax({
+                type: "GET",
+                url: "{{ route('product.getProductAttributeDeleted') }}",
+                contentType: "application/json",
+                dataType: "json",
+                data:{
+                "attribute_id":prdId
+                },
+                cache: false,
+                success: function(resp) {
+                // alert(JSON.stringify(resp));
+                if(resp.status == '200'){
+                $("."+divId+"").remove();
                 }
+                } 
+                });
+                }
+                $("."+divId).remove();
+            }
         }
 
         $(document).on("change keyup",".attribute_id",function(){
-
-            
             var itemNo = $(this).attr("data-no");
             var attribute_id = $(this).val();
             var validSelection = true;

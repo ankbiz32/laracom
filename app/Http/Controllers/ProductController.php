@@ -274,7 +274,7 @@ class ProductController extends Controller
         $product->name=$request->get('name');
         $product->price=$request->get('price');
         //$imagepath = $request->get('image');
-        $product->image=$imagepath;
+        //$product->image=$imagepath;
         $product->sku=$request->get('sku');
         $product->in_stock=$request->get('in_stock');
         //$product->has_discount=$request->get('has_discount');
@@ -299,36 +299,35 @@ class ProductController extends Controller
             $product->discount_type='';
         }
 
-        $product->update();
-
-        $attribute_ids = $request->get("attribute_id");					
-        $attribute_detail_ids = $request->get("attribute_detail_id");
-        //echo "<pre>";
-        //print_r($attribute_ids);
-        //print_r($attribute_detail_ids);
-        //exit; 
-        if(!empty($attribute_ids)){
-            foreach($attribute_ids as $k=>$v){
-                if(!empty($v) and !empty($attribute_detail_ids[$k])){
-                    $product_attribute = new ProductAttribute;
-                    $product_attribute->product_id = $product->id;
-                    $product_attribute->attribute_id=$v;
-                    $product_attribute->attribute_detail_id=$attribute_detail_ids[$k];
-                    $product_attribute->save();
-                }
-            }
+        if ($request->file('image') == null) {
+            $imagepath = $product->image;
+            $product->image=$imagepath;
         }else{
-            foreach($attribute_ids as $k=>$v){
-                if(!empty($v) and !empty($attribute_detail_ids[$k])){
-                    $product_attribute = ProductAttribute::find($v);
-                    $product_attribute->product_id = $product->id;
-                    $product_attribute->attribute_id=$v;
-                    $product_attribute->attribute_detail_id=$attribute_detail_ids[$k];
-                    $product_attribute->update();
-                }
-            }
+            $imagepath = $request->image->store('products','public');
+            $product->image=$imagepath;  
         }
 
+        $product->update();
+
+        foreach($request->get('Attribute') as $k){
+            //print_r($k);
+           // exit;
+            $did = $k['attri_id'];
+            if(!empty($did)){
+                $product_attribute = ProductAttribute::find($did);
+                $product_attribute->product_id=$id;
+                $product_attribute->attribute_id=$k['attribute_id'];
+                $product_attribute->attribute_detail_id=$k['attribute_detail_id'];
+                $product_attribute->update();
+            }
+            else{
+                $product_attribute = new ProductAttribute;
+                $product_attribute->product_id=$id;
+                $product_attribute->attribute_id=$k['attribute_id'];
+                $product_attribute->attribute_detail_id=$k['attribute_detail_id'];
+                $product_attribute->save();
+            }
+        }
 
         // Additional images are uploaded & saved in diff table
         if($request->hasfile('multi_img'))
@@ -342,15 +341,11 @@ class ProductController extends Controller
             }
         }
 
-
         // Additional tags are saved in diff table
         foreach(request('tags') as $tag){
             Tag::firstOrCreate(['tag' => $tag]);
         }
-    
-        
         return redirect()->route('admin.product')->with('success','Product updated !');
-
     }
 
     public function status(Request $request)
