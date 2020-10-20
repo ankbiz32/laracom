@@ -263,14 +263,6 @@
                                     <div class="col-md-4">
                                     <div class="position-relative form-group">
                                     <label for="attribute_id<?php echo $k; ?>" class="">Attribute</label>
-                                    <select class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }}" name="dropdown">
-                                        @foreach($attributes as $attributes)
-                                        <tr>
-                                        <td>{{ $attributes->name }}</td>
-                                        </tr>
-                                        <option value="{{ $attributes->id }}">{{ $attributes->name }}</option>
-                                        @endforeach
-                                    </select>
                                     <select id="attribute_id<?php echo $k; ?>" name="attribute_id[<?php echo $k; ?>]" class="form-control-sm form-control select2 attribute_id" data-placeholder="Select Attribute" data-no="<?php echo $k; ?>" >
                                     <option value=""></option>
                                     <?php if(!empty($attributes)){
@@ -286,9 +278,6 @@
                                     </div>
                                     <div class="col-md-4">
                                     <div class="position-relative form-group">
-                                    <?php 
-                                    $attributeDetailsList = $this->attribute_detail_model->attribute_details_dropdown(array("attribute_id"=>$v,"is_deleted"=>BOOL_FALSE),"name","ASC");
-                                    ?>
                                     <label for="attribute_detail_id<?php echo $k; ?>" class="">Attribute Options</label>
                                     <select id="attribute_detail_id<?php echo $k; ?>" name="attribute_detail_id[<?php echo $k; ?>]" class="form-control-sm form-control select2 attribute_detail_id" data-placeholder="Select Option" data-no="<?php echo $k; ?>" >
                                     <option value=""></option>

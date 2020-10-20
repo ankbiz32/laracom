@@ -10,6 +10,7 @@ use App\Brand;
 use App\Attribute;
 use App\AttributeDetail;
 use App\ProductAttribute;
+use App\ProductImage;
 use App\Category;
 use App\Cart;
 use Illuminate\Http\Request;
@@ -45,6 +46,38 @@ class ProductController extends Controller
                     $strOpts.='<option value="'.$row->id.'">'.$row->name.'</option>';
                 }
                $response = array("status"=>200,"data"=>$strOpts);
+               echo json_encode($response, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+               exit;
+            } 
+        }
+    }
+
+    public function getProductImageDeleted(Request $request)
+    {
+        if($request->ajax())
+        {
+            $productImage_id = json_decode($request->get('productImage_id'));
+            //echo json_encode($productImage_id);
+            //exit;
+            $productImage =ProductImage::where('id',$productImage_id)->delete();
+            if(!empty($productImage)){
+               $response = array("status"=>200,"msg"=>'success');
+               echo json_encode($response, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+               exit;
+            } 
+        }
+    }
+
+    public function getProductAttributeDeleted(Request $request)
+    {
+        if($request->ajax())
+        {
+            $attribute_id = json_decode($request->get('attribute_id'));
+           // echo json_encode($attribute_id);
+            //exit;
+            $productAttribute =ProductAttribute::where('id',$attribute_id)->delete();
+            if(!empty($productAttribute)){
+               $response = array("status"=>200,"msg"=>'success');
                echo json_encode($response, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
                exit;
             } 
@@ -218,43 +251,104 @@ class ProductController extends Controller
 
     public function editform($id)
     {
-        $product = Product::findOrFail($id);
-        return view('admin.editproduct',compact('product'));
+        
+        $product = Product::with('productImage','productAttribute')->findOrFail($id);
+        //echo '<pre>';
+        //print_r($product->toArray());
+        //exit;
+        $categories=$this->categories_dropdown();
+        $tags = Tag::get();
+        $brands = Brand::get();
+        $attributes = Attribute::get();
+        $attribute_details = AttributeDetail::get();
+
+        return view('admin.editproduct',compact('product','categories','tags','brands','attributes','attribute_details'));
     }
 
     public function edit(Request $request,$id)
     {
-        $this->validate(request(),[
-            'image'=>'',
-            'name'=>'required|string',
-            'brand'=>'required|in:Nike,Adidas,New Balance,Asics,Puma,Skechers,Fila,Bata,Burberry,Converse',
-            'price'=>'required|integer',
-            'gender'=>'required|in:Male,Female,Unisex',
-            'category'=>'required|in:Shoes',
-        ]);
-        if(request('image'))
-        {
-            $imagepath = $request->image->store('products','public');
-            $product = Product::findOrFail($id);
+        //$imagepath = $request->image->store('products','public');
+        $product = Product::findOrFail($id);
+        $product->category_id=json_encode($request->get('category'));
+        $product->brand_id=$request->get('brand');
+        $product->name=$request->get('name');
+        $product->price=$request->get('price');
+        //$imagepath = $request->get('image');
+        $product->image=$imagepath;
+        $product->sku=$request->get('sku');
+        $product->in_stock=$request->get('in_stock');
+        //$product->has_discount=$request->get('has_discount');
+        $product->discount_type=$request->get('discount_type');
+        $product->discount_rate=$request->get('discount_rate');
+        $product->max_order_qty=$request->get('max_order_qty');
+        $product->tags=json_encode($request->get('tags'));
+        $product->url_slug=str_slug($request->get('name'), '-');
+        $product->short_descr=$request->get('short_descr');
+        $product->full_descr=$request->get('full_descr');
+        $product->meta_title=$request->get('meta_title');
+        $product->meta_descr=$request->get('meta_descr');
 
-            $product->name=request('name');
-            $product->brand=request('brand');
-            $product->price=request('price');
-            $product->gender=request('gender');
-            $product->category=request('category');
-            $product->image=$imagepath;
-            $product->save();
-        }
-        else
+        if(request('has_discount'))
         {
-            $product = Product::findOrFail($id);
-            $product->name=request('name');
-            $product->brand=request('brand');
-            $product->price=request('price');
-            $product->gender=request('gender');
-            $product->category=request('category');
-            $product->save();
+            $product->has_discount=1;
+            $product->discount_type=request('discount_type');
+            $product->discount_rate=request('discount_rate');
         }
+        else{
+            $product->has_discount=0;
+            $product->discount_type='';
+        }
+
+        $product->update();
+
+        $attribute_ids = $request->get("attribute_id");					
+        $attribute_detail_ids = $request->get("attribute_detail_id");
+        //echo "<pre>";
+        //print_r($attribute_ids);
+        //print_r($attribute_detail_ids);
+        //exit; 
+        if(!empty($attribute_ids)){
+            foreach($attribute_ids as $k=>$v){
+                if(!empty($v) and !empty($attribute_detail_ids[$k])){
+                    $product_attribute = new ProductAttribute;
+                    $product_attribute->product_id = $product->id;
+                    $product_attribute->attribute_id=$v;
+                    $product_attribute->attribute_detail_id=$attribute_detail_ids[$k];
+                    $product_attribute->save();
+                }
+            }
+        }else{
+            foreach($attribute_ids as $k=>$v){
+                if(!empty($v) and !empty($attribute_detail_ids[$k])){
+                    $product_attribute = ProductAttribute::find($v);
+                    $product_attribute->product_id = $product->id;
+                    $product_attribute->attribute_id=$v;
+                    $product_attribute->attribute_detail_id=$attribute_detail_ids[$k];
+                    $product_attribute->update();
+                }
+            }
+        }
+
+
+        // Additional images are uploaded & saved in diff table
+        if($request->hasfile('multi_img'))
+        {
+            foreach(request('multi_img') as $img)
+            {
+                $multiimagepath = $img->store('products','public');
+                DB::table('product_images')->insert(
+                    ['img_src' => $multiimagepath, 'product_id' => $product->id]
+                );
+            }
+        }
+
+
+        // Additional tags are saved in diff table
+        foreach(request('tags') as $tag){
+            Tag::firstOrCreate(['tag' => $tag]);
+        }
+    
+        
         return redirect()->route('admin.product')->with('success','Product updated !');
 
     }
