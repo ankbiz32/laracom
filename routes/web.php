@@ -60,6 +60,9 @@ Route::post('/admin-product/bulkStatus', 'ProductController@bulkStatus')->name('
 Route::get('/product','ProductController@index')->name('product.index');
 Route::get('/product/filter','ProductController@filter')->name('product.filter');
 Route::get('/product/getAttributeDetailsList','ProductController@getAttributeDetailsList')->name('product.getAttributeDetailsList');
+Route::get('/product/getProductImageDeleted','ProductController@getProductImageDeleted')->name('product.getProductImageDeleted');
+Route::get('/product/getProductAttributeDeleted','ProductController@getProductAttributeDeleted')->name('product.getProductAttributeDeleted');
+
 Route::get('/product/{product}','ProductController@show')->name('product.show');
 
 /*--Attribute--*/
@@ -69,6 +72,7 @@ Route::post('/admin-attribute/add', 'AttributeController@store')->name('attribut
 Route::get('/admin-attribute/edit/{id}', 'AttributeController@edit')->name('attribute.editform')->middleware(['auth','admin']);
 Route::patch('/admin-attribute/edit/{id}', 'AttributeController@update')->name('attribute.update')->middleware(['auth','admin']);
 Route::get('/admin-attribute/remove/{id}', 'AttributeController@destroy')->name('attribute.remove')->middleware(['auth','admin']);
+Route::get('/admin-attribute/getAttributeDeleted', 'AttributeController@getAttributeDeleted')->name('attribute.getAttributeDeleted')->middleware(['auth','admin']);
 Route::post('/admin-attribute/bulkRemove', 'AttributeController@bulkRemove')->name('attribute.bulkRemove')->middleware(['auth','admin']);
 Route::post('/admin-attribute/status', 'AttributeController@status')->name('attribute.status')->middleware(['auth','admin']);
 Route::post('/admin-attribute/bulkStatus', 'AttributeController@bulkStatus')->name('attribute.bulkStatus')->middleware(['auth','admin']);

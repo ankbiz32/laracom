@@ -104,21 +104,22 @@ class AttributeController extends Controller
         $attribute->update();
 
             foreach($request->get('Attribute') as $k){
-                //print_r($k['describe']);
+                //print_r($k);
                 //exit;
-                if(empty($k['id'])){
+                $did = $k['attribute_id'];
+                if(!empty($did)){
+                    $attribute_detail = AttributeDetail::find($did);
+                    $attribute_detail->attribute_id=$attribute->id;
+                    $attribute_detail->name=$k['name'];
+                    $attribute_detail->describe=$k['describe'];
+                    $attribute_detail->update();
+                }
+                else{
                     $attribute_detail = new AttributeDetail;
                     $attribute_detail->attribute_id=$attribute->id;
                     $attribute_detail->name=$k['name'];
                     $attribute_detail->describe=$k['describe'];
                     $attribute_detail->save();
-                }
-                else{
-                    $attribute_detail = AttributeDetail::find($k['id']);
-                    $attribute_detail->attribute_id=$attribute->id;
-                    $attribute_detail->name=$k['name'];
-                    $attribute_detail->describe=$k['describe'];
-                    $attribute_detail->update();
                 }
             }
         return redirect()->route('admin.attribute')->with('success','Attribute update !');
@@ -176,11 +177,23 @@ class AttributeController extends Controller
         return redirect()->route('admin.attribute')->with('success','Attribute removed !');
     }
 
-    public function activeDeactiveAccount(Account $account)
-    {
-        $account->status = ! $account->status;
-        $account->save();
 
-        return $this->sendSuccess('Account updated successfully.');
+
+    public function getAttributeDeleted(Request $request)
+    {
+        if($request->ajax())
+        {
+            $attribute_id = json_decode($request->get('attribute_id'));
+            //echo json_encode($attribute_id);
+            //exit;
+            $attributeDetailsList =AttributeDetail::where('id',$attribute_id)->delete();
+            //$attributeDetailsList = AttributeDetail::all()->where('attribute_id',$attribute_id);
+            if(!empty($attributeDetailsList)){
+    
+               $response = array("status"=>200,"msg"=>'success');
+               echo json_encode($response, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+               exit;
+            } 
+        }
     }
 }
