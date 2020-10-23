@@ -499,7 +499,7 @@ use App\AttributeDetail;
             //alert(divId+''+prdId);
             var r = confirm("Are you sure?");
             if(r){
-                if(prdId==''){
+                /*if(prdId==''){
                 $("."+divId+"").remove();
                 }else{
                 $.ajax({
@@ -518,7 +518,7 @@ use App\AttributeDetail;
                 }
                 } 
                 });
-                }
+                }*/
                 $("."+divId).remove();
             }
         }
@@ -571,7 +571,7 @@ use App\AttributeDetail;
             //alert(rowId+''+dId);
             var y = confirm("Are you sure?");
             if(y){
-                $.ajax({
+                /*$.ajax({
                 type: "GET",
                 url: "{{ route('product.getProductImageDeleted') }}",
                 contentType: "application/json",
@@ -586,7 +586,8 @@ use App\AttributeDetail;
                         $("."+rowId+"").remove();
                     }
                 } 
-                });
+                });*/
+                $("."+rowId+"").remove();
             }
         }
     </script>
