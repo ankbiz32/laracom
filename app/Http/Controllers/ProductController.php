@@ -261,23 +261,51 @@ class ProductController extends Controller
         $brands = Brand::get();
         $attributes = Attribute::get();
         $attribute_details = AttributeDetail::get();
+        $productImageList = ProductImage::where('product_id',$id);
 
         return view('admin.editproduct',compact('product','categories','tags','brands','attributes','attribute_details'));
     }
-
+    
     public function edit(Request $request,$id)
     {
-        //$imagepath = $request->image->store('products','public');
+        function array_diff_assoc_recursive($array1, $array2)
+        {
+            foreach($array1 as $key => $value)
+            {
+                if(is_array($value))
+                {
+                    if(!isset($array2[$key]))
+                    {
+                        $difference[$key] = $value;
+                    }
+                    elseif(!is_array($array2[$key]))
+                    {
+                        $difference[$key] = $value;
+                    }
+                    else
+                    {
+                        $new_diff = array_diff_assoc_recursive($value, $array2[$key]);
+                        if($new_diff != FALSE)
+                        {
+                            $difference[$key] = $new_diff;
+                        }
+                    }
+                }
+                elseif(!isset($array2[$key]) || $array2[$key] != $value)
+                {
+                    $difference[$key] = $value;
+                }
+            }
+            return !isset($difference) ? 0 : $difference;
+        }
+
         $product = Product::findOrFail($id);
         $product->category_id=json_encode($request->get('category'));
         $product->brand_id=$request->get('brand');
         $product->name=$request->get('name');
         $product->price=$request->get('price');
-        //$imagepath = $request->get('image');
-        //$product->image=$imagepath;
         $product->sku=$request->get('sku');
         $product->in_stock=$request->get('in_stock');
-        //$product->has_discount=$request->get('has_discount');
         $product->discount_type=$request->get('discount_type');
         $product->discount_rate=$request->get('discount_rate');
         $product->max_order_qty=$request->get('max_order_qty');
@@ -287,7 +315,56 @@ class ProductController extends Controller
         $product->full_descr=$request->get('full_descr');
         $product->meta_title=$request->get('meta_title');
         $product->meta_descr=$request->get('meta_descr');
+        
+        $items1=array();
+        $items2=array(); 
+        if(!empty($product->productImage[0]['id'])){
+            foreach($product->productImage as $k=>$v){
+                $items1[]=array('productImage_id'=>$v->id);
+            }
+        }
+        if(!empty($request->get('Product')))
+        {
+            foreach($request->get('Product') as $k){
+                $items2[]=$k;
+            }
+        }
 
+        $delimg = array_diff_assoc_recursive($items1, $items2);
+        if(!empty($delimg)){
+            foreach($delimg as $k=>$v){
+                $productImage =ProductImage::where('id',$v['productImage_id'])->delete();
+            }
+        }
+        
+        //echo'<pre>';
+        //print_r($items1);
+        //print_r($items2);
+        //echo'</pre>';
+        //exit;
+
+        $attribute1=array();
+        $attribute2=array(); 
+        if(!empty($product->productAttribute[0]['id'])){
+            foreach($product->productAttribute as $k=>$v){
+                $attribute1[]=array('productAttribute_id'=>$v->id);
+            }
+        }
+        if(!empty($request->get('Attribute')))
+        {
+            foreach($request->get('Attribute') as $k){
+                $attribute2[]=array('productAttribute_id'=>$k['attri_id']);
+            }
+        }
+
+        $delattribute = array_diff_assoc_recursive($attribute1, $attribute2);
+        if(!empty($delattribute)){
+            foreach($delattribute as $k=>$v){
+                $productAttribute = ProductAttribute::where('id',$v['productAttribute_id'])->delete();
+            }
+        }
+
+        
         if(request('has_discount'))
         {
             $product->has_discount=1;
@@ -309,25 +386,32 @@ class ProductController extends Controller
 
         $product->update();
 
-        foreach($request->get('Attribute') as $k){
-            //print_r($k);
-           // exit;
-            $did = $k['attri_id'];
-            if(!empty($did)){
-                $product_attribute = ProductAttribute::find($did);
-                $product_attribute->product_id=$id;
-                $product_attribute->attribute_id=$k['attribute_id'];
-                $product_attribute->attribute_detail_id=$k['attribute_detail_id'];
-                $product_attribute->update();
-            }
-            else{
-                $product_attribute = new ProductAttribute;
-                $product_attribute->product_id=$id;
-                $product_attribute->attribute_id=$k['attribute_id'];
-                $product_attribute->attribute_detail_id=$k['attribute_detail_id'];
-                $product_attribute->save();
+
+
+        if(!empty($request->get('Attribute'))){
+            foreach($request->get('Attribute') as $k){
+                
+                $did = $k['attri_id'];
+                //print_r($k);
+                //print_r($did);
+                //exit;
+                if(!empty($did)){
+                    $product_attribute = ProductAttribute::find($did);
+                    $product_attribute->product_id=$product->id;
+                    $product_attribute->attribute_id=$k['attribute_id'];
+                    $product_attribute->attribute_detail_id=$k['attribute_detail_id'];
+                    $product_attribute->update();
+                }
+                else{
+                    $product_attribute = new ProductAttribute;
+                    $product_attribute->product_id=$product->id;
+                    $product_attribute->attribute_id=$k['attribute_id'];
+                    $product_attribute->attribute_detail_id=$k['attribute_detail_id'];
+                    $product_attribute->save();
+                }
             }
         }
+        
 
         // Additional images are uploaded & saved in diff table
         if($request->hasfile('multi_img'))
@@ -386,7 +470,8 @@ class ProductController extends Controller
 
         $request->session()->flash('success', 'Products removed !');
         return response()->json(['success'=>'Product removed !']);
-    }
+    }        
+
 
     public function listProducts()
     {

@@ -351,7 +351,7 @@ use App\AttributeDetail;
                                             <div class="col-sm-10">
                                                     <label class="form-check-label mr-2" for="has_discount"><strong>Product has discount</strong></label>
                                                     <div class="custom-control custom-switch d-inline">
-                                                        <input type="checkbox" class="custom-control-input" name="has_discount" id="has_discount">
+                                                        <input type="checkbox" class="custom-control-input" name="has_discount" id="has_discount" <?php echo ($product->has_discount==true)?'checked="checked"':'';?>>
                                                         <label class="custom-control-label btn" for="has_discount"></label>
                                                     </div>
                                                     @error('has_discount')
@@ -360,7 +360,7 @@ use App\AttributeDetail;
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col discOptions mt-5" {{ $product->has_discount == 0 ? 'style="display:none"' : '' }}>
+                                    <div class="col discOptions mt-5" style="<?php echo ($product->has_discount==true)?'':'display:none';?>">
                                         <div class="form-group row">
                                             <label class="col-sm-3 col-form-label" for="discount_type">{{ __('Discount type') }} <span class="req"> *</span></label>
                                             <div class="col-sm-9">
@@ -376,7 +376,7 @@ use App\AttributeDetail;
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col discOptions" {{ $product->has_discount == 0 ? 'style="display:none"' : '' }}>
+                                    <div class="col discOptions" style="<?php echo ($product->has_discount==true)?'':'display:none';?>">
                                         <div class="form-group row">
                                             <label class="col-sm-3 col-form-label" for="discount_rate">{{ __('Discount rate') }} <span class="req"> *</span></label>
                                             <div class="col-sm-9">
@@ -499,7 +499,7 @@ use App\AttributeDetail;
             //alert(divId+''+prdId);
             var r = confirm("Are you sure?");
             if(r){
-                if(prdId==''){
+                /*if(prdId==''){
                 $("."+divId+"").remove();
                 }else{
                 $.ajax({
@@ -518,7 +518,7 @@ use App\AttributeDetail;
                 }
                 } 
                 });
-                }
+                }*/
                 $("."+divId).remove();
             }
         }
@@ -571,7 +571,7 @@ use App\AttributeDetail;
             //alert(rowId+''+dId);
             var y = confirm("Are you sure?");
             if(y){
-                $.ajax({
+                /*$.ajax({
                 type: "GET",
                 url: "{{ route('product.getProductImageDeleted') }}",
                 contentType: "application/json",
@@ -586,7 +586,8 @@ use App\AttributeDetail;
                         $("."+rowId+"").remove();
                     }
                 } 
-                });
+                });*/
+                $("."+rowId+"").remove();
             }
         }
     </script>
