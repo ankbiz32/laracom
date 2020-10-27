@@ -77,15 +77,15 @@
                         <div class="row" >
                             <div class="col-sm-4">
                                 <div class="position-relative form-group">
-                                    <a href="javascript:void(0);" class="btn btn-info btn-sm" onclick="addMoreOption();"><i class="fa fa-plus"></i> Add Option</a>
+                                    <a href="javascript:void(0);" class="btn btn-info btn-sm" onclick="addMoreOption();"><i class="fa fa-plus"></i> Add more option</a>
                                 </div>
                             </div>
                         </div>
                     </div>
 
 
-                    <button type="submit" class="btn btn-primary mr-2">UPDATE ATTRIBUTE</button>
-                    <a href="{{URL::to('/admin-attribute')}}" class="btn btn-default mr-2 mr-sm-0">CANCEL</a>
+                    <button type="submit" class="btn btn-primary mr-2 mt-4">UPDATE ATTRIBUTE</button>
+                    <a href="{{URL::to('/admin-attribute')}}" class="btn btn-default mr-2 mr-sm-0  mt-4">CANCEL</a>
                 </form>
                 </div>
             </div>
@@ -96,9 +96,9 @@
     <script type="text/javascript">
 
     function addMoreOption(){
-        
+
         var tsp = Date.now();
-        
+
         $(".attributeDiv").append('<div class="form-row attribute_row_'+tsp+'"><input type = "hidden" id="attribute_id_'+tsp+'" name = "Attribute['+tsp+'][attribute_id]" value =""><div class="col-md-5"><div class="position-relative form-group"><label for="attribute_option_'+tsp+'" class="">Option Name</label><input type="text" id="attribute_option_'+tsp+'" name="Attribute['+tsp+'][name]" class="form-control attribute_option" value=""></div></div><div class="col-md-5"><div class="position-relative form-group"><label for="attribute_describe_'+tsp+'" class="">Description</label><input type="text" id="attribute_describe_'+tsp+'" name="Attribute['+tsp+'][describe]" class="form-control attribute_describe" value=""></div></div><div class="col-md-2"><div class="position-relative form-group mt-30" style="margin-top:30px;"><a href="javascript:void(0);" class="btn btn-danger" onclick="removeOption(\'attribute_row_'+tsp+'\');"><i class="fa fa-trash"></i></a></div></div></div>');
     }
 
@@ -123,11 +123,11 @@
                     if(resp.status == '200'){
                         $("."+rowId+"").remove();
                     }
-                } 
+                }
                 });
             }
-            
-           
+
+
         }
     }
     </script>

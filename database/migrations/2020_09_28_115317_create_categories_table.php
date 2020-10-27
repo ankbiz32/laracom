@@ -15,11 +15,11 @@ class CreateCategoriesTable extends Migration
     {
         Schema::create('categories', function (Blueprint $table) {
             $table->increments('id');
-            $table->text('parent_id');
+            $table->text('parent_id')->default(0);
             $table->string('name');
-            $table->string('img_src');
-            $table->string('meta_title');
-            $table->string('meta_description');
+            $table->string('img_src')->nullable();
+            $table->string('meta_title')->nullable();
+            $table->string('meta_description')->nullable();
             $table->timestamps();
         });
     }

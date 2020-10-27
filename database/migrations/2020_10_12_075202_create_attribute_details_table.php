@@ -17,7 +17,7 @@ class CreateAttributeDetailsTable extends Migration
             $table->bigIncrements('id');
             $table->bigInteger('attribute_id')->unsigned()->nullable();
             $table->string('name');
-            $table->text('describe');
+            $table->text('describe')->nullable();
             $table->timestamps();
         });
     }

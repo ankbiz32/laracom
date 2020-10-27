@@ -31,24 +31,6 @@ class ProfilesTableSeeder extends Seeder
                 'address'=>'Danau Toba',
                 'zipcode'=>27321
             ],
-            [
-                'id'=>3,
-                'user_id'=>3,
-                'phonenumber'=>'42912345',
-                'country'=>'United State of America',
-                'city'=>'Seattle',
-                'address'=>'Downtown Seattle ST 17',
-                'zipcode'=>78231
-            ],
-            [
-                'id'=>4,
-                'user_id'=>4,
-                'phonenumber'=>'032912345',
-                'country'=>'China',
-                'city'=>'Guangzhou',
-                'address'=>'ST 23a',
-                'zipcode'=>78213
-            ],
 
         ]);
     }

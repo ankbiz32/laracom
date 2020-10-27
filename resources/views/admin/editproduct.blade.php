@@ -71,7 +71,7 @@ use App\AttributeDetail;
                             <a class="nav-link py-2" id="vert-tabs-profile-tab" data-toggle="pill" href="#vert-tabs-profile" role="tab" aria-controls="vert-tabs-profile" aria-selected="false">Images</a>
                             <a class="nav-link py-2" id="vert-tabs-description-tab" data-toggle="pill" href="#vert-tabs-description" role="tab" aria-controls="vert-tabs-description" aria-selected="false">Description</a>
                             <a class="nav-link @error('meta_title') text-danger @enderror py-2" id="vert-tabs-messages-tab" data-toggle="pill" href="#vert-tabs-messages" role="tab" aria-controls="vert-tabs-messages" aria-selected="false">SEO</a>
-                            <a class="nav-link py-2" id="vert-tabs-settings-tab" data-toggle="pill" href="#vert-tabs-settings" role="tab" aria-controls="vert-tabs-settings" aria-selected="false">Options</a>
+                            <a class="nav-link py-2" id="vert-tabs-settings-tab" data-toggle="pill" href="#vert-tabs-settings" role="tab" aria-controls="vert-tabs-settings" aria-selected="false">Attributes</a>
                             <a class="nav-link py-2" id="vert-tabs-discount-tab" data-toggle="pill" href="#vert-tabs-discount" role="tab" aria-controls="vert-tabs-discount" aria-selected="false">Discount</a>
                             <a class="nav-link py-2" id="vert-tabs-inventory-tab" data-toggle="pill" href="#vert-tabs-inventory" role="tab" aria-controls="vert-tabs-inventory" aria-selected="false">Inventory</a>
                             <a class="nav-link py-2" id="vert-tabs-location-tab" data-toggle="pill" href="#vert-tabs-location" role="tab" aria-controls="vert-tabs-location" aria-selected="false">Marketplace</a>
@@ -109,10 +109,10 @@ use App\AttributeDetail;
                                     <div class="col">
                                         <div class="form-group row">
                                             <label class="col-sm-2 col-form-label" for="category">{{ __('Category') }}<span class="req"> *</span></label>
-                                            
+
                                             <div class="col-sm-10">
                                                 <select name="category[]" id="addproductcategory" multiple class="form-control select2" style="width: 100%;">
-                        
+
                                                     @if($categories)
                                                         <option value="" disabled>Select categories</option>
                                                         @foreach($categories as $c)
@@ -206,7 +206,7 @@ use App\AttributeDetail;
                                                     <label class="custom-file-label" for="customMultiFile">Choose file</label>
                                                 </div>
                                                 <small>( Multiple images can be uploaded )</small><br>
-                                                <div class="productImage">                                               
+                                                <div class="productImage">
                                                     @if(!empty($product->productImage))
                                                         <?php $i = 0; ?>
                                                         @foreach($product->productImage as $k=>$v)
@@ -287,8 +287,8 @@ use App\AttributeDetail;
                                 <div class="tab-pane fade" id="vert-tabs-settings" role="tabpanel" aria-labelledby="vert-tabs-settings-tab">
                                     <div class="attributeDiv">
                                         <div class="form-row">
-                                            <div class="col-md-3" style="margin-bottom:15px;">
-                                                <a href="javascript:void(0);" class="btn btn-info btn-sm" onclick="addAttribute();"><i class="fa fa-plus"></i> Add Option</a>
+                                            <div class="col-md-6" style="margin-bottom:15px;">
+                                                <a href="javascript:void(0);" class="btn btn-info btn-sm" onclick="addAttribute();"><i class="fa fa-plus"></i> Add more attribute</a>
                                             </div>
                                         </div>
 
@@ -306,9 +306,9 @@ use App\AttributeDetail;
                                                     <option value=""></option>
                                                     <?php if(!empty($attributes)){
                                                     foreach($attributes as $row){ ?>
-                                                        <option value="<?php echo $row->id;?>"<?php echo ($v->attribute_id==$row->id)?'selected="selected"':'';?> ><?php echo $row->name;?></option> 
-                                                    <?php 
-                                                    } 
+                                                        <option value="<?php echo $row->id;?>"<?php echo ($v->attribute_id==$row->id)?'selected="selected"':'';?> ><?php echo $row->name;?></option>
+                                                    <?php
+                                                    }
                                                     }
                                                     ?>
                                                     </select>
@@ -317,17 +317,17 @@ use App\AttributeDetail;
                                             </div>
                                             <div class="col-md-4">
                                                 <div class="position-relative form-group">
-                                                    <?php 
+                                                    <?php
                                                     $attributeDetailsList = AttributeDetail::all()->where('attribute_id',$v->attribute_id);
                                                     ?>
                                                     <label for="attribute_detail_id<?php echo $k; ?>" class="">Attribute Options</label>
                                                     <select id="attribute_detail_id<?php echo $k; ?>" name="Attribute[{{$k}}][attribute_detail_id]" class="form-control-sm form-control select2 attribute_detail_id" data-placeholder="Select Option" data-no="<?php echo $k; ?>" >
                                                     <option value=""></option>
                                                     <?php if(!empty($attributeDetailsList)){
-                                                    foreach($attributeDetailsList as $row){ ?> 
-                                                    <option value="<?php echo $row->id;?>" <?php echo ($v->attribute_detail_id==$row->id)?'selected="selected"':'';?> ><?php echo $row->name;?></option> 
-                                                    <?php 
-                                                    } 
+                                                    foreach($attributeDetailsList as $row){ ?>
+                                                    <option value="<?php echo $row->id;?>" <?php echo ($v->attribute_detail_id==$row->id)?'selected="selected"':'';?> ><?php echo $row->name;?></option>
+                                                    <?php
+                                                    }
                                                     }
                                                     ?>
                                                     </select>
@@ -342,7 +342,7 @@ use App\AttributeDetail;
                                         @endforeach
                                         <?php $i++; ?>
                                         @endif
-                                    
+
                                     </div>
                                 </div>
                                 <div class="tab-pane fade" id="vert-tabs-discount" role="tabpanel" aria-labelledby="vert-tabs-discount-tab">
@@ -489,7 +489,7 @@ use App\AttributeDetail;
         });
 
         function addAttribute(){
-            var tsp = Date.now();        
+            var tsp = Date.now();
             $(".attributeDiv").append('<div class="form-row attribute_row'+tsp+'"><input type = "hidden" id="attri_id_'+tsp+'" name = "Attribute['+tsp+'][attri_id]" value =""><div class="col-md-4"><div class="position-relative form-group"><label for="attribute_id'+tsp+'" class="">Attribute</label><select id="attribute_id'+tsp+'" name="Attribute['+tsp+'][attribute_id]" class="form-control-sm form-control attribute_id" data-placeholder="Select Attribute" data-no="'+tsp+'"><option value=""></option><?php if(!empty($attributes)){ foreach($attributes as $row){ ?> <option value="{{ $row->id}}">{{ $row->name }}</option> <?php } }?></select><label id="attribute_id'+tsp+'-error" class="error" for="attribute_id'+tsp+'"></label></div></div><div class="col-md-4"><div class="position-relative form-group"><label for="attribute_detail_id'+tsp+'" class="">Attribute Options</label><select id="attribute_detail_id'+tsp+'" name="Attribute['+tsp+'][attribute_detail_id]" class="form-control-sm form-control attribute_detail_id" data-placeholder="Select Option"  data-no="'+tsp+'" ></select><label id="attribute_detail_id'+tsp+'-error" class="error" for="attribute_detail_id'+tsp+'"></label></div></div><div class="col-md-2"><div class="position-relative form-group mt-30" style="margin-top:30px;"><a href="javascript:void(0);" class="btn btn-danger btn-sm" onclick="removeAttributeDiv(\'attribute_row'+tsp+'\');"><i class="fa fa-trash"></i></a></div></div></div>');
             $('#attribute_id'+tsp+'').select2();
             $('#attribute_detail_id'+tsp+'').select2();
@@ -516,7 +516,7 @@ use App\AttributeDetail;
                 if(resp.status == '200'){
                 $("."+divId+"").remove();
                 }
-                } 
+                }
                 });
                 }*/
                 $("."+divId).remove();
@@ -532,7 +532,7 @@ use App\AttributeDetail;
             $("#attribute_detail_id"+itemNo).html('<option value="">Select Options</option>');
             $('#attribute_detail_id'+itemNo+'').trigger('change');
 
-           
+
 
             //if(validSelection){
                 //alert(attribute_id);
@@ -551,7 +551,7 @@ use App\AttributeDetail;
                         $("#attribute_detail_id"+itemNo).html('<option value="">Select Option</option>'+resp.data);
                         $('#attribute_detail_id'+itemNo+'').trigger('change');
                     }
-                } 
+                }
                 });
             //}
         });
@@ -565,7 +565,7 @@ use App\AttributeDetail;
                     $('#'+cId+'').val(null).trigger('change');
                 }
             });
-        });   
+        });
 
         function removeOption(rowId,dId){
             //alert(rowId+''+dId);
@@ -585,7 +585,7 @@ use App\AttributeDetail;
                     if(resp.status == '200'){
                         $("."+rowId+"").remove();
                     }
-                } 
+                }
                 });*/
                 $("."+rowId+"").remove();
             }

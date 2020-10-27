@@ -50,13 +50,13 @@
                                  BULK ACTION<span class="caret"></span>
                             </a>
                             <div class="dropdown-menu" x-placement="bottom-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 40px, 0px);">
-                                <span class="dropdown-item text-secondary bg-light">UPDATE ROLE</span>
+                                <span class="dropdown-item text-secondary bg-light">SELECT ROLE:</span>
                                 <a class="dropdown-item" tabindex="-1" href="javascript:;" onclick="updateRole('Customer')">Customer</a>
                                 <a class="dropdown-item" tabindex="-1" href="javascript:;" onclick="updateRole('INVENTORY_MANAGER')">Inventory Manager</a>
                                 <a class="dropdown-item" tabindex="-1" href="javascript:;" onclick="updateRole('SALES_MANAGER')">Sales Manager</a>
                                 <a class="dropdown-item" tabindex="-1" href="javascript:;" onclick="updateRole('Admin')">Admin</a>
                                 <div class="dropdown-divider"></div>
-                                <span class="dropdown-item text-secondary bg-light mt-3">UPDATE STATUS</span>
+                                <span class="dropdown-item text-secondary bg-light mt-3">SELECT STATUS:</span>
                                 <a class="dropdown-item" tabindex="-1" href="javascript:;" onclick="changeStatus(1)">Activate User</a>
                                 <a class="dropdown-item" tabindex="-1" href="javascript:;" onclick="changeStatus(0)">Deactivate User</a>
                             </div>

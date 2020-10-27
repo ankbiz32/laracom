@@ -29,7 +29,7 @@ class CreateProductsTable extends Migration
             $table->tinyInteger('is_featured')->default(0);
             $table->tinyInteger('is_todays_deal')->default(0);
             $table->string('tags');
-            $table->string('url_slug');
+            $table->string('url_slug')->nullable();
             $table->string('short_descr')->nullable();
             $table->mediumText('full_descr')->nullable();
             $table->string('meta_title')->nullable();
