@@ -11,6 +11,10 @@ use App\Attribute;
 use App\AttributeDetail;
 use App\ProductAttribute;
 use App\ProductImage;
+use App\ProductDescription;
+use App\ProductInventory;
+use App\ProductDiscount;
+use App\ProductSeo;
 use App\Category;
 use App\Cart;
 use Illuminate\Http\Request;
@@ -208,6 +212,42 @@ class ProductController extends Controller
 
         $product->save();
 
+        $product_discount = new ProductDiscount;
+        if(request('has_discount'))
+        {
+            $product_discount->product_id = $product->id;
+            $product_discount->has_discount=1;
+            $product_discount->type=request('discount_type');
+            $product_discount->rate=request('discount_rate');
+            $product_discount->status=1;
+        }
+        else{
+            $product_discount->product_id = $product->id;
+            $product_discount->has_discount=0;
+            $product_discount->rate='';
+        }
+        $product_discount->save();
+
+        $product_description = new ProductDescription;
+        $product_description->product_id = $product->id;
+        $product_description->short_des=request('short_descr');
+        $product_description->full_des=request('full_descr');
+        $product_description->status=1;
+        $product_description->save();
+
+        $product_seo = new ProductSeo;
+        $product_seo->product_id = $product->id;
+        $product_seo->title =request('meta_title');
+        $product_seo->description=request('meta_descr');
+        $product_seo->status=1;
+        $product_seo->save();
+
+        $product_inventory = new ProductInventory;
+        $product_inventory->product_id = $product->id;
+        $product_inventory->sku=request('sku');
+        $product_inventory->in_stock=request('in_stock');
+        $product_inventory->save();
+
         $attribute_ids = $request->input("attribute_id");
         $attribute_detail_ids = $request->input("attribute_detail_id");
         //echo "<pre>";
@@ -225,6 +265,8 @@ class ProductController extends Controller
                 }
             }
         }
+
+
 
 
         // Additional images are uploaded & saved in diff table
