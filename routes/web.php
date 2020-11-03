@@ -77,6 +77,17 @@ Route::post('/admin-attribute/bulkRemove', 'AttributeController@bulkRemove')->na
 Route::post('/admin-attribute/status', 'AttributeController@status')->name('attribute.status')->middleware(['auth','admin']);
 Route::post('/admin-attribute/bulkStatus', 'AttributeController@bulkStatus')->name('attribute.bulkStatus')->middleware(['auth','admin']);
 
+/*--Country--*/
+Route::get('/admin-country', 'CountryController@index')->name('admin.country')->middleware(['auth','admin']);
+Route::get('/admin-country/add', 'CountryController@create')->name('admin.addcountry')->middleware(['auth','admin']);
+Route::post('/admin-country/add', 'CountryController@store')->name('country.store')->middleware(['auth','admin']);
+Route::get('/admin-country/edit/{id}', 'CountryController@edit')->name('country.editform')->middleware(['auth','admin']);
+Route::patch('/admin-country/edit/{id}', 'CountryController@update')->name('country.update')->middleware(['auth','admin']);
+Route::get('/admin-country/remove/{id}', 'CountryController@destroy')->name('country.remove')->middleware(['auth','admin']);
+Route::post('/admin-country/bulkRemove', 'CountryController@bulkRemove')->name('country.bulkRemove')->middleware(['auth','admin']);
+Route::post('/admin-country/status', 'CountryController@status')->name('country.status')->middleware(['auth','admin']);
+Route::post('/admin-country/bulkStatus', 'CountryController@bulkStatus')->name('country.bulkStatus')->middleware(['auth','admin']);
+
 
 
 Route::get('/cart','CartController@index')->name('cart.index');

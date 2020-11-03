@@ -232,6 +232,12 @@
                     <p>Roles</p>
                     </a>
                 </li>
+                <li class="nav-item">
+                    <a href="{{ route('admin.country') }}" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Country</p>
+                    </a>
+                </li>
                 </ul>
             </li>
 
