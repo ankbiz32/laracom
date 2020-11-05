@@ -40,6 +40,22 @@
                         </div>
 
                         <div class="form-group row">
+                            <label class="col-sm-4 col-form-label text-md-right" for="category">{{ __('Country') }}</label>
+                            <div class="col-sm-6">
+                                <select name="country" id="addCountry" class="form-control select2" style="width: 100%;" required>
+                                    @if($countrylist)
+                                        <option value="" disabled>Select Country</option>
+                                        @foreach($countrylist as $c)
+                                        <option value="{{ $c->id }}">{{ $c->name }}</option>
+                                        @endforeach
+                                    @else
+                                        <option value="" disabled>No country found. Add some country first.</option>
+                                    @endif
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
                             <label for="password" class="col-md-4 col-form-label text-md-right">{{ __('Password') }}</label>
 
                             <div class="col-md-6">

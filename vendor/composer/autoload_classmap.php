@@ -6,12 +6,16 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
+    'App\\Attribute' => $baseDir . '/app/Attribute.php',
+    'App\\AttributeDetail' => $baseDir . '/app/AttributeDetail.php',
     'App\\Brand' => $baseDir . '/app/Brand.php',
     'App\\Cart' => $baseDir . '/app/Cart.php',
     'App\\Category' => $baseDir . '/app/Category.php',
     'App\\Console\\Kernel' => $baseDir . '/app/Console/Kernel.php',
+    'App\\Country' => $baseDir . '/app/Country.php',
     'App\\Exceptions\\Handler' => $baseDir . '/app/Exceptions/Handler.php',
     'App\\Http\\Controllers\\AdminController' => $baseDir . '/app/Http/Controllers/AdminController.php',
+    'App\\Http\\Controllers\\AttributeController' => $baseDir . '/app/Http/Controllers/AttributeController.php',
     'App\\Http\\Controllers\\Auth\\ConfirmPasswordController' => $baseDir . '/app/Http/Controllers/Auth/ConfirmPasswordController.php',
     'App\\Http\\Controllers\\Auth\\ForgotPasswordController' => $baseDir . '/app/Http/Controllers/Auth/ForgotPasswordController.php',
     'App\\Http\\Controllers\\Auth\\LoginController' => $baseDir . '/app/Http/Controllers/Auth/LoginController.php',
@@ -23,6 +27,7 @@ return array(
     'App\\Http\\Controllers\\CategoryController' => $baseDir . '/app/Http/Controllers/CategoryController.php',
     'App\\Http\\Controllers\\CheckoutController' => $baseDir . '/app/Http/Controllers/CheckoutController.php',
     'App\\Http\\Controllers\\Controller' => $baseDir . '/app/Http/Controllers/Controller.php',
+    'App\\Http\\Controllers\\CountryController' => $baseDir . '/app/Http/Controllers/CountryController.php',
     'App\\Http\\Controllers\\HomeController' => $baseDir . '/app/Http/Controllers/HomeController.php',
     'App\\Http\\Controllers\\NewsletterController' => $baseDir . '/app/Http/Controllers/NewsletterController.php',
     'App\\Http\\Controllers\\OrderController' => $baseDir . '/app/Http/Controllers/OrderController.php',
@@ -45,6 +50,8 @@ return array(
     'App\\Payment' => $baseDir . '/app/Payment.php',
     'App\\Policies\\ProfilePolicy' => $baseDir . '/app/Policies/ProfilePolicy.php',
     'App\\Product' => $baseDir . '/app/Product.php',
+    'App\\ProductAttribute' => $baseDir . '/app/ProductAttribute.php',
+    'App\\ProductImage' => $baseDir . '/app/ProductImage.php',
     'App\\Profile' => $baseDir . '/app/Profile.php',
     'App\\Providers\\AppServiceProvider' => $baseDir . '/app/Providers/AppServiceProvider.php',
     'App\\Providers\\AuthServiceProvider' => $baseDir . '/app/Providers/AuthServiceProvider.php',

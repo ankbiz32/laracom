@@ -5,6 +5,10 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
 use App\User;
+use App\Country;
+use DB;
+use Session;
+use DataTables;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
@@ -55,7 +59,12 @@ class RegisterController extends Controller
             'password' => ['required', 'string', 'min:8', 'confirmed'],
         ]);
     }
-
+    
+    public function showRegistrationForm()
+    {
+        $countrylist = Country::get(["name","id"]);
+        return view('auth.register', compact (['countrylist']));
+    }
     /**
      * Create a new user instance after a valid registration.
      *
@@ -64,10 +73,13 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
+        
         return User::create([
             'name' => $data['name'],
             'email' => $data['email'],
+            'country_id' => $data['country'],
             'password' => Hash::make($data['password']),
         ]);
+
     }
 }
