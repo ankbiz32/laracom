@@ -665,11 +665,12 @@
                         }}
                     ]'>
 
+                        @foreach ($products as $product)
                             <div class="product-item">
                                 <div class="single-product">
                                     <div class="product-img">
                                         <a href="#">
-                                            <img src="assets/images/product/medium-size/b1.png" style="width:100%; height:340px; -o-object-fit:contain; object-fit:contain;" alt="Product Image">
+                                            <img src="{{ $product->image }}" style="width:100%; height:340px; -o-object-fit:contain; object-fit:contain;" alt="Product Image">
                                         </a>
                                         <span class="sticker">New</span>
                                         <span class="sticker-2"><small class="bg-warning pt-2 pb-1 text-dark px-2">16% OFF</small></span>
@@ -688,10 +689,10 @@
                                     </div>
                                     <div class="product-content">
                                         <div class="product-desc_info">
-                                            <h3 class="product-name"><a href="#">Gold charged rose water</a></h3>
+                                            <h3 class="product-name"><a href="#">{{ $product->name }}</a></h3>
                                             <div class="price-box">
                                                 <span class="old-price">₹599</span>
-                                                <span class="new-price">₹599</span>
+                                                <span class="new-price">₹{{ $product->price }}</span>
                                             </div>
                                             <div class="review-area d-flex justify-content-between align-items-center">
                                                 <div class="rating-box">
@@ -709,7 +710,8 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="product-item">
+                        @endforeach
+                            <!-- <div class="product-item">
                                 <div class="single-product">
                                     <div class="product-img">
                                         <a href="#">
@@ -838,7 +840,8 @@
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                            </div> -->
+
 
                         </div>
                     </div>

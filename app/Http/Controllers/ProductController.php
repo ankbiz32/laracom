@@ -35,6 +35,45 @@ class ProductController extends Controller
         return view('products.index',compact(['brands','categories','maxPrice','minPrice','products']));
     }
 
+    public function listProducts(Request $request)
+    {
+        if ($request->ajax()) {
+            $result=Product::all();
+            return Datatables::of($result)
+                ->addIndexColumn()
+                ->addColumn('check', '<input type="checkbox" class="rowSelector" data-id="{{ $id }}">')
+                ->addColumn('status', function($row){
+                    $btns = '
+                            <div class="custom-control custom-switch custom-switch-off-muted custom-switch-on-success">
+                                <input type="checkbox" data-id="'.$row->id.'" class="custom-control-input" id="customSwitch'.$row->id.'"
+                        ';
+
+                    if($row->is_active==1){
+                        $btns .= ' checked>';
+                    }
+                    else{
+                        $btns .= '>';
+                    }
+
+                    $btns .= '
+                                <label class="custom-control-label btn" for="customSwitch'.$row->id.'"></label>
+                            </div>
+                        ';
+                    return $btns;
+                })
+                ->addColumn('action', function($row){
+                    $btn = '
+                            <a href="'.route('product.editform',['id'=>$row->id]).'" class="btn btn-info m-1">EDIT</a>
+                            <a href="'.route('product.remove',['id'=>$row->id]).'" onclick="confirmation(event)" class="btn btn-danger m-1">REMOVE</a>
+                        ';
+                    return $btn;
+                })
+                ->rawColumns(['action', 'check', 'status'])
+                ->make(true);
+        }
+        return view('admin.product');
+    }
+
     public function getAttributeDetailsList(Request $request)
     {
         if($request->ajax())
@@ -68,7 +107,7 @@ class ProductController extends Controller
                $response = array("status"=>200,"msg"=>'success');
                echo json_encode($response, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
                exit;
-            } 
+            }
         }
     }
 
@@ -84,7 +123,7 @@ class ProductController extends Controller
                $response = array("status"=>200,"msg"=>'success');
                echo json_encode($response, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
                exit;
-            } 
+            }
         }
     }
 
@@ -293,7 +332,7 @@ class ProductController extends Controller
 
     public function editform($id)
     {
-        
+
         $product = Product::with('productImage','productAttribute')->findOrFail($id);
         //echo '<pre>';
         //print_r($product->toArray());
@@ -307,7 +346,7 @@ class ProductController extends Controller
 
         return view('admin.editproduct',compact('product','categories','tags','brands','attributes','attribute_details'));
     }
-    
+
     public function edit(Request $request,$id)
     {
         function array_diff_assoc_recursive($array1, $array2)
@@ -357,9 +396,9 @@ class ProductController extends Controller
         $product->full_descr=$request->get('full_descr');
         $product->meta_title=$request->get('meta_title');
         $product->meta_descr=$request->get('meta_descr');
-        
+
         $items1=array();
-        $items2=array(); 
+        $items2=array();
         if(!empty($product->productImage[0]['id'])){
             foreach($product->productImage as $k=>$v){
                 $items1[]=array('productImage_id'=>$v->id);
@@ -378,7 +417,7 @@ class ProductController extends Controller
                 $productImage =ProductImage::where('id',$v['productImage_id'])->delete();
             }
         }
-        
+
         //echo'<pre>';
         //print_r($items1);
         //print_r($items2);
@@ -386,7 +425,7 @@ class ProductController extends Controller
         //exit;
 
         $attribute1=array();
-        $attribute2=array(); 
+        $attribute2=array();
         if(!empty($product->productAttribute[0]['id'])){
             foreach($product->productAttribute as $k=>$v){
                 $attribute1[]=array('productAttribute_id'=>$v->id);
@@ -406,7 +445,7 @@ class ProductController extends Controller
             }
         }
 
-        
+
         if(request('has_discount'))
         {
             $product->has_discount=1;
@@ -423,7 +462,7 @@ class ProductController extends Controller
             $product->image=$imagepath;
         }else{
             $imagepath = $request->image->store('products','public');
-            $product->image=$imagepath;  
+            $product->image=$imagepath;
         }
 
         $product->update();
@@ -432,7 +471,7 @@ class ProductController extends Controller
 
         if(!empty($request->get('Attribute'))){
             foreach($request->get('Attribute') as $k){
-                
+
                 $did = $k['attri_id'];
                 //print_r($k);
                 //print_r($did);
@@ -453,7 +492,7 @@ class ProductController extends Controller
                 }
             }
         }
-        
+
 
         // Additional images are uploaded & saved in diff table
         if($request->hasfile('multi_img'))
@@ -512,14 +551,8 @@ class ProductController extends Controller
 
         $request->session()->flash('success', 'Products removed !');
         return response()->json(['success'=>'Product removed !']);
-    }        
-
-
-    public function listProducts()
-    {
-        $products = Product::orderBy('id')->get();
-        return view('admin.product', compact ('products'));
     }
+
 
 
     // FUNCTIONS FOR CATEGORIES DROPDOWN WITH PARENT NAME

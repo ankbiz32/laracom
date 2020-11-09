@@ -24,6 +24,22 @@
         -o-transform: scale(1.5); /* Opera */
         padding: 10px;
     }
+    .bulk-span{
+        position:absolute !important;
+        top:14px;
+        left:55%;
+        transform:translateX(-100%);
+        z-index:10 !important;
+    }
+    @media(max-width:780px){
+        .bulk-span{
+            position:relative !important;
+            top:25px;
+            left:24px;
+            transform:translateX(0);
+            z-index:10 !important;
+        }
+    }
 </style>
 @endsection
 
@@ -50,23 +66,22 @@
             <div class="container-fluid">
                 <div class="col-12">
                     <div class="row col mb-4">
-                        <span class="dropdown ml-auto">
-                            <a class="dropdown-toggle btn btn-secondary btn-bulk" style="display:none ;" data-toggle="dropdown" href="javascript:;" aria-expanded="false">
-                                 UPDATE SELECTED ORDERS STATUS<span class="caret"></span>
-                            </a>
-                            <div class="dropdown-menu" x-placement="bottom-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 40px, 0px);">
-                                <a class="dropdown-item" tabindex="-1" href="javascript:;" onclick="updateOrder('ORDERED')">ORDERED</a>
-                                <a class="dropdown-item" tabindex="-1" href="javascript:;" onclick="updateOrder('ACCEPTED')">ACCEPTED</a>
-                                <a class="dropdown-item" tabindex="-1" href="javascript:;" onclick="updateOrder('SHIPPED')">SHIPPED</a>
-                                <a class="dropdown-item" tabindex="-1" href="javascript:;" onclick="updateOrder('DELIVERED')">DELIVERED</a>
-                                <a class="dropdown-item" tabindex="-1" href="javascript:;" onclick="updateOrder('REJECTED')">REJECTED</a>
-                            </div>
-                        </span>
-                        <!-- <a href="{{ route('admin.addform') }}" class="btn btn-default btn-flat ml-auto">BULK ACTION</a> -->
                     </div>
                     <div class="card card-body">
                         <div class="table-responsive">
                         <table class="table table-hover yajra-datatable">
+                            <span class="dropdown ml-auto bulk-span">
+                                <a class="dropdown-toggle btn btn-default btn-bulk" style="display:none ;" data-toggle="dropdown" href="javascript:;" aria-expanded="false">
+                                    UPDATE SELECTED ORDERS STATUS<span class="caret"></span>
+                                </a>
+                                <div class="dropdown-menu" x-placement="bottom-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 40px, 0px);">
+                                    <a class="dropdown-item" tabindex="-1" href="javascript:;" onclick="updateOrder('ORDERED')">ORDERED</a>
+                                    <a class="dropdown-item" tabindex="-1" href="javascript:;" onclick="updateOrder('ACCEPTED')">ACCEPTED</a>
+                                    <a class="dropdown-item" tabindex="-1" href="javascript:;" onclick="updateOrder('SHIPPED')">SHIPPED</a>
+                                    <a class="dropdown-item" tabindex="-1" href="javascript:;" onclick="updateOrder('DELIVERED')">DELIVERED</a>
+                                    <a class="dropdown-item" tabindex="-1" href="javascript:;" onclick="updateOrder('REJECTED')">REJECTED</a>
+                                </div>
+                            </span>
                             <thead>
                             <tr>
                                 <th scope="col"><input type="checkbox" class="allSelector"></th>
@@ -144,116 +159,115 @@
 
 <script type="text/javascript">
 
-var items= new Array();
-$(function () {
+    var items= new Array();
+    $(function () {
 
-    var table = $('.yajra-datatable').DataTable({
-        processing: true,
-        serverSide: true,
-        ajax: "{{ route('admin.order') }}",
-        columns: [
-            // {data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: true, searchable: true},
-            {data: 'check', name: 'check', orderable: false, searchable: true},
-            {data: 'id', name: 'id', orderable: true, searchable: true},
-            {data: 'amount', name: 'amount', orderable: true, searchable: true},
-            {data: 'payment_type', name: 'payment_type', orderable: true, searchable: true},
-            {data: 'is_paid', name: 'is_paid',
-                render: function (data, type, full, meta) {
-                    if(data==1){
-                        var stat= '<span class="text-success">PAID</span>';
-                        return stat;
-                    }
-                    else{
-                        var stat= '<p class="text-warning">PENDING</p>';
-                        return stat;
-                    }
+        var table = $('.yajra-datatable').DataTable({
+            processing: true,
+            serverSide: true,
+            ajax: "{{ route('admin.order') }}",
+            columns: [
+                // {data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: true, searchable: true},
+                {data: 'check', name: 'check', orderable: false, searchable: true},
+                {data: 'id', name: 'id', orderable: true, searchable: true},
+                {data: 'amount', name: 'amount', orderable: true, searchable: true},
+                {data: 'payment_type', name: 'payment_type', orderable: true, searchable: true},
+                {data: 'is_paid', name: 'is_paid',
+                    render: function (data, type, full, meta) {
+                        if(data==1){
+                            var stat= '<span class="text-success">PAID</span>';
+                            return stat;
+                        }
+                        else{
+                            var stat= '<p class="text-warning">PENDING</p>';
+                            return stat;
+                        }
+                    },
+                orderable: true, searchable: true},
+                {data: 'order_status', name: 'order_status', orderable: true, searchable: true},
+                {
+                    data: 'created_at',
+                    name: 'created_at',
+                    render: function (data, type, full, meta) {
+                    var cdate= new Date(data);
+                    return cdate.getDate() + '-' + cdate.getMonth() + '-' + cdate.getFullYear();
+                    },
+                    orderable: true,
+                    searchable: true
                 },
-             orderable: true, searchable: true},
-            {data: 'order_status', name: 'order_status', orderable: true, searchable: true},
-            {
-                data: 'created_at',
-                name: 'created_at',
-                render: function (data, type, full, meta) {
-                   var cdate= new Date(data);
-                   return cdate.getDate() + '-' + cdate.getMonth() + '-' + cdate.getFullYear();
+                {
+                    data: 'action',
+                    name: 'action',
+                    orderable: true,
+                    searchable: true
                 },
-                orderable: true,
-                searchable: true
-            },
-            {
-                data: 'action',
-                name: 'action',
-                orderable: true,
-                searchable: true
-            },
-        ],
-        order: [[ 1, 'desc' ]]
-    });
-
-    // All select/deselect button
-    $(document).on('click', '.allSelector', function() {
-        if ($(this).is(':checked')) {
-            $('.rowSelector').prop( "checked", true );
-            getSelected();
-        }
-        else{
-            $('.rowSelector').prop( "checked", false );
-            getSelected();
-        }
-    });
-
-    // Individual select/deselect button
-    $(document).on('click', '.rowSelector', function() {
-        getSelected();
-    });
-
-    function getSelected(){
-        items= [];
-        $("input:checkbox[class=rowSelector]:checked").each(function () {
-            val= $(this).data("id");
-            items.push(val);
+            ],
+            order: [[ 1, 'desc' ]]
         });
-        if(items.length==0){
-            $('.btn-bulk').hide();
-        }
-        else{
-            $('.btn-bulk').show();
-        }
-    }
 
-
-
-    $('#editOrderModal').on('show.bs.modal', function (event) {
-        var button = $(event.relatedTarget);
-        var id = button.data('id');
-        var modal = $(this);
-        modal.find('.modal-body input[name="id"]').val(id);
-    })
-
-});
-
-function updateOrder(stat){
-    notie.confirm({ text: 'Change status to '+stat+' ?' }, function() {
-        $.ajax({
-            type: 'post',
-            url: "{{ route('admin.updateorderbulk') }}",
-            data:{
-                "_token": "{{ csrf_token() }}",
-                ids:JSON.stringify(items),
-                stat:stat,
-            },
-            success:function(response){
-                location.reload(true);
-            },
-            error: function(){
-                notie.alert({
-                    text: "Server error !" ,
-                    type: 'error'
-                })
+        // All select/deselect button
+        $(document).on('click', '.allSelector', function() {
+            if ($(this).is(':checked')) {
+                $('.rowSelector').prop( "checked", true );
+                getSelected();
+            }
+            else{
+                $('.rowSelector').prop( "checked", false );
+                getSelected();
             }
         });
+
+        // Individual select/deselect button
+        $(document).on('click', '.rowSelector', function() {
+            getSelected();
+        });
+
+        function getSelected(){
+            items= [];
+            $("input:checkbox[class=rowSelector]:checked").each(function () {
+                val= $(this).data("id");
+                items.push(val);
+            });
+
+            if(items.length==0){
+                $('.btn-bulk').hide();
+            }
+            else{
+                $('.btn-bulk').show();
+            }
+        }
+
+        $('#editOrderModal').on('show.bs.modal', function (event) {
+            var button = $(event.relatedTarget);
+            var id = button.data('id');
+            var modal = $(this);
+            modal.find('.modal-body input[name="id"]').val(id);
+        })
+
     });
-}
+
+    function updateOrder(stat){
+        notie.confirm({ text: 'Change status to '+stat+' ?' }, function() {
+            $.ajax({
+                type: 'post',
+                url: "{{ route('admin.updateorderbulk') }}",
+                data:{
+                    "_token": "{{ csrf_token() }}",
+                    ids:JSON.stringify(items),
+                    stat:stat,
+                },
+                success:function(response){
+                    location.reload(true);
+                },
+                error: function(){
+                    notie.alert({
+                        text: "Server error !" ,
+                        type: 'error'
+                    })
+                }
+            });
+        });
+    }
 
 </script>
 

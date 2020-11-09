@@ -18,6 +18,22 @@
         -o-transform: scale(1.5); /* Opera */
         padding: 10px;
     }
+    .bulk-span{
+        position:absolute !important;
+        top:15px;
+        left:50%;
+        transform:translateX(-100%);
+        z-index:10 !important;
+    }
+    @media(max-width:780px){
+        .bulk-span{
+            position:relative !important;
+            top:0px;
+            left:80px;
+            transform:translateX(0);
+            z-index:10 !important;
+        }
+    }
 </style>
 @endsection
 
@@ -45,27 +61,28 @@
             <div class="container-fluid">
                 <div class="col-12">
                     <div class="row col mb-4">
-                        <span class="dropdown ml-auto">
-                            <a class="dropdown-toggle btn btn-secondary btn-bulk" style="display: none;" data-toggle="dropdown" href="javascript:;" aria-expanded="false">
-                                 BULK ACTION<span class="caret"></span>
-                            </a>
-                            <div class="dropdown-menu" x-placement="bottom-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 40px, 0px);">
-                                <span class="dropdown-item text-secondary bg-light">SELECT ROLE:</span>
-                                <a class="dropdown-item" tabindex="-1" href="javascript:;" onclick="updateRole('Customer')">Customer</a>
-                                <a class="dropdown-item" tabindex="-1" href="javascript:;" onclick="updateRole('INVENTORY_MANAGER')">Inventory Manager</a>
-                                <a class="dropdown-item" tabindex="-1" href="javascript:;" onclick="updateRole('SALES_MANAGER')">Sales Manager</a>
-                                <a class="dropdown-item" tabindex="-1" href="javascript:;" onclick="updateRole('Admin')">Admin</a>
-                                <div class="dropdown-divider"></div>
-                                <span class="dropdown-item text-secondary bg-light mt-3">SELECT STATUS:</span>
-                                <a class="dropdown-item" tabindex="-1" href="javascript:;" onclick="changeStatus(1)">Activate User</a>
-                                <a class="dropdown-item" tabindex="-1" href="javascript:;" onclick="changeStatus(0)">Deactivate User</a>
-                            </div>
-                        </span>
                         <!-- <a href="{{ route('admin.addform') }}" class="btn btn-default btn-flat ml-auto">BULK ACTION</a> -->
                     </div>
                     <div class="card card-body">
                         <div class="table-responsive">
-                        <table class="table table-hover yajra-datatable">
+                        <table class="table table-hover yajra-datatable" style="position:relative">
+                            <span class="dropdown ml-auto bulk-span">
+                                <a class="dropdown-toggle btn btn-default btn-bulk" style="display: none;" data-toggle="dropdown" href="javascript:;" aria-expanded="false">
+                                    BULK ACTION<span class="caret"></span>
+                                </a>
+                                <div class="dropdown-menu" x-placement="bottom-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 40px, 0px);">
+                                    <span class="dropdown-item text-secondary bg-light">CHANGE ROLE:</span>
+                                    <a class="dropdown-item" tabindex="-1" href="javascript:;" onclick="updateRole('Customer')">Customer</a>
+                                    <a class="dropdown-item" tabindex="-1" href="javascript:;" onclick="updateRole('INVENTORY_MANAGER')">Inventory Manager</a>
+                                    <a class="dropdown-item" tabindex="-1" href="javascript:;" onclick="updateRole('SALES_MANAGER')">Sales Manager</a>
+                                    <a class="dropdown-item" tabindex="-1" href="javascript:;" onclick="updateRole('Admin')">Admin</a>
+                                    <div class="dropdown-divider"></div>
+                                    <span class="dropdown-item text-secondary bg-light mt-3">CHANGE STATUS:</span>
+                                    <a class="dropdown-item" tabindex="-1" href="javascript:;" onclick="changeStatus(1)">Activate User</a>
+                                    <a class="dropdown-item" tabindex="-1" href="javascript:;" onclick="changeStatus(0)">Deactivate User</a>
+                                </div>
+                            </span>
+
                             <thead>
                             <tr>
                                 <th scope="col"><input type="checkbox" class="allSelector"></th>
