@@ -182,17 +182,6 @@ $(function () {
         order: [[ 0, 'desc' ]]
     });
 
-     // Change product status on switching switch button
-     $(document).on('change', 'input[type="checkbox"]', function() {
-            var id=$(this).data('id');
-            if(this.checked){
-                console.log('Id: '+id+' Checked')
-            }
-            else{
-                console.log('Id: '+id+' Un-hecked')
-            }
-        });
-
     $('#editTagModal').on('show.bs.modal', function (event) {
         var button = $(event.relatedTarget);
         var id = button.data('id');

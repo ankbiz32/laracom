@@ -29,7 +29,7 @@ use App\AttributeDetail;
             width: 100px;
             height: 100px;
             margin: 10px;
-            border: 1px solid black;
+            border: 1px solid #ddd;
         }
         .ahead{
             margin-top: -80px;
@@ -214,7 +214,7 @@ use App\AttributeDetail;
                                                                 <ul>
                                                                     <li class="productImage_row_{{$k}}" style="float:left;list-style-type:none;">
                                                                         <input type ="hidden" id="productImage_id_{{$k}}" name ="Product[{{$k}}][productImage_id]" value ="{{$v->id}}">
-                                                                        <img src="{{ asset($v->img_src) }}" width="100" alt="" class="head"/>
+                                                                        <img src="{{ asset($v->img_src) }}" width="100" style="object-fit:contain" alt="" class="head"/>
                                                                         <a href="javascript:void(0);" class="btn btn-danger btn-sm ahead" onclick="removeOption('productImage_row_{{$k}}','{{$v->id}}');"><i class="fa fa-times"></i></a>
                                                                     </li>
                                                                 </ul>
@@ -497,30 +497,9 @@ use App\AttributeDetail;
 
         function removeAttributeDiv(divId,prdId){
             //alert(divId+''+prdId);
-            var r = confirm("Are you sure?");
-            if(r){
-                /*if(prdId==''){
-                $("."+divId+"").remove();
-                }else{
-                $.ajax({
-                type: "GET",
-                url: "{{ route('product.getProductAttributeDeleted') }}",
-                contentType: "application/json",
-                dataType: "json",
-                data:{
-                "attribute_id":prdId
-                },
-                cache: false,
-                success: function(resp) {
-                // alert(JSON.stringify(resp));
-                if(resp.status == '200'){
-                $("."+divId+"").remove();
-                }
-                }
-                });
-                }*/
+            notie.confirm({ text: 'Are you sure?' }, function() {
                 $("."+divId).remove();
-            }
+            })
         }
 
         $(document).on("change keyup",".attribute_id",function(){
@@ -569,26 +548,9 @@ use App\AttributeDetail;
 
         function removeOption(rowId,dId){
             //alert(rowId+''+dId);
-            var y = confirm("Are you sure?");
-            if(y){
-                /*$.ajax({
-                type: "GET",
-                url: "{{ route('product.getProductImageDeleted') }}",
-                contentType: "application/json",
-                dataType: "json",
-                data:{
-                    "productImage_id":dId
-                },
-                cache: false,
-                success: function(resp) {
-                // alert(JSON.stringify(resp));
-                    if(resp.status == '200'){
-                        $("."+rowId+"").remove();
-                    }
-                }
-                });*/
+            notie.confirm({ text: 'Are you sure?' }, function() {
                 $("."+rowId+"").remove();
-            }
+            })
         }
     </script>
 @endsection

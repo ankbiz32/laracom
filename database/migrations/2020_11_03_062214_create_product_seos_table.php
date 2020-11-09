@@ -16,7 +16,7 @@ class CreateProductSeosTable extends Migration
         Schema::create('product_seos', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->bigInteger('product_id')->unsigned()->nullable();
-            $table->string('title');
+            $table->string('title')->nullable();
             $table->text('description')->nullable();
             $table->boolean('status')->default(0);
             $table->timestamps();

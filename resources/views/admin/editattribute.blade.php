@@ -103,9 +103,7 @@
     }
 
     function removeOption(rowId,dId){
-        //alert(rowId+''+dId);
-        var y = confirm("Are you sure?");
-        if(y){
+        notie.confirm({ text: 'Are you sure?' }, function() {
             if(dId==''){
                 $("."+rowId+"").remove();
             }else{
@@ -126,9 +124,7 @@
                 }
                 });
             }
-
-
-        }
+        })
     }
     </script>
 
