@@ -453,7 +453,7 @@
                         <span class="ammount">₹1897</span>
                     </div>
                     <div class="minicart-btn_area">
-                        <a href="#" class="quicky-btn-outline btn-block text-center quicky-btn_fullwidth square-btn">View Cart</a>
+                        <a href="{{route('cart.index')}}" class="quicky-btn-outline btn-block text-center quicky-btn_fullwidth square-btn">View Cart</a>
                     </div>
                     <div class="minicart-btn_area">
                         <a href="#" class="quicky-btn btn-block text-center quicky-btn_fullwidth square-btn">Checkout</a>
@@ -676,13 +676,13 @@
                                         <span class="sticker-2"><small class="bg-warning pt-2 pb-1 text-dark px-2">16% OFF</small></span>
                                         <div class="add-actions">
                                             <ul>
-                                                <li class="quick-view-btn" data-toggle="modal" data-target="#exampleModalCenter"><a href="javascript:void(0)" data-toggle="tooltip" data-placement="top" title="Quick View"><i
+                                                <li class="quick-view-btn" data-id="{{encrypt($product->id)}}"><a href="javascript:void(0)" data-toggle="tooltip" data-placement="top" title="Quick View"><i
                                                         class="icon-magnifier"></i></a>
                                                 </li>
                                                 <li><a href="#" data-toggle="tooltip" data-placement="top" title="Add To Wishlist"><i class="icon-heart"></i></a>
                                                 </li>
 
-                                                <li><a href="#" data-toggle="tooltip" data-placement="top" title="Add To cart"><i class="icon-bag"></i></a>
+                                                <li><a href="{{ route('cart.add',['product'=>$product->id]) }}" data-toggle="tooltip" data-placement="top" title="Add To cart"><i class="icon-bag"></i></a>
                                                 </li>
                                             </ul>
                                         </div>
@@ -1443,7 +1443,7 @@
         <!-- Footer Area End Here -->
 
         <!-- Begin Modal Area -->
-        <div class="modal fade modal-wrapper" id="exampleModalCenter">
+        <div class="modal fade modal-wrapper" id="quickViewModal">
             <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
                     <div class="modal-body">
@@ -1657,6 +1657,32 @@
 
     <!-- Main JS -->
     <script src="assets/js/main.js"></script>
+
+    <script>
+        $(document).on("click", ".quick-view-btn", function(){
+            var id=$(this).data('id');
+            $('#quickViewModal .modal-body').html(id);
+            $('#quickViewModal').modal('show');
+            $.ajax({
+                url: 'product/quickView',
+                type:'post',
+                data: {
+                    "_token": "{{ csrf_token() }}",
+                    id: id
+                },
+                beforeSend : function(){
+                    $('#quickViewModal .modal-body').html('<div class="d-flex justify-content-center align-items-center">Loading...</div>');
+                    $('#quickViewModal').modal('show');
+                },
+                success: function(e){
+                    $('#quickViewModal .modal-body').html(e);
+                },
+                error: function(response){
+                    $('#quickViewModal .modal-body').html('<h4>Server error !</h4>');
+                }
+            });
+        });
+    </script>
 
 </body>
 

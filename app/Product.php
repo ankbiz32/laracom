@@ -2,6 +2,7 @@
 
 namespace App;
 use App\Stock;
+use App\Brand;
 use App\ProductAttribute;
 use App\ProductImage;
 use App\ProductDescription;
@@ -13,6 +14,10 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Product extends Model
 {
+    public function Brand(){
+        return $this->belongsTo(Brand::class, 'brand_id');
+    }
+
     public function productAttribute(){
         return $this->hasMany(ProductAttribute::class, 'product_id');
     }
@@ -22,18 +27,18 @@ class Product extends Model
     }
 
     public function ProductDescription(){
-        return $this->hasMany(ProductDescription::class, 'product_id');
+        return $this->hasOne(ProductDescription::class, 'product_id');
     }
 
     public function ProductInventory(){
-        return $this->hasMany(ProductInventory::class, 'product_id');
+        return $this->hasOne(ProductInventory::class, 'product_id');
     }
 
     public function ProductDiscount(){
-        return $this->hasMany(ProductDiscount::class, 'product_id');
+        return $this->hasOne(ProductDiscount::class, 'product_id');
     }
 
     public function ProductSeo(){
-        return $this->hasMany(ProductSeo::class, 'product_id');
+        return $this->hasOne(ProductSeo::class, 'product_id');
     }
 }

@@ -196,6 +196,41 @@ class ProductController extends Controller
         return view('products.show', compact ('product'));
     }
 
+    public function quickView(Request $request)
+    {
+        // dd(decrypt($request->id));
+        if ($request->ajax()) {
+            $response = array();
+            $id=decrypt($request->id);
+            $result=Product::with('productImage')->findOrFail($id);
+            $response['prod'] = $result;
+            $response['images'] = $result->productImage;
+            $response['descr'] = $result->ProductDescription;
+            $response['disc'] = $result->ProductDiscount;
+            $response['attr'] = $result->productAttribute;
+            $response['inventory'] = $result->ProductInventory;
+            $response['brand'] = $result->Brand;
+            return $response;
+            // $btns = '
+            //         <div class="custom-control custom-switch custom-switch-off-muted custom-switch-on-success">
+            //             <input type="checkbox" data-id="'.$row->id.'" class="custom-control-input" id="customSwitch'.$row->id.'"
+            //     ';
+
+            // if($row->is_active==1){
+            //     $btns .= ' checked>';
+            // }
+            // else{
+            //     $btns .= '>';
+            // }
+
+            // $btns .= '
+            //             <label class="custom-control-label btn" for="customSwitch'.$row->id.'"></label>
+            //         </div>
+            //     ';
+            // return $btns;
+        }
+    }
+
     public function form()
     {
         $cats = new Category;

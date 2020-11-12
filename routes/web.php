@@ -19,11 +19,13 @@ Route::post('/susbcribe', 'NewsletterController@add')->name('newsletter.add');
 Route::get('/dashboard', 'AdminController@index')->name('admin.index')->middleware(['auth','admin']);
 Route::patch('/dashboard', 'AdminController@updatereminder')->name('admin.reminder')->middleware(['auth','admin']);
 
+/*-- Admin Order --*/
 Route::get('/order', 'AdminController@order')->name('admin.order')->middleware(['auth','admin']);
 Route::post('/order', 'AdminController@update_order')->name('admin.updateorder')->middleware(['auth','admin']);
 Route::post('/order/bulkupdate', 'AdminController@update_order_bulk')->name('admin.updateorderbulk')->middleware(['auth','admin']);
 Route::get('/order/{id}', 'AdminController@show_order')->name('admin.showorder')->middleware(['auth','admin']);
 
+/*-- Admin Users --*/
 Route::get('/users', 'AdminController@user')->name('admin.user')->middleware(['auth','admin']);
 Route::post('/users/status', 'AdminController@userStatus')->name('user.status')->middleware(['auth','admin']);
 Route::post('/users/bulk-status', 'AdminController@userBulkStatus')->name('user.bulkStatus')->middleware(['auth','admin']);
@@ -63,6 +65,7 @@ Route::get('/product/getAttributeDetailsList','ProductController@getAttributeDet
 Route::get('/product/getProductImageDeleted','ProductController@getProductImageDeleted')->name('product.getProductImageDeleted');
 Route::get('/product/getProductAttributeDeleted','ProductController@getProductAttributeDeleted')->name('product.getProductAttributeDeleted');
 
+Route::post('/product/quickView', 'ProductController@quickView')->name('product.quickView');
 Route::get('/product/{product}','ProductController@show')->name('product.show');
 
 /*--Attribute--*/
