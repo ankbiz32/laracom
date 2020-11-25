@@ -210,24 +210,8 @@ class ProductController extends Controller
             $response['attr'] = $result->productAttribute;
             $response['inventory'] = $result->ProductInventory;
             $response['brand'] = $result->Brand;
+
             return $response;
-            // $btns = '
-            //         <div class="custom-control custom-switch custom-switch-off-muted custom-switch-on-success">
-            //             <input type="checkbox" data-id="'.$row->id.'" class="custom-control-input" id="customSwitch'.$row->id.'"
-            //     ';
-
-            // if($row->is_active==1){
-            //     $btns .= ' checked>';
-            // }
-            // else{
-            //     $btns .= '>';
-            // }
-
-            // $btns .= '
-            //             <label class="custom-control-label btn" for="customSwitch'.$row->id.'"></label>
-            //         </div>
-            //     ';
-            // return $btns;
         }
     }
 

@@ -4,7 +4,9 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <title>Bhukyra Agro Pvt. Ltd | Legacy Committed to excellence</title>
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <title>{{ config('app.name', 'Laravel') }}</title>
+    <!-- <title>Bhukyra Agro Pvt. Ltd | Legacy Committed to excellence</title> -->
     <meta name="robots" content="noindex, follow" />
     <meta name="description" content='The word "Bhukyra" is a compound name derived from "Bhu" (Earth, Land, Soil) and "Kyra" (Sun). The fundamental concept of Bhukyra is to maintain health. Bhukyra is aimed at keeping a person healthy, not curing them of disease.'>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -1461,43 +1463,32 @@
                                     "swipe": false,
                                     "asNavFor": ".sp-img_slider-nav"
                                     }'>
-                                        <div class="single-slide red">
-                                            <img src="assets/images/product/large-size/b1.png" style="width:100%; height: 360px; -o-object-fit: contain; object-fit: contain;" alt="Quicky's Product Image">
+                                        <div class="single-slide">
+                                            <img src="assets/images/product/large-size/b1.png" style="width:100%; height: 360px; -o-object-fit: contain; object-fit: contain;" alt="Product Image">
                                         </div>
-                                        <div class="single-slide orange">
-                                            <img src="assets/images/product/large-size/b2.png" style="width:100%; height: 360px; -o-object-fit: contain; object-fit: contain;" alt="Quicky's Product Image">
-                                        </div>
-                                        <div class="single-slide brown">
-                                            <img src="assets/images/product/large-size/b3.png" style="width:100%; height: 360px; -o-object-fit: contain; object-fit: contain;" alt="Quicky's Product Image">
-                                        </div>
-                                        <div class="single-slide umber">
-                                            <img src="assets/images/product/large-size/b4.png" style="width:100%; height: 360px; -o-object-fit: contain; object-fit: contain;" alt="Quicky's Product Image">
+                                        <div class="single-slide">
+                                            <img src="assets/images/product/large-size/b2.png" style="width:100%; height: 360px; -o-object-fit: contain; object-fit: contain;" alt="Product Image">
                                         </div>
                                     </div>
+
                                     <div class="quicky-element-carousel sp-img_slider-nav arrow-style arrow-sm_size arrow-day_color" data-slick-options='{
-                                   "slidesToShow": 3,
-                                    "asNavFor": ".sp-img_slider",
-                                   "focusOnSelect": true,
-                                   "arrows" : true,
-                                   "spaceBetween": 30
-                                  }' data-slick-responsive='[
-                                    {"breakpoint":1501, "settings": {"slidesToShow": 3}},
-                                    {"breakpoint":1200, "settings": {"slidesToShow": 2}},
-                                    {"breakpoint":992, "settings": {"slidesToShow": 3}},
-                                    {"breakpoint":768, "settings": {"slidesToShow": 3}},
-                                    {"breakpoint":575, "settings": {"slidesToShow": 2}}
-                                ]'>
-                                        <div class="single-slide red">
-                                            <img src="assets/images/product/large-size/b1.png" style="width:100%; height: 60px; -o-object-fit: contain; object-fit: contain;" alt="Quicky's Product Thumnail">
+                                    "slidesToShow": 3,
+                                        "asNavFor": ".sp-img_slider",
+                                    "focusOnSelect": true,
+                                    "arrows" : true,
+                                    "spaceBetween": 30
+                                    }' data-slick-responsive='[
+                                        {"breakpoint":1501, "settings": {"slidesToShow": 3}},
+                                        {"breakpoint":1200, "settings": {"slidesToShow": 2}},
+                                        {"breakpoint":992, "settings": {"slidesToShow": 3}},
+                                        {"breakpoint":768, "settings": {"slidesToShow": 3}},
+                                        {"breakpoint":575, "settings": {"slidesToShow": 2}}
+                                    ]'>
+                                        <div class="single-slide">
+                                            <img src="assets/images/product/large-size/b1.png" style="width:100%; height: 60px; -o-object-fit: contain; object-fit: contain;" alt="Product Thumnail">
                                         </div>
-                                        <div class="single-slide orange">
-                                            <img src="assets/images/product/large-size/b2.png" style="width:100%; height: 60px; -o-object-fit: contain; object-fit: contain;" alt="Quicky's Product Thumnail">
-                                        </div>
-                                        <div class="single-slide brown">
-                                            <img src="assets/images/product/large-size/b3.png" style="width:100%; height: 60px; -o-object-fit: contain; object-fit: contain;" alt="Quicky's Product Thumnail">
-                                        </div>
-                                        <div class="single-slide umber">
-                                            <img src="assets/images/product/large-size/b4.png" style="width:100%; height: 60px; -o-object-fit: contain; object-fit: contain;" alt="Quicky's Product Thumnail">
+                                        <div class="single-slide">
+                                            <img src="assets/images/product/large-size/b2.png" style="width:100%; height: 60px; -o-object-fit: contain; object-fit: contain;" alt="Product Thumnail">
                                         </div>
                                     </div>
                                 </div>
@@ -1517,16 +1508,15 @@
                                         </ul>
                                     </div>
                                     <div class="price-box">
-                                        <span class="new-price new-price-2 ml-0">₹299</span>
-                                        <span class="old-price">₹349</span>
+                                        <span class="new-price new-price-2 ml-0"></span>
+                                        &nbsp;
+                                        <span class="old-price"></span>
                                     </div>
                                     <div class="sp-essential_stuff">
                                         <ul>
-                                            <li>Brands <a href="javascript:void(0)">Bhukyra</a></li>
-                                            <li>Product Code: <a href="javascript:void(0)">Product 16</a></li>
-                                            <li>Reward Points: <a href="javascript:void(0)">100</a></li>
-                                            <li>Availability: <a href="javascript:void(0)">In Stock</a></li>
-                                            <li>Price in reward points: <a href="javascript:void(0)">400</a></li>
+                                            <li class="brand-name">Brands <a href="javascript:void(0)"></a></li>
+                                            <li class="sku">Product Code: <a href="javascript:void(0)"></a></li>
+                                            <li class="in-stock">Availability: <a href="javascript:void(0)">In Stock</a></li>
                                         </ul>
                                     </div>
                                     <!-- <div class="color-list_area">
@@ -1661,8 +1651,6 @@
     <script>
         $(document).on("click", ".quick-view-btn", function(){
             var id=$(this).data('id');
-            $('#quickViewModal .modal-body').html(id);
-            $('#quickViewModal').modal('show');
             $.ajax({
                 url: 'product/quickView',
                 type:'post',
@@ -1671,14 +1659,54 @@
                     id: id
                 },
                 beforeSend : function(){
-                    $('#quickViewModal .modal-body').html('<div class="d-flex justify-content-center align-items-center">Loading...</div>');
-                    $('#quickViewModal').modal('show');
+                    // $('#quickViewModal').modal('show');
                 },
                 success: function(e){
-                    $('#quickViewModal .modal-body').html(e);
+                    $('#quickViewModal').modal('show');
+                    $('#quickViewModal .modal-content .sp-heading h5 a').html(e.prod.name);
+                    if(e.disc.has_discount==1){
+                        if(e.disc.type=='FLAT'){
+                            $('#quickViewModal .modal-content .price-box .new-price').html('₹'+e.disc.rate);
+                            $('#quickViewModal .modal-content .price-box .old-price').html('₹'+e.prod.price);
+                        }else{
+                            var new_price= ((100 - e.disc.rate) / 100 ) * e.prod.price;
+                            $('#quickViewModal .modal-content .price-box .new-price').html('₹'+Math.ceil(new_price));
+                            $('#quickViewModal .modal-content .price-box .old-price').html('₹'+e.prod.price);
+                        }
+                    }
+                    else{
+                        $('#quickViewModal .modal-content .price-box .new-price').html('₹'+e.prod.price);
+                        $('#quickViewModal .modal-content .price-box .old-price').html('');
+                    }
+                    $('#quickViewModal .modal-content .sp-essential_stuff li.brand-name a').html(e.brand.name);
+                    $('#quickViewModal .modal-content .sp-essential_stuff li.sku a').html(e.inventory.sku);
+                    if(e.inventory.in_stock==1){
+                        $('#quickViewModal .modal-content .sp-essential_stuff li.in-stock a').html('In stock');
+                    }else{
+                        $('#quickViewModal .modal-content .sp-essential_stuff li.in-stock a').html('Out of stock');
+                    }
+                    var tags=JSON.parse(e.prod.tags);
+                    var j = '';
+                    tags.forEach(function (tag){
+                        j += ' <a href="javascript:void(0)"> '+tag+' </a> &nbsp;';
+                    })
+                    $('#quickViewModal .modal-content .quicky-tag-line').html(j);
+
+                    j = '<div class="single-slide red"><img src="'+e.prod.image+'" style="width:100%; height: 360px; -o-object-fit: contain; object-fit: contain;" alt=" Product Image"></div>';
+                    e.images.forEach(function (img){
+                        j += '<div class="single-slide red"><img src="'+img.img_src+'" style="width:100%; height: 360px; -o-object-fit: contain; object-fit: contain;" alt="Product Thumnail"></div>';
+                    })
+                    $('#quickViewModal .sp-img_slider').html(j);
+                    $("#quickViewModal .sp-img_slider").slick();
+
+                    j = '<div class="single-slide red"><img src="'+e.prod.image+'" style="width:100%; height: 60px; -o-object-fit: contain; object-fit: contain;" alt=" Product Image"></div>';
+                    e.images.forEach(function (img){
+                        j += '<div class="single-slide red"><img src="'+img.img_src+'" style="width:100%; height: 60px; -o-object-fit: contain; object-fit: contain;" alt="Product Thumnail"></div>';
+                    })
+                    $('#quickViewModal .sp-img_slider-nav').html(j);
                 },
                 error: function(response){
-                    $('#quickViewModal .modal-body').html('<h4>Server error !</h4>');
+                    $('#quickViewModal .modal-content').html('<div class="modal-body"><h4>Server error !</h4></div>');
                 }
             });
         });
