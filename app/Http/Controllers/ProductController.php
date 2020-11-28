@@ -193,7 +193,15 @@ class ProductController extends Controller
 
     public function show(Product $product)
     {
-        return view('products.show', compact ('product'));
+        $data['main'] = $product;
+        $data['images'] = $product->productImage;
+        $data['descr'] = $product->ProductDescription;
+        $data['disc'] = $product->ProductDiscount;
+        $data['attr'] = $product->productAttribute;
+        $data['inventory'] = $product->ProductInventory;
+        $data['brand'] = $product->Brand;
+        $categories = Category::where('parent_id', '=', 0)->get();
+        return view('products.show', compact ('data','categories'));
     }
 
     public function quickView(Request $request)
