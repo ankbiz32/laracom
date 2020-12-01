@@ -1,3 +1,4 @@
+
 <!doctype html>
 <html class="no-js" lang="en">
 
@@ -71,18 +72,20 @@
                                             <li class="megamenu-holder position-static"><a href="javascript:void(0)">Shop <small><small><i class="icon-arrow-down"></i></small></small></a>
                                                 <div class="quicky-megamenu_wrap">
                                                     <ul class="quicky-megamenu">
-                                                    @foreach($categories as $c)
-                                                        <li>
-                                                            <span class="megamenu-title">{{$c->name}}</span>
-                                                            @if(count($c->childs))
-                                                                <ul>
-                                                                @foreach($c->childs as $ch)
-                                                                    <li><a href="#">› {{$ch->name}}</a></li>
-                                                                @endforeach
-                                                                </ul>
-                                                            @endif
-                                                        </li>
-                                                    @endforeach
+                                                    @isset($categories)
+                                                        @foreach($categories as $c)
+                                                            <li>
+                                                                <span class="megamenu-title">{{$c->name}}</span>
+                                                                @if(count($c->childs))
+                                                                    <ul>
+                                                                    @foreach($c->childs as $ch)
+                                                                        <li><a href="#">› {{$ch->name}}</a></li>
+                                                                    @endforeach
+                                                                    </ul>
+                                                                @endif
+                                                            </li>
+                                                        @endforeach
+                                                    @endisset
                                                     </ul>
                                                     <div class="main-menu_bg">
                                                         <img src="{{URL::to('/')}}/assets/images/menu/bg/1.jpg" alt="Main Menu Images">
@@ -514,11 +517,6 @@
                                         <li class="twitter">
                                             <a href="#" data-toggle="tooltip" target="_blank" title="Twitter">
                                                 <i class="icon-social-twitter"></i>
-                                            </a>
-                                        </li>
-                                        <li class="google-plus">
-                                            <a href="javascript:void(0)" data-toggle="tooltip" target="_blank" title="Google Plus">
-                                                <i class="icon-social-skype"></i>
                                             </a>
                                         </li>
                                         <li class="instagram">

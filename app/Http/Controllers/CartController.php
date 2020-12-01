@@ -12,12 +12,16 @@ class CartController extends Controller
     public function add(Request $request, $id)
     {
         $product = Product::find($id);
-        $oldCart = Session::has('cart') ? Session::get('cart') : null;
-        $cart = new Cart($oldCart);
-        $cart->add($product,$product->id);
-        //dd($cart);
-        $request->session()->put('cart',$cart);
-        return redirect()->route('cart.index');
+        if($product){
+            $oldCart = Session::has('cart') ? Session::get('cart') : null;
+            $cart = new Cart($oldCart);
+            $cart->add($product,$product->id);
+            $request->session()->put('cart',$cart);
+            return redirect()->route('cart.index');
+        }
+        else{
+            return redirect()->route('cart.index');
+        }
     }
 
     public function remove($id)
@@ -25,7 +29,6 @@ class CartController extends Controller
         $oldCart = Session::has('cart') ? Session::get('cart') : null;
         $cart = new Cart($oldCart);
         $cart->remove($id);
-        //dd($cart);
         Session::put('cart',$cart);
         if($cart->totalQuantity<=0){
             Session::forget('cart');
@@ -35,6 +38,7 @@ class CartController extends Controller
 
     public function index()
     {
+        dd(Session::get('cart'));
         if(!Session::has('cart')){
             return view('cart.index',['products'=>null]);
         }
@@ -43,6 +47,7 @@ class CartController extends Controller
         $products = $cart->items;
         $totalPrice = $cart->totalPrice;
         $totalQuantity= $cart->totalQuantity;
+        // dd($products);
         return view('cart.index', compact ('products','totalPrice','totalQuantity'));
     }
 }

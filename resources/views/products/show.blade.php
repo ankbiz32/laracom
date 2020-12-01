@@ -54,6 +54,7 @@
                         <div class="sp-content ml-lg-4">
                             <div class="sp-heading">
                                 <h4 class="h4">{{$data['main']->name}}</h4>
+                                <p class="h6 my-3">{{ $data['main']->short_descr }}</p>
                             </div>
                             <div class="rating-box">
                                 <ul>
@@ -72,7 +73,7 @@
                                     <!-- <li>EX Tax: <a href="javascript:void(0)"><span>$453.35</span></a></li> -->
                                 </ul>
                             </div>
-                            <div class="product-size_box">
+                            <!-- <div class="product-size_box">
                                 <span>Size</span>
                                 <select class="myniceselect nice-select">
                                     <option value="1">S</option>
@@ -88,7 +89,7 @@
                                     <div class="dec qtybutton"><i class="zmdi zmdi-chevron-down"></i></div>
                                     <div class="inc qtybutton"><i class="zmdi zmdi-chevron-up"></i></div>
                                 </div>
-                            </div>
+                            </div> -->
                             <div class="qty-btn_area">
                                 <ul>
                                     <li><a href="{{ route('cart.add',['product'=>$data['main']->id]) }}" class="quicky-btn btn-block text-center quicky-btn_fullwidth square-btn">Add to cart</a></li>
@@ -246,32 +247,19 @@
                             "slidesToShow": 2
                             }}
                         ]'>
+                            @foreach($data['brands'] as $b)
+                            <div class="brand-item">
+                                <a href="javascript:void(0)">
+                                    <img src="{{URL::to('/').'/'.$b->img_src}}" alt="{{$b->name}}" height="60">
+                                </a>
+                            </div>
+                            @endforeach
 
-                            <div class="brand-item">
+                            <!-- <div class="brand-item">
                                 <a href="javascript:void(0)">
                                     <img src="{{URL::to('/')}}/assets/images/brand/1.png" alt=" Brand">
                                 </a>
-                            </div>
-                            <div class="brand-item">
-                                <a href="javascript:void(0)">
-                                    <img src="{{URL::to('/')}}/assets/images/brand/2.png" alt=" Brand">
-                                </a>
-                            </div>
-                            <div class="brand-item">
-                                <a href="javascript:void(0)">
-                                    <img src="{{URL::to('/')}}/assets/images/brand/3.png" alt=" Brand">
-                                </a>
-                            </div>
-                            <div class="brand-item">
-                                <a href="javascript:void(0)">
-                                    <img src="{{URL::to('/')}}/assets/images/brand/4.png" alt=" Brand">
-                                </a>
-                            </div>
-                            <div class="brand-item">
-                                <a href="javascript:void(0)">
-                                    <img src="{{URL::to('/')}}/assets/images/brand/1.png" alt=" Brand">
-                                </a>
-                            </div>
+                            </div> -->
 
                         </div>
                     </div>

@@ -23,6 +23,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+        view()->composer(['layouts.app'],function ($view){
+            $view->with('categories', \App\Category::where('parent_id', '=', 0)->get());
+        });
     }
 }

@@ -200,8 +200,8 @@ class ProductController extends Controller
         $data['attr'] = $product->productAttribute;
         $data['inventory'] = $product->ProductInventory;
         $data['brand'] = $product->Brand;
-        $categories = Category::where('parent_id', '=', 0)->get();
-        return view('products.show', compact ('data','categories'));
+        $data['brands'] = Brand::get();
+        return view('products.show', compact ('data'));
     }
 
     public function quickView(Request $request)

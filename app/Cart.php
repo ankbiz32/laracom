@@ -17,24 +17,26 @@ class Cart
     }
 
     public function add($item, $id){
-
-        $storedItem = ['quantity'=>1,'price'=>$item->price,'item'=>$item,'product_id'=>$item->id];
-
-        for ($x=0; $x<=count($this->items);$x++){
-            if(!array_key_exists($x, $this->items)){
-                $item_id=$x;
-                break;
-            }
+        if(array_key_exists($id,$this->items)){
+            $this->totalPrice += $this->items[$id]['item']['price'];
+            $this->totalQuantity++;
+            $this->items[$id]['quantity'] ++;
         }
-        $this->items[$item_id]=$storedItem;
-        $this->totalPrice += $item->price;
-        $this->totalQuantity++;
+        else{
+            $storedItem = ['quantity'=>1,'price'=>$item->price,'item'=>$item,'product_id'=>$item->id];
+            $this->items[$item->id]=$storedItem;
+            $this->totalPrice += $item->price;
+            $this->totalQuantity++;
+        }
     }
 
     public function remove($id){
-        $this->totalPrice -= $this->items[$id]['item']['price'];
-        unset($this->items[$id]);
-        $this->totalQuantity--;
+        // dd($this);
+        if(isset($this->items[$id])){
+            $this->totalPrice -= $this->items[$id]['item']['price'];
+            $this->totalQuantity-=$this->items[$id]['quantity'];
+            unset($this->items[$id]);
+        }
     }
 
 }
