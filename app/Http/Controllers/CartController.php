@@ -9,6 +9,21 @@ use Illuminate\Http\Request;
 
 class CartController extends Controller
 {
+    public function index()
+    {
+        // dd(Session::get('cart'));
+        if(!Session::has('cart')){
+            return view('cart.index',['products'=>null]);
+        }
+        $oldCart= Session::get('cart');
+        $cart= new Cart($oldCart);
+        $products = $cart->items;
+        $totalPrice = $cart->totalPrice;
+        $totalQuantity= $cart->totalQuantity;
+        // dd($products);
+        return view('cart.index', compact ('products','totalPrice','totalQuantity'));
+    }
+
     public function add(Request $request, $id)
     {
         $product = Product::find($id);
@@ -24,6 +39,27 @@ class CartController extends Controller
         }
     }
 
+    public function update(Request $request)
+    {
+        if($request->ajax())
+        {
+            if(Session::has('cart')){
+                $id=decrypt($request->id);
+                $oldCart = Session::get('cart');
+                $cart = new Cart($oldCart);
+                $cart->update($id, $request->qty);
+                $request->session()->put('cart',$cart);
+                return json_encode(['status'=>'200']);
+            }
+            else{
+                return json_encode(['status'=>'404']);
+            }
+        }
+        else{
+            return json_encode(['status'=>'403']);
+        }
+    }
+
     public function remove($id)
     {
         $oldCart = Session::has('cart') ? Session::get('cart') : null;
@@ -36,18 +72,4 @@ class CartController extends Controller
         return redirect()->route('cart.index');
     }
 
-    public function index()
-    {
-        dd(Session::get('cart'));
-        if(!Session::has('cart')){
-            return view('cart.index',['products'=>null]);
-        }
-        $oldCart= Session::get('cart');
-        $cart= new Cart($oldCart);
-        $products = $cart->items;
-        $totalPrice = $cart->totalPrice;
-        $totalQuantity= $cart->totalQuantity;
-        // dd($products);
-        return view('cart.index', compact ('products','totalPrice','totalQuantity'));
-    }
 }

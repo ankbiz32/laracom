@@ -30,6 +30,14 @@ class Cart
         }
     }
 
+    public function update($id, $qty){
+        if(array_key_exists($id, $this->items)){
+            $this->totalPrice = $this->totalPrice - $this->items[$id]['item']['price']*$this->items[$id]['quantity'] + $this->items[$id]['item']['price']*$qty;
+            $this->totalQuantity = $this->totalQuantity - $this->items[$id]['quantity'] + $qty;
+            $this->items[$id]['quantity'] = $qty;
+        }
+    }
+
     public function remove($id){
         // dd($this);
         if(isset($this->items[$id])){

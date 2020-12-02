@@ -47,7 +47,7 @@
 			$overlay.removeClass('overlay-open');
 		}
 	});
-	
+
 	/*----------------------------------------*/
 	/*  Close Button Actions
 /*----------------------------------------*/
@@ -225,17 +225,26 @@
 	$('.qtybutton').on('click', function () {
 		var $button = $(this);
 		var oldValue = $button.parent().find('input').val();
+		var maxValue = $button.parent().find('input').data('max');
 		if ($button.hasClass('inc')) {
-			var newVal = parseFloat(oldValue) + 1;
+            if (oldValue < maxValue) {
+                var newVal = parseFloat(oldValue) + 1;
+                $button.parent().find('input').val(newVal);
+                update ($button.parent().find('input'));
+			} else {
+				var newVal = maxValue;
+                $button.parent().find('input').val(newVal);
+			}
 		} else {
-			// Don't allow decrementing below zero
 			if (oldValue > 1) {
 				var newVal = parseFloat(oldValue) - 1;
-			} else {
-				newVal = 1;
+                $button.parent().find('input').val(newVal);
+                update ($button.parent().find('input'));
+            } else {
+				var newVal = 1;
+                $button.parent().find('input').val(newVal);
 			}
 		}
-		$button.parent().find('input').val(newVal);
 	});
 
 	/*----------------------------------------*/
@@ -555,7 +564,7 @@
 				appendArrows: $appendArrows,
 				prevArrow: $prevArrow,
 				nextArrow: $nextArrow,
-				rtl: $rtl,    
+				rtl: $rtl,
 				customPaging : function(slider, i) {
 					var thumb = $(slider.$slides[i]).data();
 					var number = i + 1;
@@ -606,7 +615,7 @@
 		// Added mousewheel for specific slider
 		$('.single-blog_slider, .mousewheel-slider').on('wheel', function(e) {
 			e.preventDefault();
-	
+
 			if (e.originalEvent.deltaY < 0) {
 				$(this).slick('slickNext');
 			} else {
@@ -692,9 +701,9 @@
 		jQuery Zoom
 	---------------------------- */
 	$('.zoom').zoom();
-	
+
 	/*----------------------------------
-	/* 	Instafeed active 
+	/* 	Instafeed active
 ------------------------------------*/
 	if ($('#Instafeed').length) {
 		var feed = new Instafeed({

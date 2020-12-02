@@ -1,6 +1,18 @@
     @extends('layouts.app')
 
 
+    @section ('loader')
+        <div class="loading">
+            <div class="text-center middle">
+                <img src="{{URL::to('/')}}/assets/images/menu/logo/1.png" alt="Logo">
+                <p class="mt-4">LEGACY COMMITTED TO EXCELLENCE</p>
+                <!-- <span class="loader">
+                    <span class="loader-inner"></span>
+                </span> -->
+            </div>
+        </div>
+    @endsection
+
     @section ('content')
 
         <div class="slider-area">

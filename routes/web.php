@@ -96,6 +96,7 @@ Route::post('/admin-country/bulkStatus', 'CountryController@bulkStatus')->name('
 Route::get('/cart','CartController@index')->name('cart.index');
 Route::get('/cart/add/{product}','CartController@add')->name('cart.add');
 Route::get('/cart/remove/{id}','CartController@remove')->name('cart.remove');
+Route::post('/cart/update', 'CartController@update')->name('cart.update');
 
 Route::get('/checkout','CheckoutController@index')->name('checkout.index')->middleware('auth');
 Route::post('/checkout','CheckoutController@checkout')->name('checkout')->middleware('auth');
