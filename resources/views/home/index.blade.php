@@ -224,8 +224,16 @@
                                         <div class="product-desc_info">
                                             <h3 class="product-name"><a href="#">{{ $product->name }}</a></h3>
                                             <div class="price-box">
-                                                <span class="old-price">₹599</span>
+                                            @if($product->ProductDiscount->has_discount)
+                                                <span class="old-price">₹{{ $product->price }}</span>
+                                                @if($product->ProductDiscount->type == 'FLAT')
+                                                    <span class="new-price">₹{{ $product->ProductDiscount->rate }}</span>
+                                                @else
+                                                    <span class="new-price">₹{{ ($product->ProductDiscount->rate / 100) * $product->price  }}</span>
+                                                @endif
+                                            @else
                                                 <span class="new-price">₹{{ $product->price }}</span>
+                                            @endif
                                             </div>
                                             <div class="review-area d-flex justify-content-between align-items-center">
                                                 <div class="rating-box">

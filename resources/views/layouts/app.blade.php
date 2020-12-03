@@ -370,49 +370,33 @@
             <div class="offcanvas-minicart_wrapper" id="miniCart">
                 <div class="offcanvas-menu-inner">
                     <a href="#" class="btn-close"><i class="zmdi zmdi-close"></i></a>
+                    
+                    @if(Session::has('cart'))
+                    <?php $cart=Session::get('cart'); ?>
                     <div class="minicart-content">
                         <div class="minicart-heading">
                             <h4>Shopping Cart</h4>
                         </div>
-                        <ul class="minicart-list">
+                        <ul class="minicart-list mt-3">
+                        
+                            @foreach ($cart->items as $key => $value)
                             <li class="minicart-product">
-                                <a class="product-item_remove" href="javascript:void(0)"><i
+                                <a class="product-item_remove" href="{{ route('cart.remove',['id'=> $key]) }}"><i
                                     class="zmdi zmdi-close"></i></a>
                                 <div class="product-item_img">
-                                    <img src="{{URL::to('/')}}/assets/images/product/small-size/b2.png" style="width:100%; height: 60px; -o-object-fit: contain; object-fit: contain;" alt="Product Image">
+                                    <img src="{{URL::to('/').'/'. $value['item']->image }}" style="width:100%; height: 60px; -o-object-fit: contain; object-fit: contain;" alt="Product Image">
                                 </div>
                                 <div class="product-item_content">
-                                    <a class="product-item_title" href="#">Gold charged Rose w..</a>
-                                    <span class="product-item_quantity">1 x ₹599</span>
+                                    <a class="product-item_title" href="{{ route('product.show',['product'=>$value['item']->id]) }}">{{ $value['item']->name }}</a>
+                                    <span class="product-item_quantity">{{ $value['quantity'] }} x {{ $value['price']}}</span>
                                 </div>
                             </li>
-                            <li class="minicart-product">
-                                <a class="product-item_remove" href="javascript:void(0)"><i
-                                    class="zmdi zmdi-close"></i></a>
-                                <div class="product-item_img">
-                                    <img src="{{URL::to('/')}}/assets/images/product/small-size/b5.png" style="width:100%; height: 60px; -o-object-fit: contain; object-fit: contain;" alt="Product Image">
-                                </div>
-                                <div class="product-item_content">
-                                    <a class="product-item_title" href="#">Liquid Chyavanprash</a>
-                                    <span class="product-item_quantity">1 x ₹999</span>
-                                </div>
-                            </li>
-                            <li class="minicart-product">
-                                <a class="product-item_remove" href="javascript:void(0)"><i
-                                    class="zmdi zmdi-close"></i></a>
-                                <div class="product-item_img">
-                                    <img src="{{URL::to('/')}}/assets/images/product/small-size/b4.png" style="width:100%; height: 60px; -o-object-fit: contain; object-fit: contain;" alt="Product Image">
-                                </div>
-                                <div class="product-item_content">
-                                    <a class="product-item_title" href="#">Kamal Hair Oil</a>
-                                    <span class="product-item_quantity">1 x ₹299</span>
-                                </div>
-                            </li>
+                            @endforeach
                         </ul>
                     </div>
                     <div class="minicart-item_total">
-                        <span>Subtotal</span>
-                        <span class="ammount">₹1897</span>
+                        <span>Subtotal:</span>
+                        <span class="ammount">{{$cart->totalPrice}}</span>
                     </div>
                     <div class="minicart-btn_area">
                         <a href="{{route('cart.index')}}" class="quicky-btn-outline btn-block text-center quicky-btn_fullwidth square-btn">View Cart</a>
@@ -420,6 +404,15 @@
                     <div class="minicart-btn_area">
                         <a href="#" class="quicky-btn btn-block text-center quicky-btn_fullwidth square-btn">Checkout</a>
                     </div>
+                    @else
+                    <div class="minicart-content">
+                        <div class="col-12 mt-5 text-center">
+                            <i class="zmdi zmdi-shopping-cart-plus mb-3 mt-5" style="transform:scale(6)"></i>
+                            <h5 class="mt-5 mb-2">Your shopping cart is empty.</h5>
+                            <h5>Please add some products.</h5>
+                        </div>
+                    </div>
+                    @endif
                 </div>
             </div>
             <div class="offcanvas-search_wrapper" id="searchBar">
