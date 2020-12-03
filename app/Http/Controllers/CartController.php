@@ -29,10 +29,31 @@ class CartController extends Controller
         $product = Product::find($id);
         if($product){
             $oldCart = Session::has('cart') ? Session::get('cart') : null;
-            $cart = new Cart($oldCart);
-            $cart->add($product,$product->id);
-            $request->session()->put('cart',$cart);
-            return redirect()->route('cart.index');
+            if($oldCart){
+                if(array_key_exists($id,$oldCart->items)){
+                    if($oldCart->items[$id]['quantity'] < $product->max_order_qty){
+                        $cart = new Cart($oldCart);
+                        $cart->add($product,$product->id);
+                        $request->session()->put('cart',$cart);
+                        return redirect()->route('cart.index');
+                    }
+                    else{
+                        return redirect()->route('cart.index');
+                    }
+                }
+                else{
+                    $cart = new Cart($oldCart);
+                    $cart->add($product,$product->id);
+                    $request->session()->put('cart',$cart);
+                    return redirect()->route('cart.index');
+                }
+            }
+            else{
+                $cart = new Cart($oldCart);
+                $cart->add($product,$product->id);
+                $request->session()->put('cart',$cart);
+                return redirect()->route('cart.index');
+            }
         }
         else{
             return redirect()->route('cart.index');

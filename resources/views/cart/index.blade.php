@@ -1,5 +1,5 @@
 @extends('layouts.app')
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/smokejs/3.1.1/css/smoke.min.css" integrity="sha512-zj2fhIsemrPggVoxaHr6naRVMYTzWgEG3euB1+D9KI1swX4OexYUhW3fEyPfjh/rTcYqwKkhaUBVkZQzxMI7lQ==" crossorigin="anonymous" />
+<link rel="stylesheet" href="{{URL::to('/')}}/plugins/td-message/td-message.css"/>
 <style>
     th{
         font-weight:bold !important;
@@ -49,11 +49,12 @@
                                         <td class="quicky-product-name"><a href="{{ route('product.show',['product'=>$value['item']->id]) }}">{{ $value['item']->name }}</a></td>
                                         <td class="quicky-product-price"><span class="amount">{{ $value['price']}}</span></td>
                                         <td class="quantity">
-                                            <div class="cart-plus-minus">
+                                            <div class="cart-plus-minus ">
                                                 <input class="cart-plus-minus-box" value="{{ $value['quantity']}}" data-max="{{$value['item']->max_order_qty}}" type="number" min=0 max="{{$value['item']->max_order_qty}}" data-id="{{encrypt($value['item']->id)}}" readonly>
                                                 <div class="dec qtybutton"><i class="zmdi zmdi-chevron-down"></i></div>
                                                 <div class="inc qtybutton"><i class="zmdi zmdi-chevron-up"></i></div>
                                             </div>
+                                            <!-- <label class="mt-2"><small>Max: {{ $value['item']->max_order_qty}}</small></label> -->
                                         </td>
                                         <td class="product-subtotal"><span class="amount">{{ $value['quantity'] * $value['price']}}</span></td>
                                         <td class="quicky-product-remove"><a href="{{ route('cart.remove',['id'=> $key]) }}"><i class="zmdi zmdi-close"
@@ -86,9 +87,9 @@
                                 <div class="cart-page-total pt-0">
                                     <h2>Cart totals</h2>
                                     <ul class="mb-3">
-                                        <li>Subtotal <span>{{$totalPrice}}</span></li>
-                                        <li>Shipping <span>0</span></li>
-                                        <li>Total <span>{{$totalPrice}}</span></li>
+                                        <li class="cart-subtotal">Subtotal <span>{{$totalPrice}}</span></li>
+                                        <li class="cart-shipping">Shipping <span>0</span></li>
+                                        <li class="cart-total">Total <span>{{$totalPrice}}</span></li>
                                     </ul>
                                     <a href="javascript:void(0)" class="float-right quicky-btn ">PROCEED TO CHECKOUT</a>
                                 </div>
@@ -110,7 +111,7 @@
 @endsection
 
 @section ('script')
-<script src="https://cdnjs.cloudflare.com/ajax/libs/smokejs/3.1.1/js/smoke.min.js"></script>
+<script src="{{URL::to('/')}}/plugins/td-message/td-message.min.js"></script>
     <script>
         function update(e){
             if(e.val()<1){
@@ -128,33 +129,58 @@
                     "qty": e.val()
                 },
                 dataType:'json',
-                beforeSend:function(){
-                    $('body').fadeOut();
-                },
                 success:function(data)
                 {
-                    $('body').fadeIn();
                     if(data.status==200){
-                        // alert('done');
-                        smoke.alert("Can I ask you a question?", function(e){
-                        }, {
-                            ok: "Yep",
-                            cancel: "Nope",
-                            classname: "custom-class"
-                        });
+                        
+                        var p = e.parent().parent().parent().find('.quicky-product-price span').text();
+                        var s = e.parent().parent().parent().find('.product-subtotal span').text();
+                        var c = $('.cart-subtotal span').text();
+                        var t = $('.cart-total span').text();
+                        var ship = $('.cart-shipping span').text();
+                        var pst = parseInt(p) * e.val();
+                        var cst = parseInt(c) - parseInt(s) + pst;
+                        var ct = parseInt(c) + parseInt(ship) - parseInt(s) + pst;
+                        e.parent().parent().parent().find('.product-subtotal span').text(pst);
+                        $('.cart-subtotal span').text(cst);
+                        $('.cart-total span').text(ct);
+                        $.message({
+                            type: "success",
+                            text: "Your cart has been updated",
+                            duration: 2000,
+                            positon: "top-right",
+                            showClose: true
+                        });;
                     }
                     else if(data.status==404){
-                        alert('Not found');
+                        $.message({
+                            type: "info",
+                            text: "Product not found",
+                            duration: 2000,
+                            positon: "top-right",
+                            showClose: true
+                        });;
                     }
                     else{
-                        alert('Forbidden');
+                        $.message({
+                            type: "warning",
+                            text: "<strong>Warning</strong> <br> This action is not allowed",
+                            duration: 2000,
+                            positon: "top-right",
+                            showClose: true
+                        });;
                     }
 
                 },
-                error:function(data)
+                error:function()
                 {
-                    $('body').fadeIn();
-                    alert('Server error');
+                        $.message({
+                            type: "error",
+                            text: "<strong>Some error occured.</strong> <br> Please refresh the page and try again.",
+                            duration: 6000,
+                            positon: "top-right",
+                            showClose: true
+                        });;
                 }
             })
         }
