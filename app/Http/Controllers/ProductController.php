@@ -68,7 +68,20 @@ class ProductController extends Controller
                         ';
                     return $btn;
                 })
-                ->rawColumns(['action', 'check', 'status'])
+                ->addColumn('newprice', function($row){
+                    if($row->ProductDiscount->has_discount){
+                        if($row->ProductDiscount->type=='FLAT'){
+                            $disc_rate = $row->ProductDiscount->rate;
+                        }else{
+                            $disc_rate = ((100 - $row->ProductDiscount->rate) / 100) * $row->price;
+                        }
+                        return $txt='<del>'.$row->price.'</del>&emsp;'.$disc_rate;
+                    }
+                    else{
+                        return $txt = $row->price;
+                    }
+                })
+                ->rawColumns(['action', 'check', 'status', 'newprice'])
                 ->make(true);
         }
         return view('admin.product');
@@ -360,7 +373,7 @@ class ProductController extends Controller
     public function editform($id)
     {
 
-        $product = Product::with('productImage','productAttribute')->findOrFail($id);
+        $product = Product::with('productImage','productAttribute','ProductDiscount')->findOrFail($id);
         //echo '<pre>';
         //print_r($product->toArray());
         //exit;
@@ -414,8 +427,6 @@ class ProductController extends Controller
         $product->price=$request->get('price');
         $product->sku=$request->get('sku');
         $product->in_stock=$request->get('in_stock');
-        $product->discount_type=$request->get('discount_type');
-        $product->discount_rate=$request->get('discount_rate');
         $product->max_order_qty=$request->get('max_order_qty');
         $product->tags=json_encode($request->get('tags'));
         $product->url_slug=str_slug($request->get('name'), '-');
@@ -473,16 +484,25 @@ class ProductController extends Controller
         }
 
 
+        $product_discount = ProductDiscount::where('product_id',$id);
+        $d['product_id']=$id;
         if(request('has_discount'))
         {
-            $product->has_discount=1;
-            $product->discount_type=request('discount_type');
-            $product->discount_rate=request('discount_rate');
+            $d['has_discount']=1;
+            $d['type']=request('type');
+            if(request('rate')){
+                $d['rate']=request('rate');
+            }else{
+                $d['rate']=request('price');
+            }
         }
         else{
-            $product->has_discount=0;
-            $product->discount_type='';
+            $d['has_discount']=0;
+            $d['type']='';
+            $d['rate']=request('price');
         }
+        $product_discount->update($d);
+
 
         if ($request->file('image') == null) {
             $imagepath = $product->image;

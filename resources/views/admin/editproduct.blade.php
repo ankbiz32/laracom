@@ -351,7 +351,7 @@ use App\AttributeDetail;
                                             <div class="col-sm-10">
                                                     <label class="form-check-label mr-2" for="has_discount"><strong>Product has discount</strong></label>
                                                     <div class="custom-control custom-switch d-inline">
-                                                        <input type="checkbox" class="custom-control-input" name="has_discount" id="has_discount" <?php echo ($product->has_discount==true)?'checked="checked"':'';?>>
+                                                        <input type="checkbox" class="custom-control-input" name="has_discount" id="has_discount" <?php echo ($product->ProductDiscount->has_discount==true)?'checked="checked"':'';?>>
                                                         <label class="custom-control-label btn" for="has_discount"></label>
                                                     </div>
                                                     @error('has_discount')
@@ -360,31 +360,31 @@ use App\AttributeDetail;
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col discOptions mt-5" style="<?php echo ($product->has_discount==true)?'':'display:none';?>">
+                                    <div class="col discOptions mt-5" style="<?php echo ($product->ProductDiscount->has_discount==1)?'':'display:none';?>">
                                         <div class="form-group row">
                                             <label class="col-sm-3 col-form-label" for="discount_type">{{ __('Discount type') }} <span class="req"> *</span></label>
                                             <div class="col-sm-9">
                                                 <div class="input-group ">
-                                                    <select name="discount_type" id="discount_type" class="form-control @error('discount_type') is-invalid @enderror">
-                                                        <option value="PERCENT" {{ old('discount_type', $product->discount_type) == 'PERCENT' ? 'selected' : '' }}>PERCENT OFF</option>
-                                                        <option value="FLAT" {{ old('discount_type', $product->discount_type) == 'FLAT' ? 'selected' : '' }}>FLAT RATE</option>
+                                                    <select name="type" id="discount_type" class="form-control @error('type') is-invalid @enderror">
+                                                        <option value="PERCENT" {{ old('discount_type', $product->ProductDiscount->type) == 'PERCENT' ? 'selected' : '' }}>PERCENT OFF</option>
+                                                        <option value="FLAT" {{ old('discount_type', $product->ProductDiscount->type) == 'FLAT' ? 'selected' : '' }}>FLAT RATE</option>
                                                     </select>
                                                 </div>
-                                                @error('discount_type')
+                                                @error('type')
                                                     <small class="text-danger">{{$message}}</small>
                                                 @enderror
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col discOptions" style="<?php echo ($product->has_discount==true)?'':'display:none';?>">
+                                    <div class="col discOptions" style="<?php echo ($product->ProductDiscount->has_discount==1)?'':'display:none';?>">
                                         <div class="form-group row">
                                             <label class="col-sm-3 col-form-label" for="discount_rate">{{ __('Discount rate') }} <span class="req"> *</span></label>
                                             <div class="col-sm-9">
                                                 <div class="input-group ">
-                                                    <input id="discount_rate" type="number" class="form-control @error('discount_rate') is-invalid @enderror" name="discount_rate" step="0.01" value="{{ old('discount_rate') ?? $product->discount_rate  }}">
+                                                    <input id="discount_rate" type="number" class="form-control @error('rate') is-invalid @enderror" name="rate" step="0.01" value="{{ old('rate') ?? $product->ProductDiscount->rate  }}">
                                                 </div>
                                                 <small>* Enter discount percent OR discounted product price</small>
-                                                @error('discount_rate')
+                                                @error('rate')
                                                     <small class="text-danger">{{$message}}</small>
                                                 @enderror
                                             </div>

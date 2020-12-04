@@ -45,8 +45,8 @@
                                 <tbody>
                                     @foreach ($products as $key => $value)
                                     <tr>
-                                        <td class="quicky-product-thumbnail"><a href="{{ route('product.show',['product'=>$value['item']->id]) }}"><img height="80" width="100" style="object-fit:contain" src="{{URL::to('/').'/'. $value['item']->image }}" alt="Cart Thumbnail"></a></td>
-                                        <td class="quicky-product-name"><a href="{{ route('product.show',['product'=>$value['item']->id]) }}">{{ $value['item']->name }}</a></td>
+                                        <td class="quicky-product-thumbnail"><a href="{{ route('product.show',['product'=>$value['item']->id,'slug'=>$value['item']->url_slug]) }}"><img height="80" width="100" style="object-fit:contain" src="{{URL::to('/').'/'. $value['item']->image }}" alt="Cart Thumbnail"></a></td>
+                                        <td class="quicky-product-name"><a href="{{ route('product.show',['product'=>$value['item']->id,'slug'=>$value['item']->url_slug]) }}">{{ $value['item']->name }}</a></td>
                                         <td class="quicky-product-price"><span class="amount">{{ $value['price']}}</span></td>
                                         <td class="quantity">
                                             <div class="cart-plus-minus ">

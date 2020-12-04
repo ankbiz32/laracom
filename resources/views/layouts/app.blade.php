@@ -369,7 +369,7 @@
             </div>
             <div class="offcanvas-minicart_wrapper" id="miniCart">
                 <div class="offcanvas-menu-inner">
-                    <a href="#" class="btn-close"><i class="zmdi zmdi-close"></i></a>
+                    <a href="#" class="btn-close" style="display: flex;align-items: center;"><i class="zmdi zmdi-close mb-1 mr-2"></i><span class="d-sm-inline d-none">close</span></a>
                     
                     @if(Session::has('cart'))
                     <?php $cart=Session::get('cart'); ?>
@@ -387,7 +387,7 @@
                                     <img src="{{URL::to('/').'/'. $value['item']->image }}" style="width:100%; height: 60px; -o-object-fit: contain; object-fit: contain;" alt="Product Image">
                                 </div>
                                 <div class="product-item_content">
-                                    <a class="product-item_title" href="{{ route('product.show',['product'=>$value['item']->id]) }}">{{ $value['item']->name }}</a>
+                                    <a class="product-item_title" href="{{ route('product.show',[ 'product'=>$value['item']->id, 'slug'=>$value['item']->url_slug ])}}">{{ $value['item']->name }}</a>
                                     <span class="product-item_quantity">{{ $value['quantity'] }} x {{ $value['price']}}</span>
                                 </div>
                             </li>

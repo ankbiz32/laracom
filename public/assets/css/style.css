@@ -5500,12 +5500,12 @@ i, .tab-content .tab-pane.active, .scroll-to-top i, .quantity .cart-plus-minus >
   top: 0;
   left: -60px;
   background: #151515;
-  width: 60px;
+  width: 120px;
   height: 60px;
   line-height: 60px;
   text-align: center;
   z-index: 10;
-  font-size: 24px;
+  font-size: 22px; text-transform: lowercase;
 }
 
 @media (max-width: 479px) {

@@ -66,7 +66,7 @@ Route::get('/product/getProductImageDeleted','ProductController@getProductImageD
 Route::get('/product/getProductAttributeDeleted','ProductController@getProductAttributeDeleted')->name('product.getProductAttributeDeleted');
 
 Route::post('/product/quickView', 'ProductController@quickView')->name('product.quickView');
-Route::get('/product/{product}','ProductController@show')->name('product.show');
+Route::get('/product/{product}/{slug}','ProductController@show')->name('product.show');
 
 /*--Attribute--*/
 Route::get('/admin-attribute', 'AttributeController@index')->name('admin.attribute')->middleware(['auth','admin']);

@@ -134,7 +134,7 @@
                         searchable: true
                     },
                     {data: 'name', name: 'name', orderable: true, searchable: true},
-                    {data: 'price', name: 'price', orderable: true, searchable: true},
+                    {data: 'newprice', name: 'newprice', orderable: true, searchable: true},
                     {
                         data: 'status',
                         name: 'status',

@@ -202,34 +202,37 @@
                             <div class="product-item">
                                 <div class="single-product">
                                     <div class="product-img">
-                                        <a href="{{ route('product.show',['product'=>$product->id]) }}">
+                                        <a href="{{ route('product.show',['product'=>$product->id,'slug'=>$product->url_slug]) }}">
                                             <img src="{{ $product->image }}" style="width:100%; height:340px; -o-object-fit:contain; object-fit:contain;" alt="Product Image">
                                         </a>
                                         <span class="sticker">New</span>
-                                        <span class="sticker-2"><small class="bg-warning pt-2 pb-1 text-dark px-2">16% OFF</small></span>
+                                        @if($product->ProductDiscount->has_discount)
+                                            @if($product->ProductDiscount->type == 'FLAT')
+                                                <span class="sticker-2"><small class="bg-warning pt-2 pb-1 text-dark px-2">FLAT DISCOUNT</small></span>
+                                            @else
+                                                <span class="sticker-2"><small class="bg-warning pt-2 pb-1 text-dark px-2">{{$product->ProductDiscount->rate}}% OFF</small></span>
+                                            @endif
+                                        @endif
                                         <div class="add-actions">
                                             <ul>
-                                                <li class="quick-view-btn" data-id="{{encrypt($product->id)}}"><a href="javascript:void(0)" data-toggle="tooltip" data-placement="top" title="Quick View"><i
-                                                        class="icon-magnifier"></i></a>
-                                                </li>
                                                 <li><a href="#" data-toggle="tooltip" data-placement="top" title="Add To Wishlist"><i class="icon-heart"></i></a>
                                                 </li>
 
-                                                <li><a href="{{ route('cart.add',['product'=>$product->id]) }}" data-toggle="tooltip" data-placement="top" title="Add To cart"><i class="icon-bag"></i></a>
+                                                <li><a href="{{ route('product.show',['product'=>$product->id,'slug'=>$product->url_slug]) }}" data-toggle="tooltip" data-placement="top" title="View product"><i class="icon-eye"></i></a>
                                                 </li>
                                             </ul>
                                         </div>
                                     </div>
                                     <div class="product-content">
                                         <div class="product-desc_info">
-                                            <h3 class="product-name"><a href="#">{{ $product->name }}</a></h3>
+                                            <h3 class="product-name"><a href="{{ route('product.show',['product'=>$product->id,'slug'=>$product->url_slug]) }}">{{ $product->name }}</a></h3>
                                             <div class="price-box">
                                             @if($product->ProductDiscount->has_discount)
                                                 <span class="old-price">₹{{ $product->price }}</span>
                                                 @if($product->ProductDiscount->type == 'FLAT')
                                                     <span class="new-price">₹{{ $product->ProductDiscount->rate }}</span>
                                                 @else
-                                                    <span class="new-price">₹{{ ($product->ProductDiscount->rate / 100) * $product->price  }}</span>
+                                                    <span class="new-price">₹{{ ( (100 - $product->ProductDiscount->rate) / 100) * $product->price  }}</span>
                                                 @endif
                                             @else
                                                 <span class="new-price">₹{{ $product->price }}</span>

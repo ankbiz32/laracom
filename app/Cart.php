@@ -23,16 +23,29 @@ class Cart
             $this->items[$id]['quantity'] ++;
         }
         else{
-            $storedItem = ['quantity'=>1,'price'=>$item->price,'item'=>$item,'product_id'=>$item->id];
+            $price = $item->price;
+            if($item->ProductDiscount->has_discount){
+                if($item->ProductDiscount->type=='FLAT'){
+                    $price = $item->ProductDiscount->rate;
+                }
+                else{
+                    $price = ( (100 - $item->ProductDiscount->rate) / 100 ) * $item->price;
+                }
+            }
+            $storedItem = ['quantity'=>1,
+                            'price'=>$price,
+                            'item'=>$item,
+                            'product_id'=>$item->id
+                        ];
             $this->items[$item->id]=$storedItem;
-            $this->totalPrice += $item->price;
+            $this->totalPrice += $price;
             $this->totalQuantity++;
         }
     }
 
     public function update($id, $qty){
         if(array_key_exists($id, $this->items)){
-            $this->totalPrice = $this->totalPrice - $this->items[$id]['item']['price']*$this->items[$id]['quantity'] + $this->items[$id]['item']['price']*$qty;
+            $this->totalPrice = $this->totalPrice - $this->items[$id]['price']*$this->items[$id]['quantity'] + $this->items[$id]['price']*$qty;
             $this->totalQuantity = $this->totalQuantity - $this->items[$id]['quantity'] + $qty;
             $this->items[$id]['quantity'] = $qty;
         }

@@ -11,7 +11,6 @@ class CartController extends Controller
 {
     public function index()
     {
-        // dd(Session::get('cart'));
         if(!Session::has('cart')){
             return view('cart.index',['products'=>null]);
         }
@@ -20,14 +19,13 @@ class CartController extends Controller
         $products = $cart->items;
         $totalPrice = $cart->totalPrice;
         $totalQuantity= $cart->totalQuantity;
-        // dd($products);
         return view('cart.index', compact ('products','totalPrice','totalQuantity'));
     }
 
     public function add(Request $request, $id)
     {
         $product = Product::find($id);
-        if($product){
+        if($product && $product->is_active){
             $oldCart = Session::has('cart') ? Session::get('cart') : null;
             if($oldCart){
                 if(array_key_exists($id,$oldCart->items)){

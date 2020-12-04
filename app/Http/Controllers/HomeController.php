@@ -14,7 +14,7 @@ class HomeController extends Controller
         // dd(geoip($request->ip())); //For dynamic ip address
         // dd(geoip('178.18.25.0')); //For static ip address
         // dd($products = Product::where('country_iso_code',geoip($request->ip())->iso_code)->take(4)->get());
-        $products = Product::orderBy('id', 'DESC')->get();
+        $products = Product::where('is_active',1)->orderBy('id', 'DESC')->get();
         return view('home.index',compact('products'));
 
     }
