@@ -18,7 +18,6 @@ class CreateProductSeosTable extends Migration
             $table->bigInteger('product_id')->unsigned()->nullable();
             $table->string('title')->nullable();
             $table->text('description')->nullable();
-            $table->boolean('status')->default(0);
             $table->timestamps();
         });
     }

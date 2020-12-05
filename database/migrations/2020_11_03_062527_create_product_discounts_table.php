@@ -19,7 +19,6 @@ class CreateProductDiscountsTable extends Migration
             $table->tinyInteger('has_discount')->default(0);
             $table->string('type')->nullable();
             $table->string('rate')->nullable();
-            $table->boolean('status')->default(0);
             $table->timestamps();
         });
     }

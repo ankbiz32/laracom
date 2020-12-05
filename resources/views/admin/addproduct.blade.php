@@ -199,8 +199,8 @@
                                         <div class="form-group row">
                                             <label class="col-sm-2 col-form-label" for="price">Short description</label>
                                             <div class="col-sm-10">
-                                            <textarea name="short_descr" id="short_descr" class="form-control @error('short_descr') is-invalid @enderror" rows="3" maxlength="200"></textarea>
-                                                @error('short_descr')
+                                            <textarea name="short_des" id="short_des" class="form-control @error('short_des') is-invalid @enderror" rows="3" maxlength="200"></textarea>
+                                                @error('short_des')
                                                     <span class="invalid-feedback" role="alert">
                                                         <strong>{{ $message }}</strong>
                                                     </span>
@@ -212,8 +212,8 @@
                                         <div class="form-group row">
                                             <label class="col-sm-2 col-form-label" for="price">Full description</label>
                                             <div class="col-sm-10">
-                                            <textarea name="full_descr" id="full_descr" class="form-control @error('full_descr') is-invalid @enderror" rows="5"></textarea>
-                                                @error('full_descr')
+                                            <textarea name="full_des" id="full_des" class="form-control @error('full_des') is-invalid @enderror" rows="5"></textarea>
+                                                @error('full_des')
                                                     <span class="invalid-feedback" role="alert">
                                                         <strong>{{ $message }}</strong>
                                                     </span>
@@ -409,7 +409,7 @@
 
             bsCustomFileInput.init();
 
-            $('#full_descr').summernote({
+            $('#full_des').summernote({
                 height: 200,
             });
 
@@ -453,10 +453,9 @@
         }
 
         function removeAttributeDiv(divId){
-            var r = confirm("Are you sure?");
-            if(r){
+            notie.confirm({ text: 'Are you sure?' }, function() {
                 $("."+divId).remove();
-            }
+            })
         }
 
         $(document).on("change keyup",".attribute_id",function(){

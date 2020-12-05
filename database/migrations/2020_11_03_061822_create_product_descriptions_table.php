@@ -18,7 +18,6 @@ class CreateProductDescriptionsTable extends Migration
             $table->bigInteger('product_id')->unsigned()->nullable();
             $table->text('short_des')->nullable();
             $table->text('full_des')->nullable();
-            $table->boolean('status')->default(0);
             $table->timestamps();
         });
     }

@@ -196,6 +196,7 @@ use App\AttributeDetail;
                                         </div>
                                     </div>
                                 </div>
+
                                 <div class="tab-pane fade" id="vert-tabs-profile" role="tabpanel" aria-labelledby="vert-tabs-profile-tab">
                                     <div class="col">
                                         <div class="form-group row">
@@ -206,6 +207,7 @@ use App\AttributeDetail;
                                                     <label class="custom-file-label" for="customMultiFile">Choose file</label>
                                                 </div>
                                                 <small>( Multiple images can be uploaded )</small><br>
+                                                <input type ="hidden" id="pids" name ="pids">
                                                 <div class="productImage">
                                                     @if(!empty($product->productImage))
                                                         <?php $i = 0; ?>
@@ -213,7 +215,6 @@ use App\AttributeDetail;
                                                             @if($i >= 0)
                                                                 <ul>
                                                                     <li class="productImage_row_{{$k}}" style="float:left;list-style-type:none;">
-                                                                        <input type ="hidden" id="productImage_id_{{$k}}" name ="Product[{{$k}}][productImage_id]" value ="{{$v->id}}">
                                                                         <img src="{{ asset($v->img_src) }}" width="100" style="object-fit:contain" alt="" class="head"/>
                                                                         <a href="javascript:void(0);" class="btn btn-danger btn-sm ahead" onclick="removeOption('productImage_row_{{$k}}','{{$v->id}}');"><i class="fa fa-times"></i></a>
                                                                     </li>
@@ -234,10 +235,10 @@ use App\AttributeDetail;
                                 <div class="tab-pane fade" id="vert-tabs-description" role="tabpanel" aria-labelledby="vert-tabs-description-tab">
                                     <div class="col">
                                         <div class="form-group row">
-                                            <label class="col-sm-2 col-form-label" for="price">Short description</label>
+                                            <label class="col-sm-2 col-form-label">Short description</label>
                                             <div class="col-sm-10">
-                                            <textarea name="short_descr" id="short_descr" class="form-control @error('short_descr') is-invalid @enderror" rows="3" maxlength="200" value="{{ old('short_descr') ?? $product->short_descr  }}">{{$product->short_descr}}</textarea>
-                                                @error('short_descr')
+                                            <textarea name="short_des" id="short_des" class="form-control @error('short_des') is-invalid @enderror" rows="3" maxlength="200" value="{{ old('short_des') ?? $product->short_des  }}">{{$product->ProductDescription->short_des}}</textarea>
+                                                @error('short_des')
                                                     <span class="invalid-feedback" role="alert">
                                                         <strong>{{ $message }}</strong>
                                                     </span>
@@ -247,10 +248,10 @@ use App\AttributeDetail;
                                     </div>
                                     <div class="col">
                                         <div class="form-group row">
-                                            <label class="col-sm-2 col-form-label" for="price">Full description</label>
+                                            <label class="col-sm-2 col-form-label">Full description</label>
                                             <div class="col-sm-10">
-                                            <textarea name="full_descr" id="full_descr" class="form-control @error('full_descr') is-invalid @enderror" rows="5" value="{{ old('full_descr') ?? $product->full_descr  }}">{{$product->full_descr}}</textarea>
-                                                @error('full_descr')
+                                            <textarea name="full_des" id="full_des" class="form-control @error('full_des') is-invalid @enderror" rows="5" value="{{ old('full_des') ?? $product->full_des  }}">{{$product->ProductDescription->full_des}}</textarea>
+                                                @error('full_des')
                                                     <span class="invalid-feedback" role="alert">
                                                         <strong>{{ $message }}</strong>
                                                     </span>
@@ -265,7 +266,7 @@ use App\AttributeDetail;
                                         <div class="form-group row">
                                             <label class="col-sm-2 col-form-label" for="price">Meta title :</label>
                                             <div class="col-sm-10">
-                                                <input type="text" name="meta_title" value="{{ old('meta_title') ?? $product->meta_title  }}" class="form-control @error('meta_title') is-invalid @enderror">
+                                                <input type="text" name="meta_title" value="{{ old('meta_title') ?? $product->ProductSeo->title  }}" class="form-control @error('meta_title') is-invalid @enderror">
                                                 @error('meta_title')
                                                     <span class="invalid-feedback" role="alert">
                                                         <strong>{{ $message }}</strong>
@@ -278,7 +279,7 @@ use App\AttributeDetail;
                                         <div class="form-group row">
                                             <label class="col-sm-2 col-form-label" for="price">Meta Description :</label>
                                             <div class="col-sm-10">
-                                                <textarea rows="6" name="meta_descr" value="{{ old('meta_descr') ?? $product->meta_descr  }}" class="form-control" maxlength="500">{{$product->meta_descr}}</textarea>
+                                                <textarea rows="6" name="meta_descr" class="form-control" maxlength="500">{{$product->ProductSeo->description}}</textarea>
                                             </div>
                                         </div>
                                     </div>
@@ -297,12 +298,11 @@ use App\AttributeDetail;
                                         @foreach($product->productAttribute as $k=>$v)
                                         @if($i >= 0)
                                         <div class="form-row attribute_row<?php echo $k; ?>">
-                                            <input type ="hidden" id="attri_id<?php echo $k; ?>" name ="Attribute[{{$k}}][attri_id]" value ="{{$v->id}}">
 
                                             <div class="col-md-4">
                                                 <div class="position-relative form-group">
                                                     <label for="attribute_id<?php echo $k; ?>" class="">Attribute</label>
-                                                    <select id="attribute_id<?php echo $k; ?>" name="Attribute[{{$k}}][attribute_id]" class="form-control-sm form-control select2 attribute_id" data-placeholder="Select Attribute" data-no="<?php echo $k; ?>" >
+                                                    <select id="attribute_id<?php echo $k; ?>" name="attr[]" class="form-control-sm form-control select2 attribute_id" data-placeholder="Select Attribute" data-no="<?php echo $k; ?>" >
                                                     <option value=""></option>
                                                     <?php if(!empty($attributes)){
                                                     foreach($attributes as $row){ ?>
@@ -321,7 +321,7 @@ use App\AttributeDetail;
                                                     $attributeDetailsList = AttributeDetail::all()->where('attribute_id',$v->attribute_id);
                                                     ?>
                                                     <label for="attribute_detail_id<?php echo $k; ?>" class="">Attribute Options</label>
-                                                    <select id="attribute_detail_id<?php echo $k; ?>" name="Attribute[{{$k}}][attribute_detail_id]" class="form-control-sm form-control select2 attribute_detail_id" data-placeholder="Select Option" data-no="<?php echo $k; ?>" >
+                                                    <select id="attribute_detail_id<?php echo $k; ?>" name="attr_detail[]" class="form-control-sm form-control select2 attribute_detail_id" data-placeholder="Select Option" data-no="<?php echo $k; ?>" >
                                                     <option value=""></option>
                                                     <?php if(!empty($attributeDetailsList)){
                                                     foreach($attributeDetailsList as $row){ ?>
@@ -345,6 +345,7 @@ use App\AttributeDetail;
 
                                     </div>
                                 </div>
+
                                 <div class="tab-pane fade" id="vert-tabs-discount" role="tabpanel" aria-labelledby="vert-tabs-discount-tab">
                                     <div class="col">
                                         <div class="form-group row">
@@ -391,15 +392,14 @@ use App\AttributeDetail;
                                         </div>
                                     </div>
                                 </div>
+
                                 <div class="tab-pane fade" id="vert-tabs-inventory" role="tabpanel" aria-labelledby="vert-tabs-inventory-tab">
-
-
                                     <div class="col">
                                         <div class="form-group row">
                                             <label class="col-sm-3 col-form-label" for="sku">{{ __('Product SKU') }} :</label>
                                             <div class="col-sm-9">
                                                 <div class="input-group ">
-                                                    <input id="sku" type="text" class="form-control @error('sku') is-invalid @enderror" name="sku" value="{{ old('sku') ?? $product->sku  }}">
+                                                    <input id="sku" type="text" class="form-control @error('sku') is-invalid @enderror" name="sku" value="{{ old('sku') ?? $product->ProductInventory->sku  }}">
                                                 </div>
                                                 @error('sku')
                                                     <small class="text-danger">{{$message}} </small>
@@ -413,8 +413,8 @@ use App\AttributeDetail;
                                             <div class="col-sm-9">
                                                 <div class="input-group ">
                                                     <select name="in_stock" id="in_stock" class="form-control @error('in_stock') is-invalid @enderror">
-                                                        <option value="1" {{ old('in_stock', $product->in_stock) == '1' ? 'selected' : '' }}>In stock</option>
-                                                        <option value="0" {{ old('in_stock', $product->in_stock) == '0' ? 'selected' : '' }}>Out of stock</option>
+                                                        <option value="1" {{ old('in_stock', $product->ProductInventory->in_stock) == '1' ? 'selected' : '' }}>In stock</option>
+                                                        <option value="0" {{ old('in_stock', $product->ProductInventory->in_stock) == '0' ? 'selected' : '' }}>Out of stock</option>
                                                     </select>
                                                 </div>
                                                 @error('in_stock')
@@ -424,6 +424,7 @@ use App\AttributeDetail;
                                         </div>
                                     </div>
                                 </div>
+
                                 <div class="tab-pane fade" id="vert-tabs-location" role="tabpanel" aria-labelledby="vert-tabs-location-tab">
                                     Countries, where the product will be available
                                 </div>
@@ -453,7 +454,7 @@ use App\AttributeDetail;
 
             bsCustomFileInput.init();
 
-            $('#full_descr').summernote({
+            $('#full_des').summernote({
                 height: 200,
             });
 
@@ -490,7 +491,7 @@ use App\AttributeDetail;
 
         function addAttribute(){
             var tsp = Date.now();
-            $(".attributeDiv").append('<div class="form-row attribute_row'+tsp+'"><input type = "hidden" id="attri_id_'+tsp+'" name = "Attribute['+tsp+'][attri_id]" value =""><div class="col-md-4"><div class="position-relative form-group"><label for="attribute_id'+tsp+'" class="">Attribute</label><select id="attribute_id'+tsp+'" name="Attribute['+tsp+'][attribute_id]" class="form-control-sm form-control attribute_id" data-placeholder="Select Attribute" data-no="'+tsp+'"><option value=""></option><?php if(!empty($attributes)){ foreach($attributes as $row){ ?> <option value="{{ $row->id}}">{{ $row->name }}</option> <?php } }?></select><label id="attribute_id'+tsp+'-error" class="error" for="attribute_id'+tsp+'"></label></div></div><div class="col-md-4"><div class="position-relative form-group"><label for="attribute_detail_id'+tsp+'" class="">Attribute Options</label><select id="attribute_detail_id'+tsp+'" name="Attribute['+tsp+'][attribute_detail_id]" class="form-control-sm form-control attribute_detail_id" data-placeholder="Select Option"  data-no="'+tsp+'" ></select><label id="attribute_detail_id'+tsp+'-error" class="error" for="attribute_detail_id'+tsp+'"></label></div></div><div class="col-md-2"><div class="position-relative form-group mt-30" style="margin-top:30px;"><a href="javascript:void(0);" class="btn btn-danger btn-sm" onclick="removeAttributeDiv(\'attribute_row'+tsp+'\');"><i class="fa fa-trash"></i></a></div></div></div>');
+            $(".attributeDiv").append('<div class="form-row attribute_row'+tsp+'"><div class="col-md-4"><div class="position-relative form-group"><label for="attribute_id'+tsp+'" class="">Attribute</label><select id="attribute_id'+tsp+'" name="attr[]" class="form-control-sm form-control attribute_id" data-placeholder="Select Attribute" data-no="'+tsp+'" required><option value=""></option><?php if(!empty($attributes)){ foreach($attributes as $row){ ?> <option value="{{ $row->id}}">{{ $row->name }}</option> <?php } }?></select><label id="attribute_id'+tsp+'-error" class="error" for="attribute_id'+tsp+'"></label></div></div><div class="col-md-4"><div class="position-relative form-group"><label for="attribute_detail_id'+tsp+'" class="">Attribute Options</label><select id="attribute_detail_id'+tsp+'" name="attr_detail[]" class="form-control-sm form-control attribute_detail_id" data-placeholder="Select Option"  data-no="'+tsp+'" required></select><label id="attribute_detail_id'+tsp+'-error" class="error" for="attribute_detail_id'+tsp+'"></label></div></div><div class="col-md-2"><div class="position-relative form-group mt-30" style="margin-top:30px;"><a href="javascript:void(0);" class="btn btn-danger btn-sm" onclick="removeAttributeDiv(\'attribute_row'+tsp+'\');"><i class="fa fa-trash"></i></a></div></div></div>');
             $('#attribute_id'+tsp+'').select2();
             $('#attribute_detail_id'+tsp+'').select2();
         }
@@ -547,9 +548,15 @@ use App\AttributeDetail;
         });
 
         function removeOption(rowId,dId){
-            //alert(rowId+''+dId);
             notie.confirm({ text: 'Are you sure?' }, function() {
                 $("."+rowId+"").remove();
+                var pids=$("#pids").val();
+                if(pids==''){
+                    pids=dId;
+                }else{
+                    pids=pids+','+dId;
+                }
+                $("#pids").val(pids);
             })
         }
     </script>

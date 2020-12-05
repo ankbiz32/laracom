@@ -262,6 +262,7 @@ class ProductController extends Controller
 
         $imagepath = $request->image->store('products','public');
 
+        // Save critical details
         $product = new Product();
         $product->name=request('name');
         $product->price=request('price');
@@ -271,26 +272,9 @@ class ProductController extends Controller
         $product->max_order_qty=request('max_order_qty');
         $product->tags=json_encode(request('tags'));
         $product->url_slug=str_slug(request('name'), '-');
-        $product->short_descr=request('short_descr');
-        $product->full_descr=request('full_descr');
-        $product->meta_title=request('meta_title');
-        $product->meta_descr=request('meta_descr');
-        $product->sku=request('sku');
-        $product->in_stock=request('in_stock');
-
-        if(request('has_discount'))
-        {
-            $product->has_discount=1;
-            $product->discount_type=request('discount_type');
-            $product->discount_rate=request('discount_rate');
-        }
-        else{
-            $product->has_discount=0;
-            $product->discount_type='';
-        }
-
         $product->save();
 
+        // Save product discount detail
         $product_discount = new ProductDiscount;
         if(request('has_discount'))
         {
@@ -298,41 +282,43 @@ class ProductController extends Controller
             $product_discount->has_discount=1;
             $product_discount->type=request('discount_type');
             $product_discount->rate=request('discount_rate');
-            $product_discount->status=1;
         }
         else{
             $product_discount->product_id = $product->id;
             $product_discount->has_discount=0;
-            $product_discount->rate='';
+            $product_discount->type='';
+            $product_discount->rate=$product->price;
         }
         $product_discount->save();
 
+        // Save product descr detail
         $product_description = new ProductDescription;
         $product_description->product_id = $product->id;
-        $product_description->short_des=request('short_descr');
-        $product_description->full_des=request('full_descr');
-        $product_description->status=1;
+        $product_description->short_des=request('short_des');
+        $product_description->full_des=request('full_des');
         $product_description->save();
 
+        // Save product SEO detail
         $product_seo = new ProductSeo;
         $product_seo->product_id = $product->id;
-        $product_seo->title =request('meta_title');
+        if(request('meta_title')==''){
+            $product_seo->title =request('name');
+        }else{
+            $product_seo->title =request('meta_title');
+        }
         $product_seo->description=request('meta_descr');
-        $product_seo->status=1;
         $product_seo->save();
 
+        // Save product inventory detail
         $product_inventory = new ProductInventory;
         $product_inventory->product_id = $product->id;
         $product_inventory->sku=request('sku');
         $product_inventory->in_stock=request('in_stock');
         $product_inventory->save();
 
+        // Save product attributes detail
         $attribute_ids = $request->input("attribute_id");
         $attribute_detail_ids = $request->input("attribute_detail_id");
-        //echo "<pre>";
-        //print_r($attribute_ids);
-        //print_r($attribute_detail_ids);
-        //exit;
         if(!empty($attribute_ids)){
             foreach($attribute_ids as $k=>$v){
                 if(!empty($v) and !empty($attribute_detail_ids[$k])){
@@ -345,10 +331,7 @@ class ProductController extends Controller
             }
         }
 
-
-
-
-        // Additional images are uploaded & saved in diff table
+        // Save product additional images
         if($request->hasfile('multi_img'))
         {
            foreach(request('multi_img') as $img)
@@ -360,12 +343,10 @@ class ProductController extends Controller
            }
         }
 
-
-        // Additional tags are saved in diff table
+        // Additional/New tags are saved in diff table
         foreach(request('tags') as $tag){
             Tag::firstOrCreate(['tag' => $tag]);
         }
-
 
         return redirect()->route('admin.product')->with('success','Product added !');
     }
@@ -373,10 +354,7 @@ class ProductController extends Controller
     public function editform($id)
     {
 
-        $product = Product::with('productImage','productAttribute','ProductDiscount')->findOrFail($id);
-        //echo '<pre>';
-        //print_r($product->toArray());
-        //exit;
+        $product = Product::findOrFail($id);
         $categories=$this->categories_dropdown();
         $tags = Tag::get();
         $brands = Brand::get();
@@ -389,102 +367,47 @@ class ProductController extends Controller
 
     public function edit(Request $request,$id)
     {
-        function array_diff_assoc_recursive($array1, $array2)
-        {
-            foreach($array1 as $key => $value)
-            {
-                if(is_array($value))
-                {
-                    if(!isset($array2[$key]))
-                    {
-                        $difference[$key] = $value;
-                    }
-                    elseif(!is_array($array2[$key]))
-                    {
-                        $difference[$key] = $value;
-                    }
-                    else
-                    {
-                        $new_diff = array_diff_assoc_recursive($value, $array2[$key]);
-                        if($new_diff != FALSE)
-                        {
-                            $difference[$key] = $new_diff;
-                        }
-                    }
-                }
-                elseif(!isset($array2[$key]) || $array2[$key] != $value)
-                {
-                    $difference[$key] = $value;
-                }
-            }
-            return !isset($difference) ? 0 : $difference;
-        }
-
         $product = Product::findOrFail($id);
         $product->category_id=json_encode($request->get('category'));
         $product->brand_id=$request->get('brand');
         $product->name=$request->get('name');
         $product->price=$request->get('price');
-        $product->sku=$request->get('sku');
-        $product->in_stock=$request->get('in_stock');
         $product->max_order_qty=$request->get('max_order_qty');
         $product->tags=json_encode($request->get('tags'));
         $product->url_slug=str_slug($request->get('name'), '-');
-        $product->short_descr=$request->get('short_descr');
-        $product->full_descr=$request->get('full_descr');
-        $product->meta_title=$request->get('meta_title');
-        $product->meta_descr=$request->get('meta_descr');
 
-        $items1=array();
-        $items2=array();
-        if(!empty($product->productImage[0]['id'])){
-            foreach($product->productImage as $k=>$v){
-                $items1[]=array('productImage_id'=>$v->id);
-            }
-        }
-        if(!empty($request->get('Product')))
-        {
-            foreach($request->get('Product') as $k){
-                $items2[]=$k;
-            }
-        }
-
-        $delimg = array_diff_assoc_recursive($items1, $items2);
+        $delimg=explode(',',$request->get('pids'));
         if(!empty($delimg)){
-            foreach($delimg as $k=>$v){
-                $productImage =ProductImage::where('id',$v['productImage_id'])->delete();
+            foreach($delimg as $v){
+                $productImage =ProductImage::where('id',$v)->delete();
             }
         }
 
-        //echo'<pre>';
-        //print_r($items1);
-        //print_r($items2);
-        //echo'</pre>';
-        //exit;
 
-        $attribute1=array();
-        $attribute2=array();
-        if(!empty($product->productAttribute[0]['id'])){
-            foreach($product->productAttribute as $k=>$v){
-                $attribute1[]=array('productAttribute_id'=>$v->id);
+        ProductAttribute::where('product_id',$id)->delete();
+        if(!empty($request->get('attr'))){
+            for ( $z=0; $z<count($request->get('attr')); $z++){
+                $p_attr = new ProductAttribute;
+                $p_attr->product_id = $product->id;
+                $p_attr->attribute_detail_id = $request->get('attr_detail')[$z];
+                $p_attr->attribute_id = $request->get('attr')[$z];
+                $p_attr->save();
             }
         }
-        if(!empty($request->get('Attribute')))
-        {
-            foreach($request->get('Attribute') as $k){
-                $attribute2[]=array('productAttribute_id'=>$k['attri_id']);
-            }
-        }
+  
 
-        $delattribute = array_diff_assoc_recursive($attribute1, $attribute2);
-        if(!empty($delattribute)){
-            foreach($delattribute as $k=>$v){
-                $productAttribute = ProductAttribute::where('id',$v['productAttribute_id'])->delete();
-            }
+        if ($request->file('image') == null) {
+            $imagepath = $product->image;
+            $product->image=$imagepath;
+        }else{
+            $imagepath = $request->image->store('products','public');
+            $product->image=$imagepath;
         }
+        $product->update();
 
 
         $product_discount = ProductDiscount::where('product_id',$id);
+        $d = array();
         $d['product_id']=$id;
         if(request('has_discount'))
         {
@@ -504,28 +427,35 @@ class ProductController extends Controller
         $product_discount->update($d);
 
 
-        if ($request->file('image') == null) {
-            $imagepath = $product->image;
-            $product->image=$imagepath;
+        $product_descr = ProductDescription::where('product_id',$id);
+        $d = array();
+        $d['full_des']=request('full_des');
+        $d['short_des']=request('short_des');
+        $product_descr->update($d);
+
+        $product_seo = ProductSeo::where('product_id',$id);
+        $d = array();
+        if(request('meta_title')==''){
+            $d['title'] =request('name');
         }else{
-            $imagepath = $request->image->store('products','public');
-            $product->image=$imagepath;
+            $d['title']=request('meta_title');
         }
+        $d['description']=request('meta_descr');
+        $product_seo->update($d);
 
-        $product->update();
-
+        $product_inv = ProductInventory::where('product_id',$id);
+        $d = array();
+        $d['sku']=request('sku');
+        $d['in_stock']=request('in_stock');
+        $product_inv->update($d);
 
 
         if(!empty($request->get('Attribute'))){
             foreach($request->get('Attribute') as $k){
-
                 $did = $k['attri_id'];
-                //print_r($k);
-                //print_r($did);
-                //exit;
                 if(!empty($did)){
                     $product_attribute = ProductAttribute::find($did);
-                    $product_attribute->product_id=$product->id;
+                    $product_attribute->product_id=$id;
                     $product_attribute->attribute_id=$k['attribute_id'];
                     $product_attribute->attribute_detail_id=$k['attribute_detail_id'];
                     $product_attribute->update();
@@ -541,7 +471,6 @@ class ProductController extends Controller
         }
 
 
-        // Additional images are uploaded & saved in diff table
         if($request->hasfile('multi_img'))
         {
             foreach(request('multi_img') as $img)
@@ -553,7 +482,7 @@ class ProductController extends Controller
             }
         }
 
-        // Additional tags are saved in diff table
+
         foreach(request('tags') as $tag){
             Tag::firstOrCreate(['tag' => $tag]);
         }
