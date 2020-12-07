@@ -29,10 +29,10 @@ class ProductController extends Controller
     {
         $products = Product::get();
         $brands = Brand::get();
-        $categories = Category::select('name')->groupBy('name')->get();
+        $tags = DB::table('tags')->get();
         $maxPrice = Product::select('price')->max('price');
         $minPrice = Product::select('price')->min('price');
-        return view('products.index',compact(['brands','categories','maxPrice','minPrice','products']));
+        return view('products.index',compact(['brands','tags','maxPrice','minPrice','products']));
     }
 
     public function listProducts(Request $request)
@@ -42,6 +42,14 @@ class ProductController extends Controller
             return Datatables::of($result)
                 ->addIndexColumn()
                 ->addColumn('check', '<input type="checkbox" class="rowSelector" data-id="{{ $id }}">')
+                ->addColumn('stock', function($row){
+                    if($row->ProductInventory->in_stock){
+                        return $txt='<span class="text-success">In stock</span>';
+                    }
+                    else{
+                        return $txt='<span class="text-danger">Out of stock</span>';
+                    }
+                })
                 ->addColumn('status', function($row){
                     $btns = '
                             <div class="custom-control custom-switch custom-switch-off-muted custom-switch-on-success">
@@ -81,7 +89,7 @@ class ProductController extends Controller
                         return $txt = $row->price;
                     }
                 })
-                ->rawColumns(['action', 'check', 'status', 'newprice'])
+                ->rawColumns(['action', 'check','stock', 'status', 'newprice'])
                 ->make(true);
         }
         return view('admin.product');

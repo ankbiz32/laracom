@@ -47,40 +47,42 @@
                         @if(!empty($attribute->attributeDetail))
                         <?php $i = 0; ?>
                             @foreach($attribute->attributeDetail as $k=>$v)
-                                @if($i >= 0)
 
                                 <div class="row form-row attribute_row_{{$k}}" >
-                                <input type ="hidden" id="attribute_id_{{$k}}" name ="Attribute[{{$k}}][attribute_id]" value ="{{$v->id}}">
+                                <input type ="hidden" id="attribute_id_{{$k}}" name ="attr_detail_id[]" value ="{{$v->id}}">
                                     <div class="col-sm-5">
                                         <div class="position-relative form-group">
                                             <label for="attribute_option_{{$k}}" class="">Option Name</label>
-                                            <input type="text" id="attribute_option_{{$k}}" name="Attribute[{{$k}}][name]" class="form-control attribute_option" value="{{ old('name') ?? $v->name}}" />
+                                            <input type="text" id="attribute_option_{{$k}}" name="opt_name[]" class="form-control attribute_option" value="{{ old('name') ?? $v->name}}" required/>
                                         </div>
                                     </div>
                                     <div class="col-sm-5">
                                         <div class="position-relative form-group">
                                             <label for="attribute_describe_{{$k}}" class="">Description</label>
-                                            <input type="text" id="attribute_describe_{{$k}}" name="Attribute[{{$k}}][describe]" class="form-control attribute_describe" value="{{ old('name') ?? $v->describe}}" />
+                                            <input type="text" id="attribute_describe_{{$k}}" name="opt_descr[]" class="form-control attribute_describe" value="{{ old('name') ?? $v->describe}}" />
                                         </div>
                                     </div>
+                                    
+                                    @if($i != 0)
                                     <div class="col-sm-2">
                                         <div class="position-relative form-group" style="margin-top:30px;">
-                                            <a href="javascript:void(0);" class="btn btn-danger" onclick="removeOption('attribute_row_{{$k}}','{{$v->id}}');"><i class="fa fa-trash"></i></a>
+                                            <a href="javascript:void(0);" class="btn btn-danger" onclick="removeOldOption('attribute_row_{{$k}}','{{$v->id}}');"><i class="fa fa-trash"></i></a>
                                         </div>
                                     </div>
+                                    @endif
                                 </div>
 
-                                @endif
                                 <?php $i++; ?>
                             @endforeach
                         @endif
-                        <div class="row" >
+                        <div class="row addRow" >
                             <div class="col-sm-4">
                                 <div class="position-relative form-group">
                                     <a href="javascript:void(0);" class="btn btn-info btn-sm" onclick="addMoreOption();"><i class="fa fa-plus"></i> Add more option</a>
                                 </div>
                             </div>
                         </div>
+                        <input type ="hidden" class="delOldOpt" name ="delOldOpt" value ="">
                     </div>
 
 
@@ -99,31 +101,25 @@
 
         var tsp = Date.now();
 
-        $(".attributeDiv").append('<div class="form-row attribute_row_'+tsp+'"><input type = "hidden" id="attribute_id_'+tsp+'" name = "Attribute['+tsp+'][attribute_id]" value =""><div class="col-md-5"><div class="position-relative form-group"><label for="attribute_option_'+tsp+'" class="">Option Name</label><input type="text" id="attribute_option_'+tsp+'" name="Attribute['+tsp+'][name]" class="form-control attribute_option" value=""></div></div><div class="col-md-5"><div class="position-relative form-group"><label for="attribute_describe_'+tsp+'" class="">Description</label><input type="text" id="attribute_describe_'+tsp+'" name="Attribute['+tsp+'][describe]" class="form-control attribute_describe" value=""></div></div><div class="col-md-2"><div class="position-relative form-group mt-30" style="margin-top:30px;"><a href="javascript:void(0);" class="btn btn-danger" onclick="removeOption(\'attribute_row_'+tsp+'\');"><i class="fa fa-trash"></i></a></div></div></div>');
+        $('<div class="form-row attribute_row_'+tsp+'"><div class="col-md-5"><div class="position-relative form-group"><label for="attribute_option_'+tsp+'" class="">Option Name</label><input type="text" id="attribute_option_'+tsp+'" name="new_opt_name[]" class="form-control attribute_option" value="" required></div></div><div class="col-md-5"><div class="position-relative form-group"><label for="attribute_describe_'+tsp+'" class="">Description</label><input type="text" id="attribute_describe_'+tsp+'" name="new_opt_descr[]" class="form-control attribute_describe" value=""></div></div><div class="col-md-2"><div class="position-relative form-group mt-30" style="margin-top:30px;"><a href="javascript:void(0);" class="btn btn-danger" onclick="removeOption(\'attribute_row_'+tsp+'\');"><i class="fa fa-trash"></i></a></div></div></div>').insertBefore($(".addRow"));
     }
 
+    function removeOldOption(rowId,dId){
+        notie.confirm({ text: 'Are you sure?' }, function() {
+            var t=$(".delOldOpt").val();
+            if(t==''){
+                s=dId;
+                $(".delOldOpt").val(s);
+            }else{
+                s=t+','+dId;
+                $(".delOldOpt").val(s)
+            }
+            $("."+rowId+"").remove();
+        })
+    }
     function removeOption(rowId,dId){
         notie.confirm({ text: 'Are you sure?' }, function() {
-            if(dId==''){
-                $("."+rowId+"").remove();
-            }else{
-                $.ajax({
-                type: "GET",
-                url: "{{ route('attribute.getAttributeDeleted') }}",
-                contentType: "application/json",
-                dataType: "json",
-                data:{
-                    "attribute_id":dId
-                },
-                cache: false,
-                success: function(resp) {
-                // alert(JSON.stringify(resp));
-                    if(resp.status == '200'){
-                        $("."+rowId+"").remove();
-                    }
-                }
-                });
-            }
+            $("."+rowId+"").remove();
         })
     }
     </script>

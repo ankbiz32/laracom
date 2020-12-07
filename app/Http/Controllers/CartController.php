@@ -25,7 +25,7 @@ class CartController extends Controller
     public function add(Request $request, $id)
     {
         $product = Product::find($id);
-        if($product && $product->is_active){
+        if($product && $product->is_active && $product->ProductInventory->in_stock){
             $oldCart = Session::has('cart') ? Session::get('cart') : null;
             if($oldCart){
                 if(array_key_exists($id,$oldCart->items)){

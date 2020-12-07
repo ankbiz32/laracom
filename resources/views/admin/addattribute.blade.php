@@ -59,7 +59,7 @@
                                     <div class="col-sm-5">
                                         <div class="position-relative form-group">
                                             <label for="attribute_option_0" class="">Option Name</label>
-                                            <input type="text" id="attribute_option_0" name="Attribute[0][name]" class="form-control attribute_option" value="" />
+                                            <input type="text" id="attribute_option_0" name="Attribute[0][name]" class="form-control attribute_option" value="" required />
                                         </div>
                                     </div>
                                     <div class="col-sm-5">
@@ -96,7 +96,7 @@ function addMoreOption(){
 
 	var tsp = Date.now();
 
-	$(".attributeDiv").append('<div class="form-row attribute_row_'+tsp+'"><div class="col-md-5"><div class="position-relative form-group"><label for="attribute_option_'+tsp+'" class="">Option Name</label><input type="text" id="attribute_option_'+tsp+'" name="Attribute['+tsp+'][name]" class="form-control attribute_option" value=""></div></div><div class="col-md-5"><div class="position-relative form-group"><label for="attribute_describe_'+tsp+'" class="">Description</label><input type="text" id="attribute_describe_'+tsp+'" name="Attribute['+tsp+'][describe]" class="form-control attribute_describe" value=""></div></div><div class="col-md-2"><div class="position-relative form-group mt-30" style="margin-top:30px;"><a href="javascript:void(0);" class="btn btn-danger" onclick="removeOption(\'attribute_row_'+tsp+'\');"><i class="fa fa-trash"></i></a></div></div></div>');
+	$(".attributeDiv").append('<div class="form-row attribute_row_'+tsp+'"><div class="col-md-5"><div class="position-relative form-group"><label for="attribute_option_'+tsp+'" class="">Option Name</label><input type="text" id="attribute_option_'+tsp+'" name="Attribute['+tsp+'][name]" class="form-control attribute_option" value="" required></div></div><div class="col-md-5"><div class="position-relative form-group"><label for="attribute_describe_'+tsp+'" class="">Description</label><input type="text" id="attribute_describe_'+tsp+'" name="Attribute['+tsp+'][describe]" class="form-control attribute_describe" value=""></div></div><div class="col-md-2"><div class="position-relative form-group mt-30" style="margin-top:30px;"><a href="javascript:void(0);" class="btn btn-danger" onclick="removeOption(\'attribute_row_'+tsp+'\');"><i class="fa fa-trash"></i></a></div></div></div>');
 }
 
 function removeOption(rowId){

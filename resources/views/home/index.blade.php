@@ -205,12 +205,15 @@
                                         <a href="{{ route('product.show',['product'=>$product->id,'slug'=>$product->url_slug]) }}">
                                             <img src="{{ $product->image }}" style="width:100%; height:340px; -o-object-fit:contain; object-fit:contain;" alt="Product Image">
                                         </a>
-                                        <span class="sticker">New</span>
-                                        @if($product->ProductDiscount->has_discount)
-                                            @if($product->ProductDiscount->type == 'FLAT')
-                                                <span class="sticker-2"><small class="bg-warning pt-2 pb-1 text-dark px-2">FLAT DISCOUNT</small></span>
-                                            @else
-                                                <span class="sticker-2"><small class="bg-warning pt-2 pb-1 text-dark px-2">{{$product->ProductDiscount->rate}}% OFF</small></span>
+                                        @if(!$product->ProductInventory->in_stock)
+                                            <span class="sticker">Out of stock</span>
+                                        @else
+                                            @if($product->ProductDiscount->has_discount)
+                                                @if($product->ProductDiscount->type == 'FLAT')
+                                                    <span class="sticker-2"><small class="bg-warning pt-2 pb-1 text-dark px-2">FLAT DISCOUNT</small></span>
+                                                @else
+                                                    <span class="sticker-2"><small class="bg-warning pt-2 pb-1 text-dark px-2">{{$product->ProductDiscount->rate}}% OFF</small></span>
+                                                @endif
                                             @endif
                                         @endif
                                         <div class="add-actions">

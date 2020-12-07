@@ -79,12 +79,6 @@ class AttributeController extends Controller
     public function edit($id)
     {
         $attribute = Attribute::with('attributeDetail')->findOrFail($id);
-        //echo '<pre>';
-        //print_r($attribute->toArray());
-        //exit;
-        //$attribute = Attribute::findOrFail($id);
-        //print_r($attribute);
-        //exit;
         return view('admin.editattribute',compact('attribute'));
 
     }
@@ -98,69 +92,39 @@ class AttributeController extends Controller
      */
     public function update(Request $request, $id)
     {
-
         $attribute = Attribute::find($id);
         $attribute->name = $request->get('name'); 
         $attribute->update();
-
-            foreach($request->get('Attribute') as $k){
-                //print_r($k);
-                //exit;
-                $did = $k['attribute_id'];
-                if(!empty($did)){
-                    $attribute_detail = AttributeDetail::find($did);
-                    $attribute_detail->attribute_id=$attribute->id;
-                    $attribute_detail->name=$k['name'];
-                    $attribute_detail->describe=$k['describe'];
-                    $attribute_detail->update();
+        
+            if($request->get('delOldOpt')!=''){
+                $ids=explode(',',$request->get('delOldOpt'));
+                foreach($ids as $k){
+                    AttributeDetail::where('id',$k)->delete();
                 }
-                else{
+            }
+            if($request->get('new_opt_name')){
+                for($g=0; $g<count($request->get('new_opt_name')); $g++){
+                    $non=$request->get('new_opt_name');
+                    $nod=$request->get('new_opt_descr');
                     $attribute_detail = new AttributeDetail;
-                    $attribute_detail->attribute_id=$attribute->id;
-                    $attribute_detail->name=$k['name'];
-                    $attribute_detail->describe=$k['describe'];
+                    $attribute_detail->attribute_id=$id;
+                    $attribute_detail->name=$non[$g];
+                    $attribute_detail->describe=$nod[$g];
                     $attribute_detail->save();
                 }
             }
+
+            // dd('t');
+            for($g=0; $g<count($request->get('attr_detail_id')); $g++){
+                $on=$request->get('opt_name');
+                $od=$request->get('opt_descr');
+                $attribute_detail = AttributeDetail::find($request->get('attr_detail_id')[$g]);
+                $attribute_detail->attribute_id=$id;
+                $attribute_detail->name=$on[$g];
+                $attribute_detail->describe=$od[$g];
+                $attribute_detail->update();
+            }
         return redirect()->route('admin.attribute')->with('success','Attribute update !');
-
-
-        if(request('image'))
-        {
-            $imagepath = $request->image->store('products','public');
-            $product = Product::findOrFail($id);
-
-            $product->name=request('name');
-            $product->brand=request('brand');
-            $product->price=request('price');
-            $product->gender=request('gender');
-            $product->category=request('category');
-            $product->image=$imagepath;
-            $product->save();
-        }
-        else
-        {
-            $product = Product::findOrFail($id);
-            $product->name=request('name');
-            $product->brand=request('brand');
-            $product->price=request('price');
-            $product->gender=request('gender');
-            $product->category=request('category');
-            $product->save();
-        }
-        return redirect()->route('admin.product')->with('success','Product updated !');
-
-
-
-
-        //$attribute = Attribute::with('attributeDetail')->findOrFail($id);
-        //echo '<pre>';
-        //print_r($attribute->toArray());
-        //exit;
-        //$attribute = Attribute::findOrFail($id);
-        //print_r($attribute);
-        //exit;
-        //return view('admin.editattribute',compact('attribute'));
     }
 
     /**
@@ -172,12 +136,11 @@ class AttributeController extends Controller
     public function destroy($id)
     {
         Attribute::where('id',$id)->delete();
+        ProductAttribute::where('id',$id)->delete();
         AttributeDetail::where('attribute_id',$id)->delete();
 
         return redirect()->route('admin.attribute')->with('success','Attribute removed !');
     }
-
-
 
     public function getAttributeDeleted(Request $request)
     {

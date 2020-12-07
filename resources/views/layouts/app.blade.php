@@ -59,7 +59,7 @@
                                 <div class="main-menu_area d-none d-lg-block">
                                     <nav class="main-nav d-flex justify-content-center">
                                         <ul>
-                                            <li class=""><a href="javascript:void(0)">Home</a>
+                                            <li class=""><a href="{{URL::to('/')}}">Home</a>
                                             </li>
                                             <li class="megamenu-holder position-static"><a href="javascript:void(0)">Shop <small><small><i class="icon-arrow-down"></i></small></small></a>
                                                 <div class="quicky-megamenu_wrap">
@@ -108,7 +108,14 @@
                                             <a href="#miniCart" class="minicart-btn toolbar-btn">
                                                 <div class="minicart-count_area">
                                                     <i class="zmdi zmdi-mall p-1"></i>
-                                                    <small><sup class="badge badge-danger badge-pills">1</sup></small>
+                                                    <small><sup class="badge badge-danger pt-sm-1 pt-1">
+                                                    @if(Session::has('cart'))
+                                                    {{ Session::get('cart')->totalQuantity }}
+                                                    @else
+                                                        0
+                                                    @endif
+
+                                                    </sup></small>
                                                     <!-- <p class="total-price">$420 <span>(10)</span></p> -->
                                                 </div>
                                             </a>
