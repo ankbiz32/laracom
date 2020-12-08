@@ -28,11 +28,12 @@ class ProductController extends Controller
     public function index()
     {
         $products = Product::get();
+        $categories = Category::where('parent_id', '=', 0)->get();
         $brands = Brand::get();
         $tags = DB::table('tags')->get();
         $maxPrice = Product::select('price')->max('price');
         $minPrice = Product::select('price')->min('price');
-        return view('products.index',compact(['brands','tags','maxPrice','minPrice','products']));
+        return view('products.index',compact(['brands','tags','categories','maxPrice','minPrice','products']));
     }
 
     public function listProducts(Request $request)
@@ -153,23 +154,22 @@ class ProductController extends Controller
         if($request->ajax())
         {
             $products= Product::where('is_active','=',1);
-            $query = json_decode($request->get('query'));
+            // $query = json_decode($request->get('query'));
             $price = json_decode($request->get('price'));
-            $brand = json_decode($request->get('brand'));
-            $attribute_detail_id = json_decode($request->get('attribute_detail_id'));
-
-            if(!empty($query))
-            {
-                $products= $products->where('name','like','%'.$query.'%');
-            }
+            // $brand = json_decode($request->get('brand'));
+            // $attribute_detail_id = json_decode($request->get('attribute_detail_id'));
             if(!empty($price))
             {
                 $products= $products->where('price','<=',$price);
             }
-            if(!empty($brand))
-            {
-                $products= $products->whereIn('brand_id',$brand);
-            }
+            // if(!empty($query))
+            // {
+            //     $products= $products->where('name','like','%'.$query.'%');
+            // }
+            // if(!empty($brand))
+            // {
+            //     $products= $products->whereIn('brand_id',$brand);
+            // }
             $products=$products->get();
 
             $total_row = $products->count();
@@ -179,30 +179,111 @@ class ProductController extends Controller
                 foreach($products as $product)
                 {
                     $output .='
-                    <div class="col-lg-4 col-md-6 col-sm-12 pt-3">
-                        <div class="card">
-                            <a href="product/'.$product->id.'">
-                                <div class="card-body ">
-                                    <div class="product-info">
-
-                                    <div class="info-1"><img src="'.asset($product->image).'" alt=""></div>
-                                    <div class="info-4"><h5>'.$product->brand_id.'</h5></div>
-                                    <div class="info-2"><h4>'.$product->name.'</h4></div>
-                                    <div class="info-3"><h5>RM '.$product->price.'</h5></div>
+                            <div class="col-12">
+                                <div class="product-item">
+                                    <div class="single-product">
+                                        <div class="product-img">
+                                            <a href="single-product.html">
+                                                <img src="assets/images/product/medium-size/25.jpg" alt=" Product Image">
+                                            </a>
+                                            <div class="add-actions">
+                                                <ul>
+                                                    <li class="quick-view-btn" data-toggle="modal" data-target="#exampleModalCenter"><a href="javascript:void(0)" data-toggle="tooltip" data-placement="top" title="Quick View"><i class="icon-magnifier"></i></a>
+                                                    </li>
+                                                    <li><a href="wishlist.html" data-toggle="tooltip" data-placement="top" title="Add To Wishlist"><i
+                                                            class="icon-heart"></i></a>
+                                                    </li>
+                                                    <li><a href="compare.html" data-toggle="tooltip" data-placement="top" title="Add To Compare"><i
+                                                            class="icon-refresh"></i></a>
+                                                    </li>
+                                                    <li><a href="cart.html" data-toggle="tooltip" data-placement="top" title="Add To cart"><i class="icon-bag"></i></a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                        <div class="product-content bg-snow">
+                                            <div class="product-desc_info">
+                                                <div class="manufacture-product_top">
+                                                    <span>Clock</span>
+                                                </div>
+                                                <h3 class="product-name"><a href="single-product.html">Abstract Design
+                                                        Clock</a></h3>
+                                                <div class="price-box">
+                                                    <span class="new-price ml-0">$70.00</span>
+                                                </div>
+                                                <div class="review-area d-flex justify-content-between align-items-center">
+                                                    <div class="rating-box gamboge-color">
+                                                        <ul>
+                                                            <li><i class="icon-star"></i></li>
+                                                            <li><i class="icon-star"></i></li>
+                                                            <li><i class="icon-star"></i></li>
+                                                            <li><i class="icon-star"></i></li>
+                                                            <li><i class="icon-star"></i></li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
-                            </a>
-                        </div>
-                    </div>
+                                <div class="list-product_item">
+                                    <div class="single-product">
+                                        <div class="product-img">
+                                            <a href="single-product.html">
+                                                <img src="assets/images/product/medium-size/25.jpg" alt=" Product Image">
+                                            </a>
+                                        </div>
+                                        <div class="quicky-product-content">
+                                            <div class="product-desc_info">
+                                                <h6 class="product-name"><a href="single-product.html">Abstract Design Clock</a>
+                                                </h6>
+                                                <div class="price-box">
+                                                    <span class="old-price">$75.00</span>
+                                                    <span class="new-price">$70.00</span>
+                                                </div>
+                                                <div class="rating-box gamboge-color">
+                                                    <ul>
+                                                        <li><i class="icon-star"></i></li>
+                                                        <li><i class="icon-star"></i></li>
+                                                        <li><i class="icon-star"></i></li>
+                                                        <li><i class="icon-star"></i></li>
+                                                        <li><i class="icon-star"></i></li>
+                                                    </ul>
+                                                </div>
+                                                <div class="product-short_desc">
+                                                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+                                                        tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim
+                                                        veniam, quis nostrud exercitation ullamco,Proin lectus ipsum, gravida et
+                                                        mattis vulputate, tristique ut lectus</p>
+                                                </div>
+                                            </div>
+                                            <div class="add-actions">
+                                                <ul>
+                                                    <li class="quick-view-btn" data-toggle="modal" data-target="#exampleModalCenter"><a href="javascript:void(0)" data-toggle="tooltip" data-placement="top" title="Quick View"><i class="icon-magnifier"></i></a>
+                                                    </li>
+                                                    <li><a href="wishlist.html" data-toggle="tooltip" data-placement="top" title="Add To Wishlist"><i
+                                                            class="icon-heart"></i></a>
+                                                    </li>
+                                                    <li><a href="compare.html" data-toggle="tooltip" data-placement="top" title="Add To Compare"><i
+                                                            class="icon-refresh"></i></a>
+                                                    </li>
+                                                    <li><a href="cart.html" data-toggle="tooltip" data-placement="top" title="Add To cart"><i class="icon-bag"></i></a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                     ';
                 }
             }
             else
             {
                 $output='
-                <div class="col-lg-4 col-md-6 col-sm-6 pt-3">
-                    <h4>No Data Found</h4>
-                </div>
+                    <div class="col-12">
+                        <h5>No products found.</h5>
+                    </div>
                 ';
             }
             $data = array(
