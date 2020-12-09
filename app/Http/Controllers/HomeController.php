@@ -18,4 +18,16 @@ class HomeController extends Controller
         return view('home.index',compact('products'));
 
     }
+
+    public function tag($tag)
+    {
+        $products = Product::where('tags','LIKE','%'.$tag.'%')->get();
+        dd($products);
+    }
+
+    public function category($category_id, $slug)
+    {
+        $products = DB::table('products')->where('name','LIKE','%'.$slug.'%')->get();
+        dd($products);
+    }
 }

@@ -724,19 +724,23 @@
 	var sliderrange = $('#slider-range');
 	var amountprice = $('#amount');
 	var minPrice = $('#amount').data('min');
+	if(minPrice<5){
+		minPrice=5;
+	}
+	var minPrice = $('#amount').data('min');
 	var maxPrice = $('#amount').data('max');
 	$(function () {
 		sliderrange.slider({
 			range: true,
-			min: minPrice,
-			max: maxPrice,
+			min: minPrice-5,
+			max: maxPrice+100,
 			values: [minPrice, maxPrice],
 			slide: function (event, ui) {
-				amountprice.val(ui.values[1]);
+				amountprice.val('$' + sliderrange.slider('values', 0) + ' - $' + sliderrange.slider('values', 1));
 			}
 		});
-		// amountprice.val('$' + sliderrange.slider('values', 0) + ' - $' + sliderrange.slider('values', 1));
-		amountprice.val(sliderrange.slider('values', 1));
+		amountprice.val('$' + sliderrange.slider('values', 0) + ' - $' + sliderrange.slider('values', 1));
+		// amountprice.val(sliderrange.slider('values', 1));
 	});
 
 	/*--------------------------------

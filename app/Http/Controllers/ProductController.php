@@ -156,11 +156,14 @@ class ProductController extends Controller
             $products= Product::where('is_active','=',1);
             // $query = json_decode($request->get('query'));
             $price = json_decode($request->get('price'));
+            preg_match_all('!\d+!', $price, $range);
+            $minP=$range[0][0];
+            $maxP=$range[0][1];
             // $brand = json_decode($request->get('brand'));
             // $attribute_detail_id = json_decode($request->get('attribute_detail_id'));
             if(!empty($price))
             {
-                $products= $products->where('price','<=',$price);
+                $products= $products->whereBetween('price', [$minP, $maxP]);
             }
             // if(!empty($query))
             // {
@@ -183,33 +186,42 @@ class ProductController extends Controller
                                 <div class="product-item">
                                     <div class="single-product">
                                         <div class="product-img">
-                                            <a href="single-product.html">
-                                                <img src="assets/images/product/medium-size/25.jpg" alt=" Product Image">
+                                            <a href="'.route('product.show',['product'=>$product->id,'slug'=>$product->url_slug]).'">
+                                                <img src="'.$product->image.'" style="width:100%; height:200px; -o-object-fit:cover; object-fit:cover;" alt="Product Image">
                                             </a>
                                             <div class="add-actions">
                                                 <ul>
-                                                    <li class="quick-view-btn" data-toggle="modal" data-target="#exampleModalCenter"><a href="javascript:void(0)" data-toggle="tooltip" data-placement="top" title="Quick View"><i class="icon-magnifier"></i></a>
+                                                    <li><a href="#" data-toggle="tooltip" data-placement="top" title="Add To Wishlist"><i class="icon-heart"></i></a>
                                                     </li>
-                                                    <li><a href="wishlist.html" data-toggle="tooltip" data-placement="top" title="Add To Wishlist"><i
-                                                            class="icon-heart"></i></a>
-                                                    </li>
-                                                    <li><a href="compare.html" data-toggle="tooltip" data-placement="top" title="Add To Compare"><i
-                                                            class="icon-refresh"></i></a>
-                                                    </li>
-                                                    <li><a href="cart.html" data-toggle="tooltip" data-placement="top" title="Add To cart"><i class="icon-bag"></i></a>
+
+                                                    <li><a href="'. route('product.show',['product'=>$product->id,'slug'=>$product->url_slug]) .'" data-toggle="tooltip" data-placement="top" title="View product"><i class="icon-eye"></i></a>
                                                     </li>
                                                 </ul>
                                             </div>
                                         </div>
                                         <div class="product-content bg-snow">
                                             <div class="product-desc_info">
-                                                <div class="manufacture-product_top">
-                                                    <span>Clock</span>
-                                                </div>
-                                                <h3 class="product-name"><a href="single-product.html">Abstract Design
-                                                        Clock</a></h3>
-                                                <div class="price-box">
-                                                    <span class="new-price ml-0">$70.00</span>
+                                            <h3 class="product-name"><a href="'. route('product.show',['product'=>$product->id,'slug'=>$product->url_slug]) .'">'.$product->name .'</a></h3>
+                                                <div class="price-box">';
+                                            if($product->ProductDiscount->has_discount) {
+                                                if($product->ProductDiscount->type == 'FLAT') {
+                                                    $output .='
+                                                            <span class="old-price">₹'.$product->price .'</span>
+                                                            <span class="new-price">₹'.$product->ProductDiscount->rate .'</span>';
+                                                }
+                                                else{
+                                                     $output .='    
+                                                        <span class="old-price">₹'.$product->price .'</span>          
+                                                        <span class="new-price">₹'. ( (100 - $product->ProductDiscount->rate) / 100) * $product->price .'</span>';
+                                                }
+                                            }
+                                            else{
+                     $output .='
+                                                
+                                                    <span class="new-price ml-0">₹'.$product->price.'</span>';
+
+                                            }
+                    $output .='
                                                 </div>
                                                 <div class="review-area d-flex justify-content-between align-items-center">
                                                     <div class="rating-box gamboge-color">
@@ -229,17 +241,36 @@ class ProductController extends Controller
                                 <div class="list-product_item">
                                     <div class="single-product">
                                         <div class="product-img">
-                                            <a href="single-product.html">
-                                                <img src="assets/images/product/medium-size/25.jpg" alt=" Product Image">
+                                            <a href="'.route('product.show',['product'=>$product->id,'slug'=>$product->url_slug]).'">
+                                                <img src="'.$product->image.'" alt=" Product Image">
                                             </a>
                                         </div>
                                         <div class="quicky-product-content">
                                             <div class="product-desc_info">
-                                                <h6 class="product-name"><a href="single-product.html">Abstract Design Clock</a>
+                                                <h6 class="product-name"><a href="'.route('product.show',['product'=>$product->id,'slug'=>$product->url_slug]).'">'.$product->name .'</a>
                                                 </h6>
-                                                <div class="price-box">
-                                                    <span class="old-price">$75.00</span>
-                                                    <span class="new-price">$70.00</span>
+                                                <div class="price-box">';
+                                                
+                                            if($product->ProductDiscount->has_discount) {
+                                                if($product->ProductDiscount->type == 'FLAT') {
+                                                    $output .='
+                                                            <span class="old-price">₹'.$product->price .'</span>
+                                                            <span class="new-price">₹'.$product->ProductDiscount->rate .'</span>';
+                                                }
+                                                else{
+                                                     $output .='    
+                                                        <span class="old-price">₹'.$product->price .'</span>          
+                                                        <span class="new-price">₹'. ( (100 - $product->ProductDiscount->rate) / 100) * $product->price .'</span>';
+                                                }
+                                            }
+                                            else{
+                     $output .='
+                                                
+                                                    <span class="new-price ml-0">₹'.$product->price.'</span>';
+
+                                            }
+                                            
+                     $output .='
                                                 </div>
                                                 <div class="rating-box gamboge-color">
                                                     <ul>
@@ -251,23 +282,16 @@ class ProductController extends Controller
                                                     </ul>
                                                 </div>
                                                 <div class="product-short_desc">
-                                                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-                                                        tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim
-                                                        veniam, quis nostrud exercitation ullamco,Proin lectus ipsum, gravida et
-                                                        mattis vulputate, tristique ut lectus</p>
+                                                    <p>'.$product->ProductDescription->short_des.'</p>
                                                 </div>
                                             </div>
                                             <div class="add-actions">
                                                 <ul>
-                                                    <li class="quick-view-btn" data-toggle="modal" data-target="#exampleModalCenter"><a href="javascript:void(0)" data-toggle="tooltip" data-placement="top" title="Quick View"><i class="icon-magnifier"></i></a>
+                                                    <li><a href="#" data-toggle="tooltip" data-placement="top" title="Add To Wishlist"><i class="icon-heart"></i></a>
                                                     </li>
-                                                    <li><a href="wishlist.html" data-toggle="tooltip" data-placement="top" title="Add To Wishlist"><i
-                                                            class="icon-heart"></i></a>
+
+                                                    <li><a href="'. route('product.show',['product'=>$product->id,'slug'=>$product->url_slug]) .'" data-toggle="tooltip" data-placement="top" title="View product"><i class="icon-eye"></i></a>
                                                     </li>
-                                                    <li><a href="compare.html" data-toggle="tooltip" data-placement="top" title="Add To Compare"><i
-                                                            class="icon-refresh"></i></a>
-                                                    </li>
-                                                    <li><a href="cart.html" data-toggle="tooltip" data-placement="top" title="Add To cart"><i class="icon-bag"></i></a>
                                                     </li>
                                                 </ul>
                                             </div>
@@ -287,7 +311,8 @@ class ProductController extends Controller
                 ';
             }
             $data = array(
-                'table_data'  =>$output
+                'table_data'  =>$output,
+                'total_row'  =>$total_row
             );
             echo json_encode($data);
         }
@@ -295,15 +320,18 @@ class ProductController extends Controller
 
     public function show(Product $product)
     {
-        $data['main'] = $product;
-        $data['images'] = $product->productImage;
-        $data['descr'] = $product->ProductDescription;
-        $data['disc'] = $product->ProductDiscount;
-        $data['attr'] = $product->productAttribute;
-        $data['inventory'] = $product->ProductInventory;
-        $data['brand'] = $product->Brand;
-        $data['brands'] = Brand::get();
-        return view('products.show', compact ('data'));
+        if($product->is_active){
+            $data['main'] = $product;
+            $data['images'] = $product->productImage;
+            $data['descr'] = $product->ProductDescription;
+            $data['disc'] = $product->ProductDiscount;
+            $data['attr'] = $product->productAttribute;
+            $data['inventory'] = $product->ProductInventory;
+            $data['brand'] = $product->Brand;
+            $data['brands'] = Brand::get();
+            return view('products.show', compact ('data'));
+        }
+        abort(404);
     }
 
     public function quickView(Request $request)

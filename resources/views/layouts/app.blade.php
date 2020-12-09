@@ -91,7 +91,7 @@
                                                     <li><a href="#">FAQ</a></li>
                                                 </ul>
                                             </li>
-                                            <li><a href="javascript:void(0)">Blog</a>
+                                            <li><a href="{{ route('product.index') }}">Products</a>
                                             </li>
                                             <li><a href="javascript:void(0)">Contact</a></li>
                                         </ul>

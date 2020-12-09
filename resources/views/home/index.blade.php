@@ -203,7 +203,7 @@
                                 <div class="single-product">
                                     <div class="product-img">
                                         <a href="{{ route('product.show',['product'=>$product->id,'slug'=>$product->url_slug]) }}">
-                                            <img src="{{ $product->image }}" style="width:100%; height:340px; -o-object-fit:contain; object-fit:contain;" alt="Product Image">
+                                            <img src="{{ $product->image }}" style="width:100%; height:250px; -o-object-fit:cover; object-fit:cover;" alt="Product Image">
                                         </a>
                                         @if(!$product->ProductInventory->in_stock)
                                             <span class="sticker">Out of stock</span>

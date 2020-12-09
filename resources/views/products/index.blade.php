@@ -28,8 +28,10 @@
                               <div class="price-slider-amount">
                                   <div class="label-input">
                                       <label>price : </label>
-                                      <input type="text" id="amount" data-min="{{$minPrice}}" data-max="{{$maxPrice}}" name="price" placeholder="Add Your Price" />
-                                      <button class="filter-btn">Filter</button>
+                                      <input type="text" id="amount" data-min="{{$minPrice}}" data-max="{{$maxPrice}}" name="price" placeholder="Add Your Price" class="mb-2" />
+                                      
+                                        <button class="quicky-btn-outline btn-block filter text-center py-2">Apply filter</button>
+                                      <!-- <button class="filter-btn">Filter</button> -->
                                   </div>
                               </div>
                           </div>
@@ -37,7 +39,7 @@
 
                       <div class="quicky-sidebar_categories category-module">
                           <div class="quicky-categories_title">
-                              <h5 class="pb-2">Product Categories :</h5>
+                              <h5 class="pb-2">Categories :</h5>
                           </div>
                           <div class="sidebar-categories_menu">
                               <ul>
@@ -64,11 +66,11 @@
 
                       <div class="quicky-sidebar_categories">
                           <div class="quicky-categories_title quicky-tags_title">
-                              <h5 class="pb-2">Product Tags :</h5>
+                              <h5 class="pb-2">Tags :</h5>
                           </div>
                           <ul class="quicky-tags_list">
                             @foreach($tags as $tag)
-                                <li><a href="javascript:void(0)">{{$tag->tag}}</a></li>
+                                <li><a href="{{ route( 'tag.list', ['tag'=>$tag->tag] ) }}">{{$tag->tag}}</a></li>
                             @endforeach
                           </ul>
                       </div>
@@ -91,11 +93,11 @@
                           <a class="list" data-target="listview" data-toggle="tooltip" data-placement="top" title="List View"><i class="zmdi zmdi-view-list-alt"></i></a>
                       </div>
                       <div class="product-page_count">
-                          <p>(Showing 1–9 of 40 results)</p>
+                          <p></p>
                       </div>
                       <div class="product-item-selection_area">
                           <div class="product-short">
-                              <label class="select-label">Sort By:</label>
+                              <label class="select-label">Sort by:</label>
                               <select class="nice-select">
                                   <option value="1">Default sorting</option>
                                   <option value="2">Name, A to Z</option>
@@ -110,9 +112,14 @@
                           </div>
                       </div>
                   </div>
-                  <div class="shop-product-wrap grid gridview-3 row">
+                  <div class="shop-product-wrap grid gridview-3 row h-100">
+                    <div class="h-100 w-100 bg-white d-flex justify-content-center align-items-center ajax-loader" style="opacity:0.4">
+                        <div class="zmdi zmdi-hc-spin" style="margin-top:-500px;">
+                            <i class="zmdi zmdi-refresh" style="transform:scale(5);opacity:0.6"></i>
+                        </div>
+                    </div>
                   </div>
-                  <div class="row">
+                  <!-- <div class="row">
                       <div class="col-lg-12">
                           <div class="quicky-paginatoin-area">
                               <ul class="quicky-pagination-box">
@@ -125,7 +132,7 @@
                               </ul>
                           </div>
                       </div>
-                  </div>
+                  </div> -->
               </div>
           </div>
       </div>
@@ -138,6 +145,7 @@
 
   $(document).ready(function(){
 
+    var loader = $('.ajax-loader');
       filter_data('');
 
       function filter_data(query='')
@@ -156,9 +164,15 @@
                 //   brand:brand,
                   },
               dataType:'json',
+              beforeSend:function(){
+                  $('.shop-product-wrap').html(loader);
+                  loader.fadeIn();
+              },
               success:function(data)
               {
+                  loader.fadeOut();
                   $('.shop-product-wrap').html(data.table_data);
+                  $('.product-page_count p').html('(Total '+data.total_row+' products found)');
               }
           })
       }
@@ -177,18 +191,13 @@
           filter_data(query);
       });
 
-      $(document).on('click','.filter-btn',function(){
+      $(document).on('click','.filter',function(){
           filter_data('');
       });
 
       $('.selector').click(function(){
           var query = $('#search').val();
           filter_data(query);
-      });
-
-      $(document).on('input','#pricerange',function(){
-          var range = $(this).val();
-          $('#currentrange').html(range);
       });
 
       $(document).on('change','#size-dropdown',function(){
