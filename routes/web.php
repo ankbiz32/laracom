@@ -92,8 +92,10 @@ Route::post('/admin-country/status', 'CountryController@status')->name('country.
 Route::post('/admin-country/bulkStatus', 'CountryController@bulkStatus')->name('country.bulkStatus')->middleware(['auth','admin']);
 
 
-Route::get('/tag/{tag}','HomeController@tag')->name('tag.list');
+Route::get('/tags/{tag}','HomeController@tag')->name('tag.list');
+Route::get('/tag/filter','HomeController@filter')->name('tag.filter');
 Route::get('/category/{category}/{slug}','HomeController@category')->name('category.list');
+Route::get('/category/filter','HomeController@categoryFilter')->name('category.filter');
 
 Route::get('/cart','CartController@index')->name('cart.index');
 Route::get('/cart/add/{product}','CartController@add')->name('cart.add');

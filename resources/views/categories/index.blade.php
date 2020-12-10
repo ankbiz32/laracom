@@ -4,10 +4,10 @@
   <div class="breadcrumb-area">
       <div class="container">
           <div class="breadcrumb-content">
-              <h2>Product</h2>
+              <h2>Tags</h2>
               <ul>
                   <li><a href="{{URL('/')}}">Home</a></li>
-                  <li class="active">Products</li>
+                  <li class="active">Tags</li>
               </ul>
           </div>
       </div>
@@ -81,19 +81,14 @@
 
       function filter_data(query='')
       {
-        //   var search=JSON.stringify(query);
           var price =JSON.stringify($('#amount').val());
-        //   var gender =JSON.stringify(get_filter('gender'));
-        //   var brand =JSON.stringify(get_filter('brand'));
           $.ajax({
-              url:"{{ route('product.filter') }}",
+              url:"{{ route('category.filter') }}",
               method:'GET',
               data:{
                   price:price,
-                //   query:search,
-                //   gender:gender,
-                //   brand:brand,
-                  },
+                  cid:'{{$cid}}'
+                },
               dataType:'json',
               beforeSend:function(){
                   $('.shop-product-wrap').html(loader);

@@ -27,13 +27,11 @@ class ProductController extends Controller
 {
     public function index()
     {
-        $products = Product::get();
         $categories = Category::where('parent_id', '=', 0)->get();
-        $brands = Brand::get();
         $tags = DB::table('tags')->get();
         $maxPrice = Product::select('price')->max('price');
         $minPrice = Product::select('price')->min('price');
-        return view('products.index',compact(['brands','tags','categories','maxPrice','minPrice','products']));
+        return view('products.index',compact(['tags','categories','maxPrice','minPrice']));
     }
 
     public function listProducts(Request $request)
@@ -383,13 +381,24 @@ class ProductController extends Controller
         $product = new Product();
         $product->name=request('name');
         $product->price=request('price');
-        $product->category_id=json_encode(request('category'));
         $product->brand_id=request('brand');
         $product->image=$imagepath;
         $product->max_order_qty=request('max_order_qty');
         $product->tags=json_encode(request('tags'));
         $product->url_slug=str_slug(request('name'), '-');
         $product->save();
+
+        // Save category product relation
+        $dataSet = [];
+        foreach (request('category') as $ctgid) {
+            $dataSet[] = [
+                'category_id'  => $ctgid,
+                'product_id'    => $product->id,
+                'created_at'       => date('Y-m-d H:i:s'),
+                'updated_at'       => date('Y-m-d H:i:s')
+            ];
+        }
+        DB::table('category_product')->insert($dataSet);
 
         // Save product discount detail
         $product_discount = new ProductDiscount;
@@ -485,7 +494,6 @@ class ProductController extends Controller
     public function edit(Request $request,$id)
     {
         $product = Product::findOrFail($id);
-        $product->category_id=json_encode($request->get('category'));
         $product->brand_id=$request->get('brand');
         $product->name=$request->get('name');
         $product->price=$request->get('price');
@@ -499,7 +507,18 @@ class ProductController extends Controller
                 $productImage =ProductImage::where('id',$v)->delete();
             }
         }
-
+        
+        // Edit category product relation
+        DB::table('category_product')->where('product_id', $id)->delete();
+        $dataSet = [];
+        foreach (request('category') as $ctgid) {
+            $dataSet[] = [
+                'category_id'  => $ctgid,
+                'product_id'    => $id,
+                'updated_at'       => date('Y-m-d H:i:s')
+            ];
+        }
+        DB::table('category_product')->insert($dataSet);
 
         ProductAttribute::where('product_id',$id)->delete();
         if(!empty($request->get('attr'))){

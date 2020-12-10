@@ -41,4 +41,9 @@ class Product extends Model
     public function ProductSeo(){
         return $this->hasOne(ProductSeo::class, 'product_id');
     }
+
+    public function categories()
+    {
+        return $this->belongsToMany(Category::class);
+    }
 }

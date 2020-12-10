@@ -1,6 +1,11 @@
 <?php
-use App\AttributeDetail;
+    use App\AttributeDetail;
+    $catArray=array();
+    foreach($product->categories as $ctg){
+        $catArray[]=$ctg->id;
+    }
 ?>
+
 @extends('layouts.admin')
 @section('css')
     <link rel="stylesheet" href="{{URL::to('/')}}/plugins/select2/css/select2.min.css">
@@ -116,7 +121,7 @@ use App\AttributeDetail;
                                                     @if($categories)
                                                         <option value="" disabled>Select categories</option>
                                                         @foreach($categories as $c)
-                                                            @if(in_array($c->id,json_decode($product->category_id)))
+                                                            @if(in_array($c->id, $catArray))
                                                             <option value="{{ $c->id }}" selected="selected">{{ $c->full_name }}</option>
                                                             @else
                                                             <option value="{{ $c->id }}">{{ $c->full_name }}</option>
