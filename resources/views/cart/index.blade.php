@@ -98,7 +98,7 @@
                     </form>
                     @else
                     <div class="col-12 text-center">
-                        <i class="zmdi zmdi-shopping-cart-plus" style="transform:scale(6)"></i>
+                        <i class="zmdi zmdi-shopping-cart-plus" style="transform:scale(4)"></i>
                         <h5 class="mt-5 mb-3">Your shopping cart is empty. Please add some products.</h5>
                         <a href="{{ route('product.index') }}" class="quicky-btn">Go to shop </a>
                     </div>

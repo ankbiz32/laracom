@@ -151,27 +151,24 @@ class ProductController extends Controller
     {
         if($request->ajax())
         {
-            $products= Product::where('is_active','=',1);
             // $query = json_decode($request->get('query'));
+            // $attribute_detail_id = json_decode($request->get('attribute_detail_id'));
             $price = json_decode($request->get('price'));
             preg_match_all('!\d+!', $price, $range);
             $minP=$range[0][0];
             $maxP=$range[0][1];
-            // $brand = json_decode($request->get('brand'));
-            // $attribute_detail_id = json_decode($request->get('attribute_detail_id'));
+            
             if(!empty($price))
-            {
-                $products= $products->whereBetween('price', [$minP, $maxP]);
+            { 
+                $products= Product::where('is_active','=',1)->whereBetween('price', [$minP, $maxP])->get();
+            }
+            else{
+                $products= Product::where('is_active','=',1)->get();
             }
             // if(!empty($query))
             // {
             //     $products= $products->where('name','like','%'.$query.'%');
             // }
-            // if(!empty($brand))
-            // {
-            //     $products= $products->whereIn('brand_id',$brand);
-            // }
-            $products=$products->get();
 
             $total_row = $products->count();
             if($total_row>0)
@@ -408,12 +405,19 @@ class ProductController extends Controller
             $product_discount->has_discount=1;
             $product_discount->type=request('discount_type');
             $product_discount->rate=request('discount_rate');
+            if (request('discount_type')=='FLAT'){
+                $product_discount->new_price=request('discount_rate');
+            }
+            else{
+                $product_discount->new_price=( (100 - request('discount_rate')) / 100 ) * $product->price ;
+            }
         }
         else{
             $product_discount->product_id = $product->id;
             $product_discount->has_discount=0;
             $product_discount->type='';
             $product_discount->rate=$product->price;
+            $product_discount->new_price=$product->price;
         }
         $product_discount->save();
 
@@ -554,11 +558,18 @@ class ProductController extends Controller
             }else{
                 $d['rate']=request('price');
             }
+            
+            if (request('type')=='FLAT'){
+                $d['new_price']=request('rate');
+            }else{
+                $d['new_price']=ceil(( (100 - request('rate')) / 100 ) * request('price'));
+            }
         }
         else{
             $d['has_discount']=0;
             $d['type']='';
             $d['rate']=request('price');
+            $d['new_price']=request('price');
         }
         $product_discount->update($d);
 

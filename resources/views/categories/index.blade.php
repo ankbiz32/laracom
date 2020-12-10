@@ -46,7 +46,7 @@
                   <div class="shop-product-wrap grid gridview-3 row h-100">
                     <div class="h-100 w-100 bg-white d-flex justify-content-center align-items-center ajax-loader" style="opacity:0.4">
                         <div class="zmdi zmdi-hc-spin" style="margin-top:-500px;">
-                            <i class="zmdi zmdi-refresh" style="transform:scale(5);opacity:0.6"></i>
+                            <i class="zmdi zmdi-refresh" style="transform:scale(4);opacity:0.6"></i>
                         </div>
                     </div>
                   </div>

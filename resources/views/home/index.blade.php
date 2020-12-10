@@ -238,7 +238,7 @@
                                                     <span class="new-price">₹{{ ( (100 - $product->ProductDiscount->rate) / 100) * $product->price  }}</span>
                                                 @endif
                                             @else
-                                                <span class="new-price">₹{{ $product->price }}</span>
+                                                <span class="new-price ml-0">₹{{ $product->price }}</span>
                                             @endif
                                             </div>
                                             <div class="review-area d-flex justify-content-between align-items-center">
@@ -251,7 +251,7 @@
                                                         <li><i class="icon-star"></i></li>
                                                     </ul>
                                                 </div>
-                                                <span class="manufacture-product">Skin care</span>
+                                                <span class="manufacture-product">{{$product->categories[0]->name}}</span>
                                             </div>
                                         </div>
                                     </div>

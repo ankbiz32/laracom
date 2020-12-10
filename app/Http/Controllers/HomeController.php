@@ -205,26 +205,19 @@ class HomeController extends Controller
     {
         if($request->ajax())
         {
-            $category = Category::findOrFail($category_id);
-            dd($category->products);
-            $products= Product::where('is_active','=',1);
+            
             $price = json_decode($request->get('price'));
             preg_match_all('!\d+!', $price, $range);
             $minP=$range[0][0];
             $maxP=$range[0][1];
             if(!empty($price))
-            {
-                $products= $products->whereBetween('price', [$minP, $maxP]);
+            { 
+                $products = Category::findOrFail($request->get('cid'))->products->whereBetween('price', [$minP, $maxP]);
             }
-            // if(!empty($query))
-            // {
-            //     $products= $products->where('name','like','%'.$query.'%');
-            // }
-            // if(!empty($brand))
-            // {
-            //     $products= $products->whereIn('brand_id',$brand);
-            // }
-            $products=$products->get();
+            else{
+                $category = Category::findOrFail($request->get('cid'));
+                $products= $category->products;
+            }
 
             $total_row = $products->count();
             if($total_row>0)
@@ -238,7 +231,7 @@ class HomeController extends Controller
                                     <div class="single-product">
                                         <div class="product-img">
                                             <a href="'.route('product.show',['product'=>$product->id,'slug'=>$product->url_slug]).'">
-                                                <img src="'.$product->image.'" style="width:100%; height:200px; -o-object-fit:cover; object-fit:cover;" alt="Product Image">
+                                                <img src="'.URL('/').'/'.$product->image.'" style="width:100%; height:200px; -o-object-fit:cover; object-fit:cover;" alt="Product Image">
                                             </a>
                                             <div class="add-actions">
                                                 <ul>
@@ -293,7 +286,7 @@ class HomeController extends Controller
                                     <div class="single-product">
                                         <div class="product-img">
                                             <a href="'.route('product.show',['product'=>$product->id,'slug'=>$product->url_slug]).'">
-                                                <img src="'.$product->image.'" alt=" Product Image">
+                                                <img src="'.URL('/').'/'.$product->image.'" alt=" Product Image">
                                             </a>
                                         </div>
                                         <div class="quicky-product-content">

@@ -54,7 +54,7 @@
                         <div class="sp-content ml-lg-4">
                             <div class="sp-heading">
                                 <h4 class="h4">{{$data['main']->name}}</h4>
-                                <p class="h6 my-3">{{ $data['main']->short_descr }}</p>
+                                <p class="h6 my-3">{{ $data['descr']->short_des }}</p>
                             </div>
                             <div class="rating-box">
                                 <ul>
@@ -151,7 +151,7 @@
                         <div class="tab-content uren-tab_content">
                             <div id="description" class="tab-pane active show" role="tabpanel">
                                 <div class="product-description">
-                                    {!! $data['main']->full_descr !!}
+                                    {!! $data['descr']->full_des !!}
                                 </div>
                             </div>
                             <div id="reviews" class="tab-pane" role="tabpanel">
