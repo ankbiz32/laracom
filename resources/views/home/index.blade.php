@@ -2,15 +2,25 @@
 
 
     @section ('loader')
-        <div class="loading">
+        <!-- <div class="loading">
             <div class="text-center middle">
                 <img src="{{URL::to('/')}}/assets/images/menu/logo/1.png" alt="Logo">
                 <p class="mt-4">LEGACY COMMITTED TO EXCELLENCE</p>
             </div>
-        </div>
+        </div> -->
     @endsection
 
     @section ('content')
+        <style>
+            .featured-products .slick-list{
+                padding: 0 10% 0 0;
+            }
+            @media(max-width:480px){
+                .featured-products .slick-list{
+                    padding: 0 30% 0 0;
+                }
+            }
+        </style>
 
         <div class="slider-area">
 
@@ -110,42 +120,26 @@
         <div class="service-area pt-100 ">
             <div class="container">
                 <div class="row">
-                    <div class="col-lg-4 col-md-6">
-                        <div class="service-item">
-                            <div class="service-img">
-                                <img src="{{URL::to('/')}}/assets/images/service/1.png" alt="Quicky's Service">
-                            </div>
-                            <div class="service-content">
-                                <h3 class="heading">Free Home Delivery</h3>
-                                <p class="short-desc">Provide free home delivery
-                                    for all product over $100</p>
-                            </div>
+                    <div class="col-lg-12 mb-5">
+                        <div class="section-title">
+                            <h3 class="heading">Top Categories</h3>
                         </div>
                     </div>
-                    <div class="col-lg-4 col-md-6">
-                        <div class="service-item">
-                            <div class="service-img">
-                                <img src="{{URL::to('/')}}/assets/images/service/2.png" alt="Quicky's Service">
+                </div>
+                <div class="row">
+                    @foreach($categories as $catg)
+                    <a href="" class="col-md-4">
+                        <div class="service-item flex-column align-items-center">
+                            <div class="service-img mb-2 mb-sm-0">
+                                <img src="{{URL::to('/').'/'.$catg->img_src}}" height="70" style="object-fit:contain" alt="Category">
                             </div>
-                            <div class="service-content">
-                                <h3 class="heading">Quality Products</h3>
-                                <p class="short-desc">We ensure our product
-                                    quality all times</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-4 col-md-6">
-                        <div class="service-item">
-                            <div class="service-img">
-                                <img src="{{URL::to('/')}}/assets/images/service/3.png" alt="Quicky's Service">
-                            </div>
-                            <div class="service-content">
-                                <h3 class="heading">3 Day Return</h3>
-                                <p class="short-desc">Our producr return policy
-                                    is very easy & simple</p>
+                            <div class="service-content pl-0 text-center">
+                                <h3 class="heading">{{$catg->name}}</h3>
+                                <p><small>See products →</small></p>
                             </div>
                         </div>
-                    </div>
+                    </a>
+                    @endforeach
                 </div>
             </div>
         </div>
@@ -208,8 +202,8 @@
             </div>
         </div>
 
-        <div class="product-area pt-95">
-            <div class="container">
+        <div class="product-area pt-95 featured-products">
+            <div class="containers pl-4" style="width:100%;overflow:hidden">
                 <div class="row">
                     <div class="col-lg-12">
                         <div class="section-title">
@@ -234,7 +228,6 @@
                         "slidesToShow": 1
                         }}
                     ]'>
-
                         @foreach ($products as $product)
                             <div class="product-item">
                                 <div class="single-product">
@@ -295,138 +288,6 @@
                                 </div>
                             </div>
                         @endforeach
-                            <!-- <div class="product-item">
-                                <div class="single-product">
-                                    <div class="product-img">
-                                        <a href="#">
-                                            <img src="assets/images/product/medium-size/b3.png" style="width:100%; height:340px; -o-object-fit:contain; object-fit:contain;" alt=" Product Image">
-                                        </a>
-                                        <div class="add-actions">
-                                            <ul>
-                                                <li class="quick-view-btn" data-toggle="modal" data-target="#exampleModalCenter"><a href="javascript:void(0)" data-toggle="tooltip" data-placement="top" title="Quick View"><i
-                                                        class="icon-magnifier"></i></a>
-                                                </li>
-                                                <li><a href="#" data-toggle="tooltip" data-placement="top" title="Add To Wishlist"><i class="icon-heart"></i></a>
-                                                </li>
-
-                                                <li><a href="#" data-toggle="tooltip" data-placement="top" title="Add To cart"><i class="icon-bag"></i></a>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                    <div class="product-content">
-                                        <div class="product-desc_info">
-                                            <h3 class="product-name"><a href="#">Rose water</a></h3>
-                                            <div class="price-box">
-                                                <span class="old-price">₹349</span>
-                                                <span class="new-price">₹349</span>
-                                            </div>
-                                            <div class="review-area d-flex justify-content-between align-items-center">
-                                                <div class="rating-box">
-                                                    <ul>
-                                                        <li><i class="icon-star"></i></li>
-                                                        <li><i class="icon-star"></i></li>
-                                                        <li><i class="icon-star"></i></li>
-                                                        <li><i class="icon-star"></i></li>
-                                                        <li><i class="icon-star"></i></li>
-                                                    </ul>
-                                                </div>
-                                                <span class="manufacture-product">Skin care</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="product-item">
-                                <div class="single-product">
-                                    <div class="product-img">
-                                        <a href="#">
-                                            <img src="assets/images/product/medium-size/b5.png" style="width:100%; height:340px; -o-object-fit:contain; object-fit:contain;" alt="Quicky's Product Image">
-                                        </a>
-                                        <span class="sticker">Hot</span>
-                                        <span class="sticker-2"><small class="bg-warning pt-2 pb-1 text-dark px-2">25% OFF</small></span>
-                                        <div class="add-actions">
-                                            <ul>
-                                                <li class="quick-view-btn" data-toggle="modal" data-target="#exampleModalCenter"><a href="javascript:void(0)" data-toggle="tooltip" data-placement="top" title="Quick View"><i
-                                                        class="icon-magnifier"></i></a>
-                                                </li>
-                                                <li><a href="#" data-toggle="tooltip" data-placement="top" title="Add To Wishlist"><i class="icon-heart"></i></a>
-                                                </li>
-
-                                                <li><a href="#" data-toggle="tooltip" data-placement="top" title="Add To cart"><i class="icon-bag"></i></a>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                    <div class="product-content">
-                                        <div class="product-desc_info">
-                                            <h3 class="product-name"><a href="#">Liquid Chyavanprash</a></h3>
-                                            <div class="price-box">
-                                                <span class="old-price">₹299</span>
-                                                <span class="new-price">₹299</span>
-                                            </div>
-                                            <div class="review-area d-flex justify-content-between align-items-center">
-                                                <div class="rating-box">
-                                                    <ul>
-                                                        <li><i class="icon-star"></i></li>
-                                                        <li><i class="icon-star"></i></li>
-                                                        <li><i class="icon-star"></i></li>
-                                                        <li><i class="icon-star"></i></li>
-                                                        <li><i class="icon-star"></i></li>
-                                                    </ul>
-                                                </div>
-                                                <span class="manufacture-product">Health care</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="product-item">
-                                <div class="single-product">
-                                    <div class="product-img">
-                                        <a href="#">
-                                            <img src="assets/images/product/medium-size/b6.png" style="width:100%; height:340px; -o-object-fit:contain; object-fit:contain;" alt="Product Image">
-                                        </a>
-                                        <span class="sticker">New</span>
-                                        <span class="sticker-2">-16%</span>
-                                        <div class="add-actions">
-                                            <ul>
-                                                <li class="quick-view-btn" data-toggle="modal" data-target="#exampleModalCenter"><a href="javascript:void(0)" data-toggle="tooltip" data-placement="top" title="Quick View"><i
-                                                        class="icon-magnifier"></i></a>
-                                                </li>
-                                                <li><a href="#" data-toggle="tooltip" data-placement="top" title="Add To Wishlist"><i class="icon-heart"></i></a>
-                                                </li>
-
-                                                <li><a href="#" data-toggle="tooltip" data-placement="top" title="Add To cart"><i class="icon-bag"></i></a>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                    <div class="product-content">
-                                        <div class="product-desc_info">
-                                            <h3 class="product-name"><a href="#">Oro Safe Tooth Powder</a></h3>
-                                            <div class="price-box">
-                                                <span class="old-price">₹149</span>
-                                                <span class="new-price">₹149</span>
-                                            </div>
-                                            <div class="review-area d-flex justify-content-between align-items-center">
-                                                <div class="rating-box">
-                                                    <ul>
-                                                        <li><i class="icon-star"></i></li>
-                                                        <li><i class="icon-star"></i></li>
-                                                        <li><i class="icon-star"></i></li>
-                                                        <li><i class="icon-star"></i></li>
-                                                        <li><i class="icon-star"></i></li>
-                                                    </ul>
-                                                </div>
-                                                <span class="manufacture-product">Handcraft</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div> -->
-
-
                         </div>
                     </div>
                 </div>
