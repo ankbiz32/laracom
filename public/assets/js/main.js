@@ -680,8 +680,8 @@
 	/*----------------------------------------*/
 	/*  Sidebar Categories Menu Activation
 /*----------------------------------------*/
-	$('.sidebar-categories_menu li.has-sub > a').on('click', function () {
-		$(this).removeAttr('href');
+	$('.sidebar-categories_menu li.has-sub > i').on('click', function () {
+		// $(this).removeAttr('href');
 		var element = $(this).parent('li');
 		if (element.hasClass('open')) {
 			element.removeClass('open');
@@ -723,20 +723,17 @@
 -------------------------------- */
 	var sliderrange = $('#slider-range');
 	var amountprice = $('#amount');
-	var minPrice = $('#amount').data('min');
-	if(minPrice<5){
-		minPrice=5;
-	}
-	var minPrice = $('#amount').data('min');
 	var maxPrice = $('#amount').data('max');
+	var	minPrice=0;
 	$(function () {
 		sliderrange.slider({
 			range: true,
-			min: minPrice-5,
+			min: minPrice-3,
 			max: maxPrice+100,
 			values: [minPrice, maxPrice],
 			slide: function (event, ui) {
 				amountprice.val('$' + sliderrange.slider('values', 0) + ' - $' + sliderrange.slider('values', 1));
+				$('.price-slider-amount button.filter').removeClass('quicky-btn-outline').addClass('quicky-btn');
 			}
 		});
 		amountprice.val('$' + sliderrange.slider('values', 0) + ' - $' + sliderrange.slider('values', 1));

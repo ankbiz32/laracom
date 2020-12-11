@@ -1,6 +1,34 @@
 
+    <style>
+        .quicky-content_wrapper .quicky-sidebar-catagories_area .quicky-sidebar_categories .sidebar-categories_menu ul li{
+            position: relative;
+        }
+        .quicky-content_wrapper .quicky-sidebar-catagories_area .quicky-sidebar_categories .sidebar-categories_menu ul li > i{
+            font-size: 20px;
+            position: absolute;
+            top: 0;
+            right: 0;
+            background-color:#eee;
+            padding:5px 10px;
+            border-radius:5px;
+            -webkit-transform: rotate(0deg);
+            -ms-transform: rotate(0deg);
+            transform: rotate(0deg);
+        }
+        .quicky-content_wrapper .quicky-sidebar-catagories_area .quicky-sidebar_categories .sidebar-categories_menu ul li.open > i {
+            -webkit-transform: rotate(45deg);
+            -ms-transform: rotate(45deg);
+            transform: rotate(45deg);
+        }
+        .template-color-1 .sidebar-categories_menu ul li:hover > a {
+            color: inherit;
+        }
+        .template-color-1 .sidebar-categories_menu ul li a:hover {
+            color: #a8741a;
+        }
+    </style>
     
-    <div class="col-sm-3 order-2 order-lg-1 py-4 shadow px-5 bg-white">
+    <div class="col-md-3 order-2 order-lg-1 py-4 shadow px-5 bg-white">
         <div class="quicky-sidebar-catagories_area">
 
             <div class="quicky-sidebar_categories">
@@ -31,7 +59,9 @@
                     @isset($categories)
                         @foreach($categories as $c)
                             @if(count($c->childs))
-                                <li class="has-sub"><a href="javascript:void(0)">{{$c->name}}<i class="zmdi zmdi-plus"></i></a>
+                                <li class="has-sub relative">
+                                    <a href="{{ route( 'category.list', ['category'=>$c->id, 'slug'=>$c->meta_title] ) }}">{{$c->name}}</a>
+                                    <i class="zmdi zmdi-plus"></i>
                                     <ul>
                                     @foreach($c->childs as $ch)
                                         <li><a href="{{ route( 'category.list', ['category'=>$ch->id, 'slug'=>$ch->meta_title] ) }}">{{$ch->name}}</a></li>

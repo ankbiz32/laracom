@@ -35,16 +35,37 @@ class HomeController extends Controller
         $t=$request->get('tag');
         if($request->ajax())
         {
-            $products= Product::where('is_active','=',1)->where('tags','LIKE','%'.$t.'%');
             $price = json_decode($request->get('price'));
             preg_match_all('!\d+!', $price, $range);
-            $minP=$range[0][0];
-            $maxP=$range[0][1];
+            $sort = $request->get('sort');
+            $minP=(int)$range[0][0];
+            $maxP=(int)$range[0][1];
             if(!empty($price))
             {
-                $products= $products->whereBetween('price', [$minP, $maxP]);
+                $products = DB::table('products')
+                            ->leftJoin('product_discounts', 'products.id', '=', 'product_discounts.product_id')
+                            ->leftJoin('product_descriptions', 'products.id', '=', 'product_descriptions.product_id')
+                            ->where('products.is_active','=',1)
+                            ->where('products.tags','LIKE','%'.$t.'%')
+                            ->whereBetween('product_discounts.new_price', [$minP, $maxP])
+                            ->select('products.*', 'product_discounts.has_discount', 'product_discounts.new_price','product_descriptions.short_des');
+                            if($sort=='plth'){
+                                $products=$products->orderBy('product_discounts.new_price','ASC');
+                            }
+                            elseif($sort=='phtl'){
+                                $products=$products->orderBy('product_discounts.new_price','DESC');
+                            }
+                $products=$products->get();
             }
-            $products=$products->get();
+            else{
+                $products = DB::table('products')
+                            ->leftJoin('product_discounts', 'products.id', '=', 'product_discounts.product_id')
+                            ->leftJoin('product_descriptions', 'products.id', '=', 'product_descriptions.product_id')
+                            ->where('products.is_active','=',1)
+                            ->where('products.tags','LIKE','%'.$t.'%')
+                            ->select('products.*', 'product_discounts.has_discount', 'product_discounts.new_price','product_descriptions.short_des')
+                            ->get();
+            }
 
             $total_row = $products->count();
             if($total_row>0)
@@ -74,17 +95,10 @@ class HomeController extends Controller
                                             <div class="product-desc_info">
                                             <h3 class="product-name"><a href="'. route('product.show',['product'=>$product->id,'slug'=>$product->url_slug]) .'">'.$product->name .'</a></h3>
                                                 <div class="price-box">';
-                                            if($product->ProductDiscount->has_discount) {
-                                                if($product->ProductDiscount->type == 'FLAT') {
-                                                    $output .='
-                                                            <span class="old-price">₹'.$product->price .'</span>
-                                                            <span class="new-price">₹'.$product->ProductDiscount->rate .'</span>';
-                                                }
-                                                else{
-                                                     $output .='    
-                                                        <span class="old-price">₹'.$product->price .'</span>          
-                                                        <span class="new-price">₹'. ( (100 - $product->ProductDiscount->rate) / 100) * $product->price .'</span>';
-                                                }
+                                            if($product->has_discount) {
+                                                $output .='
+                                                        <span class="old-price">₹'.$product->price .'</span>
+                                                        <span class="new-price">₹'.$product->new_price .'</span>';
                                             }
                                             else{
                      $output .='
@@ -122,17 +136,10 @@ class HomeController extends Controller
                                                 </h6>
                                                 <div class="price-box">';
                                                 
-                                            if($product->ProductDiscount->has_discount) {
-                                                if($product->ProductDiscount->type == 'FLAT') {
-                                                    $output .='
-                                                            <span class="old-price">₹'.$product->price .'</span>
-                                                            <span class="new-price">₹'.$product->ProductDiscount->rate .'</span>';
-                                                }
-                                                else{
-                                                     $output .='    
-                                                        <span class="old-price">₹'.$product->price .'</span>          
-                                                        <span class="new-price">₹'. ( (100 - $product->ProductDiscount->rate) / 100) * $product->price .'</span>';
-                                                }
+                                            if($product->has_discount) {
+                                                $output .='
+                                                        <span class="old-price">₹'.$product->price .'</span>
+                                                        <span class="new-price">₹'.$product->new_price .'</span>';
                                             }
                                             else{
                      $output .='
@@ -153,7 +160,7 @@ class HomeController extends Controller
                                                     </ul>
                                                 </div>
                                                 <div class="product-short_desc">
-                                                    <p>'.$product->ProductDescription->short_des.'</p>
+                                                    <p>'.$product->short_des.'</p>
                                                 </div>
                                             </div>
                                             <div class="add-actions">
@@ -208,15 +215,39 @@ class HomeController extends Controller
             
             $price = json_decode($request->get('price'));
             preg_match_all('!\d+!', $price, $range);
-            $minP=$range[0][0];
-            $maxP=$range[0][1];
+            $sort = $request->get('sort');
+            $minP=(int)$range[0][0];
+            $maxP=(int)$range[0][1];
             if(!empty($price))
             { 
-                $products = Category::findOrFail($request->get('cid'))->products->whereBetween('price', [$minP, $maxP]);
+                $categ = Category::findOrFail($request->get('cid'));
+                $products = DB::table('products')
+                            ->leftJoin('product_discounts', 'products.id', '=', 'product_discounts.product_id')
+                            ->leftJoin('product_descriptions', 'products.id', '=', 'product_descriptions.product_id')
+                            ->leftJoin('category_product', 'products.id', '=', 'category_product.product_id')
+                            ->where('category_product.category_id','=',$request->get('cid'))
+                            ->where('products.is_active','=',1)
+                            ->whereBetween('product_discounts.new_price', [$minP, $maxP])
+                            ->select('products.*', 'product_discounts.has_discount', 'product_discounts.new_price','product_descriptions.short_des');
+                            if($sort=='plth'){
+                                $products=$products->orderBy('product_discounts.new_price','ASC');
+                            }
+                            elseif($sort=='phtl'){
+                                $products=$products->orderBy('product_discounts.new_price','DESC');
+                            }
+                $products=$products->get();
+                
             }
             else{
-                $category = Category::findOrFail($request->get('cid'));
-                $products= $category->products;
+                $categ = Category::findOrFail($request->get('cid'));
+                $products = DB::table('products')
+                            ->leftJoin('product_discounts', 'products.id', '=', 'product_discounts.product_id')
+                            ->leftJoin('product_descriptions', 'products.id', '=', 'product_descriptions.product_id')
+                            ->leftJoin('category_product', 'products.id', '=', 'category_product.product_id')
+                            ->where('category_product.category_id','=',$request->get('cid'))
+                            ->where('products.is_active','=',1)
+                            ->select('products.*', 'product_discounts.has_discount', 'product_discounts.new_price','product_descriptions.short_des')
+                            ->get();
             }
 
             $total_row = $products->count();
@@ -247,17 +278,10 @@ class HomeController extends Controller
                                             <div class="product-desc_info">
                                             <h3 class="product-name"><a href="'. route('product.show',['product'=>$product->id,'slug'=>$product->url_slug]) .'">'.$product->name .'</a></h3>
                                                 <div class="price-box">';
-                                            if($product->ProductDiscount->has_discount) {
-                                                if($product->ProductDiscount->type == 'FLAT') {
-                                                    $output .='
-                                                            <span class="old-price">₹'.$product->price .'</span>
-                                                            <span class="new-price">₹'.$product->ProductDiscount->rate .'</span>';
-                                                }
-                                                else{
-                                                     $output .='    
-                                                        <span class="old-price">₹'.$product->price .'</span>          
-                                                        <span class="new-price">₹'. ( (100 - $product->ProductDiscount->rate) / 100) * $product->price .'</span>';
-                                                }
+                                            if($product->has_discount) {
+                                                $output .='
+                                                        <span class="old-price">₹'.$product->price .'</span>
+                                                        <span class="new-price">₹'.$product->new_price .'</span>';
                                             }
                                             else{
                      $output .='
@@ -295,17 +319,10 @@ class HomeController extends Controller
                                                 </h6>
                                                 <div class="price-box">';
                                                 
-                                            if($product->ProductDiscount->has_discount) {
-                                                if($product->ProductDiscount->type == 'FLAT') {
-                                                    $output .='
-                                                            <span class="old-price">₹'.$product->price .'</span>
-                                                            <span class="new-price">₹'.$product->ProductDiscount->rate .'</span>';
-                                                }
-                                                else{
-                                                     $output .='    
-                                                        <span class="old-price">₹'.$product->price .'</span>          
-                                                        <span class="new-price">₹'. ( (100 - $product->ProductDiscount->rate) / 100) * $product->price .'</span>';
-                                                }
+                                            if($product->has_discount) {
+                                                $output .='
+                                                        <span class="old-price">₹'.$product->price .'</span>
+                                                        <span class="new-price">₹'.$product->new_price .'</span>';
                                             }
                                             else{
                      $output .='
@@ -326,7 +343,7 @@ class HomeController extends Controller
                                                     </ul>
                                                 </div>
                                                 <div class="product-short_desc">
-                                                    <p>'.$product->ProductDescription->short_des.'</p>
+                                                    <p>'.$product->short_des.'</p>
                                                 </div>
                                             </div>
                                             <div class="add-actions">

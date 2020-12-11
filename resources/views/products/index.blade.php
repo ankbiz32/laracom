@@ -17,7 +17,7 @@
       <div class="container">
           <div class="row">
             @include('layouts.sidebar')
-              <div class="col-sm-9 order-1 order-lg-2">
+              <div class="col-md-9 order-1 order-lg-2">
                   <div class="shop-toolbar">
                       <div class="product-view-mode">
                           <a class="active grid-3" data-target="gridview-3" data-toggle="tooltip" data-placement="top" title="Grid View"><i class="zmdi zmdi-grid"></i></a>
@@ -29,16 +29,10 @@
                       <div class="product-item-selection_area">
                           <div class="product-short">
                               <label class="select-label">Sort by:</label>
-                              <select class="nice-select">
-                                  <option value="1">Default sorting</option>
-                                  <option value="2">Name, A to Z</option>
-                                  <option value="3">Name, Z to A</option>
-                                  <option value="4">Price, low to high</option>
-                                  <option value="5">Price, high to low</option>
-                                  <option value="5">Rating (Highest)</option>
-                                  <option value="5">Rating (Lowest)</option>
-                                  <option value="5">Model (A - Z)</option>
-                                  <option value="5">Model (Z - A)</option>
+                              <select class="nice-select sort">
+                                  <option value="default">Default sorting</option>
+                                  <option value="plth">Price: low to high</option>
+                                  <option value="phtl">Price: high to low</option>
                               </select>
                           </div>
                       </div>
@@ -77,9 +71,9 @@
   $(document).ready(function(){
 
     var loader = $('.ajax-loader');
-      filter_data('');
+      filter_data('','default');
 
-      function filter_data(query='')
+      function filter_data(query='',sort)
       {
         //   var search=JSON.stringify(query);
           var price =JSON.stringify($('#amount').val());
@@ -89,11 +83,10 @@
               url:"{{ route('product.filter') }}",
               method:'GET',
               data:{
-                  price:price,
+                price:price,
+                sort:sort,
                 //   query:search,
-                //   gender:gender,
-                //   brand:brand,
-                  },
+              },
               dataType:'json',
               beforeSend:function(){
                   $('.shop-product-wrap').html(loader);
@@ -102,6 +95,8 @@
               success:function(data)
               {
                   loader.fadeOut();
+                  
+				    $('.price-slider-amount button.filter').removeClass('quicky-btn').addClass('quicky-btn-outline');
                   $('.shop-product-wrap').html(data.table_data);
                   $('.product-page_count p').html('(Total '+data.total_row+' products found)');
               }
@@ -117,19 +112,26 @@
           return filter;
       }
 
+      $(document).on('change','.sort',function(){
+          var val = $(this).val();
+          filter_data('',val);
+      });
+
       $(document).on('keyup','#search',function(){
           var query = $(this).val();
           filter_data(query);
       });
 
       $(document).on('click','.filter',function(){
-          filter_data('');
+          filter_data('',$('.sort').val());
       });
 
       $('.selector').click(function(){
           var query = $('#search').val();
           filter_data(query);
       });
+
+     
 
       $(document).on('change','#size-dropdown',function(){
           var size = $(this).val();

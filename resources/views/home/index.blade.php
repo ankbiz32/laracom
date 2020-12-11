@@ -6,9 +6,6 @@
             <div class="text-center middle">
                 <img src="{{URL::to('/')}}/assets/images/menu/logo/1.png" alt="Logo">
                 <p class="mt-4">LEGACY COMMITTED TO EXCELLENCE</p>
-                <!-- <span class="loader">
-                    <span class="loader-inner"></span>
-                </span> -->
             </div>
         </div>
     @endsection
@@ -110,7 +107,49 @@
 
         </div>
 
-        <!-- Begin Banner Area -->
+        <div class="service-area pt-100 ">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-4 col-md-6">
+                        <div class="service-item">
+                            <div class="service-img">
+                                <img src="{{URL::to('/')}}/assets/images/service/1.png" alt="Quicky's Service">
+                            </div>
+                            <div class="service-content">
+                                <h3 class="heading">Free Home Delivery</h3>
+                                <p class="short-desc">Provide free home delivery
+                                    for all product over $100</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-md-6">
+                        <div class="service-item">
+                            <div class="service-img">
+                                <img src="{{URL::to('/')}}/assets/images/service/2.png" alt="Quicky's Service">
+                            </div>
+                            <div class="service-content">
+                                <h3 class="heading">Quality Products</h3>
+                                <p class="short-desc">We ensure our product
+                                    quality all times</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-md-6">
+                        <div class="service-item">
+                            <div class="service-img">
+                                <img src="{{URL::to('/')}}/assets/images/service/3.png" alt="Quicky's Service">
+                            </div>
+                            <div class="service-content">
+                                <h3 class="heading">3 Day Return</h3>
+                                <p class="short-desc">Our producr return policy
+                                    is very easy & simple</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <div class="banner-area pt-100">
             <div class="container">
                 <div class="row">
@@ -168,9 +207,7 @@
                 </div>
             </div>
         </div>
-        <!-- Banner Area End Here -->
 
-        <!-- Begin Product Area -->
         <div class="product-area pt-95">
             <div class="container">
                 <div class="row">
@@ -395,9 +432,7 @@
                 </div>
             </div>
         </div>
-        <!-- Product Area End Here -->
 
-        <!-- Begin Best Deals Area -->
         <div class="best-deals_area pt-85">
             <div class="container-fluid p-0">
                 <div class="row no-gutters">
@@ -506,9 +541,7 @@
                 </div>
             </div>
         </div>
-        <!-- Best Deals Area End Here -->
 
-        <!-- Begin Product Area Two -->
         <div class="product-area product-area-2 pt-95">
             <div class="container">
                 <div class="row">
@@ -800,7 +833,6 @@
                 </div>
             </div>
         </div>
-        <!-- Product Area Two End Here -->
 
         <div class="banner-area-2 pt-85">
             <div class="container">

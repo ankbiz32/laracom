@@ -67,11 +67,11 @@
                                                     @isset($categories)
                                                         @foreach($categories as $c)
                                                             <li>
-                                                                <span class="megamenu-title">{{$c->name}}</span>
+                                                                <span class="megamenu-title"><a href="{{ route( 'category.list', ['category'=>$c->id, 'slug'=>$c->meta_title] ) }}">{{$c->name}}</a></span>
                                                                 @if(count($c->childs))
                                                                     <ul>
                                                                     @foreach($c->childs as $ch)
-                                                                        <li><a href="#">› {{$ch->name}}</a></li>
+                                                                        <li><a href="{{ route( 'category.list', ['category'=>$ch->id, 'slug'=>$ch->meta_title] ) }}">› {{$ch->name}}</a></li>
                                                                     @endforeach
                                                                     </ul>
                                                                 @endif
