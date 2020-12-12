@@ -177,6 +177,7 @@
                     </div>
                 </div>
             </div>
+
             <div class="mobile-menu_wrapper" id="mobileMenu">
                 <div class="offcanvas-menu-inner">
                     <div class="container">
@@ -374,6 +375,7 @@
                     </div>
                 </div>
             </div>
+
             <div class="offcanvas-minicart_wrapper" id="miniCart">
                 <div class="offcanvas-menu-inner">
                     <a href="#" class="btn-close" style="display: flex;align-items: center;"><i class="zmdi zmdi-close mb-1 mr-2"></i><span class="d-sm-inline d-none">close</span></a>
@@ -422,6 +424,7 @@
                     @endif
                 </div>
             </div>
+
             <div class="offcanvas-search_wrapper" id="searchBar">
                 <div class="offcanvas-menu-inner">
                     <div class="container">
@@ -438,6 +441,7 @@
                     </div>
                 </div>
             </div>
+
             <div class="global-overlay"></div>
         </header>
 
@@ -769,6 +773,47 @@
     <script src="{{URL::to('/')}}/assets/js/main.js"></script>
 
     @yield('script')
+
+    @if(Session::get('cart_updated'))
+        <script>
+            $('.offcanvas-minicart_wrapper').addClass('open');
+            $('.global-overlay').addClass('overlay-open');
+        </script>
+    @endif
+
+    <!-- For notifications -->
+    @if(Session::get('info'))
+        <script>
+            $.message({
+                text: "{!!Session::get('info')!!}",
+                duration: 5000,
+                positon: "top-right",
+                showClose: true
+            });
+        </script>
+    @endif
+    @if(Session::get('success'))
+        <script>
+            $.message({
+                type: "success",
+                text: "{!!Session::get('success')!!}",
+                duration: 2000,
+                positon: "top-right",
+                showClose: true
+            });
+        </script>
+    @endif
+    @if(Session::get('error'))
+        <script>
+            $.message({
+                type: "error",
+                text: "{{Session::get('error')}}",
+                duration: 5000,
+                positon: "top-right",
+                showClose: true
+            });
+        </script>
+    @endif
 
 </body>
 

@@ -28,7 +28,7 @@ class ProductController extends Controller
     public function index()
     {
         $categories = Category::where('parent_id', '=', 0)->get();
-        $tags = DB::table('tags')->get();
+        $tags = DB::table('tags')->limit(5)->get();
         $maxPrice = Product::select('price')->max('price');
         $minPrice = Product::select('price')->min('price');
         return view('products.index',compact(['tags','categories','maxPrice','minPrice']));

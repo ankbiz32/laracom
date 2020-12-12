@@ -33,28 +33,28 @@ class CartController extends Controller
                         $cart = new Cart($oldCart);
                         $cart->add($product,$product->id);
                         $request->session()->put('cart',$cart);
-                        return redirect()->route('cart.index');
+                        return redirect()->back()->with('cart_updated','Your cart has some changes');
                     }
                     else{
-                        return redirect()->route('cart.index');
+                        return redirect()->back()->with('info','Max. order limit reached for this product.');
                     }
                 }
                 else{
                     $cart = new Cart($oldCart);
                     $cart->add($product,$product->id);
                     $request->session()->put('cart',$cart);
-                    return redirect()->route('cart.index');
+                    return redirect()->back()->with('cart_updated','Your cart has some changes');
                 }
             }
             else{
                 $cart = new Cart($oldCart);
                 $cart->add($product,$product->id);
                 $request->session()->put('cart',$cart);
-                return redirect()->route('cart.index');
+                return redirect()->back()->with('cart_updated','Your cart has some changes');
             }
         }
         else{
-            return redirect()->route('cart.index');
+            return redirect()->back()->with('info','Product not found.');
         }
     }
 
@@ -88,7 +88,7 @@ class CartController extends Controller
         if($cart->totalQuantity<=0){
             Session::forget('cart');
         }
-        return redirect()->route('cart.index');
+        return redirect()->back()->with('success','Product removed from your cart.');
     }
 
 }

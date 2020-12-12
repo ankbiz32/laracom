@@ -127,7 +127,6 @@
 
 .td-message-container .td-message {
   max-width: 500px;
-  word-break: break-all;
   box-sizing: border-box;
   display: flex;
   animation: top-slide-down 0.3s ease;
@@ -185,4 +184,20 @@
 
 .td-message-container .td-message.bottom {
   animation: bottom-slide-up 0.3s ease;
+}
+
+@media(max-width:480px){
+  .td-message-container .td-message.bottom-right {
+    bottom: 8px;
+    right: 0;
+  }
+
+  .td-message-container{
+    padding: 0 5px;
+  }
+  .td-message-container .td-message.top-right {
+    top: 8px;
+    right: 0;
+  }
+  
 }

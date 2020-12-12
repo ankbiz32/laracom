@@ -2,175 +2,346 @@
 
 @section ('content')
 
-<div class="container">
-    <div class="row">
-        <div class="col-7 mx-auto">
-            <h3>CHECKOUT</h3>
-            <hr>
-            
-            <form action="{{ route('checkout') }}" method="POST" id="checkout-form">
-                @csrf
-                <div class="row ">
-                    
-                    <div class="col-12">
-                        <h5>SHIPPING DETAILS</h5>
-                    </div>
-
-                    <div class="col-12">
-                        <label for="name" class="">{{ __('Name') }}</label>
-                        <div class="form-group">
-                            <div>
-                                <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name') ?? $user->name ??'' }}" required autocomplete="name" autofocus>
-                                @error('name')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-12">
-                        <label for="phonenumber" class="">{{ __('Phone Number') }}</label>
-                        <div class="form-group">
-                            <div>
-                                <input id="phonenumber" type="text" class="form-control @error('phonenumber') is-invalid @enderror" name="phonenumber" value="{{ old('phonenumber') ?? $user->profile->phonenumber ??'' }}" required autocomplete="phonenumber" autofocus>
-                                @error('phonenumber')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-12">
-                        <label for="country" class="">{{ __('Country') }}</label>
-                        <div class="form-group">
-                            <div>
-                                <input id="country" type="text" class="form-control @error('country') is-invalid @enderror" name="country" value="{{ old('country') ?? $user->profile->country ??'' }}" required autocomplete="country" autofocus>
-                                @error('country')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-12">
-                        <label for="city" class="">{{ __('City') }}</label>
-                        <div class="form-group">
-                            <div>
-                                <input id="city" type="text" class="form-control @error('city') is-invalid @enderror" name="city" value="{{ old('city') ?? $user->profile->city ??'' }}" required autocomplete="city" autofocus>
-                                @error('city')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-12">
-                        <label for="address" class="">{{ __('Address') }}</label>
-                        <div class="form-group">
-                            <div>
-                                <input id="address" type="text" class="form-control @error('address') is-invalid @enderror" name="address" value="{{ old('address') ?? $user->profile->address ??'' }}" required autocomplete="address" autofocus>
-                                @error('address')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-12">
-                        <label for="zipcode" class="">{{ __('Zipcode') }}</label>
-                        <div class="form-group">
-                            <div>
-                                <input id="zipcode" type="text" class="form-control @error('zipcode') is-invalid @enderror" name="zipcode" value="{{ old('zipcode') ?? $user->profile->zipcode ??'' }}" required autocomplete="zipcode" autofocus>
-                                @error('zipcode')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-12">
-                        <hr>
-                        <h5>BILLING ADDRESS</h5>
-                    </div>
-                    
-
-                    <div class="col-12">
-                        <label for="creditcardnumber" class="">{{ __('Credit Card Number') }}</label>
-                        <div class="form-group">
-                            <div>
-                                <input id="creditcardnumber" type="text" class="form-control @error('creditcardnumber') is-invalid @enderror" name="creditcardnumber" value="{{ old('creditcardnumber') }}" required autocomplete="creditcardnumber" autofocus>
-                                @error('creditcardnumber')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-6">
-                        <label for="expiremonth" class="">{{ __('Expiration Month') }}</label>
-                        <div class="form-group">
-                            <div>
-                                <input id="expiremonth" type="text" class="form-control @error('expiremonth') is-invalid @enderror" name="expiremonth" value="{{ old('expiremonth') }}" required autocomplete="expiremonth" autofocus>
-                                @error('expiremonth')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-6">
-                        <label for="expireyear" class="">{{ __('Expiration Year') }}</label>
-                        <div class="form-group">
-                            <div>
-                                <input id="expireyear" type="text" class="form-control @error('expireyear') is-invalid @enderror" name="expireyear" value="{{ old('expireyear') }}" required autocomplete="expireyear" autofocus>
-                                @error('expireyear')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
-                            </div>
-                        </div>
-                    </div>
-
-                    
-                    <div class="col-12">
-                        <label for="cvc" class="">{{ __('CVC') }}</label>
-                        <div class="form-group">
-                            <div>
-                                <input id="cvc" type="text" class="form-control @error('cvc') is-invalid @enderror" name="cvc" value="{{ old('cvc') }}" required autocomplete="cvc" autofocus>
-                                @error('cvc')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
-                            </div>
-                        </div>
-                    </div>
-
-
+        <div class="breadcrumb-area">
+            <div class="container">
+                <div class="breadcrumb-content">
+                    <h2>Checkout</h2>
+                    <ul>
+                        <li><a href="{{URL('/')}}">Home</a></li>
+                        <li class="active">Checkout</li>
+                    </ul>
                 </div>
-                
-                <button type="submit" class="button-primary w-100">BUY NOW</button>
-            
-            </form>
+            </div>
         </div>
-    </div>
-</div>
 
+        <div class="checkout-area">
+            <div class="container">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="coupon-accordion">
+                            <h3>Returning customer? <span id="showlogin">Click here to login</span></h3>
+                            <div id="checkout-login" class="coupon-content">
+                                <div class="coupon-info">
+                                    <p class="coupon-text">Quisque gravida turpis sit amet nulla posuere lacinia. Cras sed est
+                                        sit amet ipsum luctus.</p>
+                                    <form action="javascript:void(0)">
+                                        <p class="form-row-first">
+                                            <label>Username or email <span class="required">*</span></label>
+                                            <input type="text">
+                                        </p>
+                                        <p class="form-row-last">
+                                            <label>Password <span class="required">*</span></label>
+                                            <input type="text">
+                                        </p>
+                                        <p class="form-row">
+                                            <input value="Login" type="submit">
+                                            <label>
+                                                <input type="checkbox">
+                                                Remember me
+                                            </label>
+                                        </p>
+                                        <p class="lost-password"><a href="javascript:void(0)">Lost your password?</a></p>
+                                    </form>
+                                </div>
+                            </div>
+                            <h3>Have a coupon? <span id="showcoupon">Click here to enter your code</span></h3>
+                            <div id="checkout_coupon" class="coupon-checkout-content">
+                                <div class="coupon-info">
+                                    <form action="javascript:void(0)">
+                                        <p class="checkout-coupon">
+                                            <input placeholder="Coupon code" type="text">
+                                            <input class="coupon-inner_btn" value="Apply Coupon" type="submit">
+                                        </p>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-6 col-12">
+                        <form action="javascript:void(0)">
+                            <div class="checkbox-form">
+                                <h3>Billing Details</h3>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="country-select clearfix">
+                                            <label>Country <span class="required">*</span></label>
+                                            <select class="myniceselect nice-select wide">
+                                                <option data-display="Bangladesh">Bangladesh</option>
+                                                <option value="uk">London</option>
+                                                <option value="rou">Romania</option>
+                                                <option value="fr">French</option>
+                                                <option value="de">Germany</option>
+                                                <option value="aus">Australia</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="checkout-form-list">
+                                            <label>First Name <span class="required">*</span></label>
+                                            <input placeholder="" type="text">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="checkout-form-list">
+                                            <label>Last Name <span class="required">*</span></label>
+                                            <input placeholder="" type="text">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="checkout-form-list">
+                                            <label>Company Name</label>
+                                            <input placeholder="" type="text">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="checkout-form-list">
+                                            <label>Address <span class="required">*</span></label>
+                                            <input placeholder="Street address" type="text">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="checkout-form-list">
+                                            <input placeholder="Apartment, suite, unit etc. (optional)" type="text">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="checkout-form-list">
+                                            <label>Town / City <span class="required">*</span></label>
+                                            <input type="text">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="checkout-form-list">
+                                            <label>State / County <span class="required">*</span></label>
+                                            <input placeholder="" type="text">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="checkout-form-list">
+                                            <label>Postcode / Zip <span class="required">*</span></label>
+                                            <input placeholder="" type="text">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="checkout-form-list">
+                                            <label>Email Address <span class="required">*</span></label>
+                                            <input placeholder="" type="email">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="checkout-form-list">
+                                            <label>Phone <span class="required">*</span></label>
+                                            <input type="text">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="checkout-form-list create-acc">
+                                            <input id="cbox" type="checkbox">
+                                            <label>Create an account?</label>
+                                        </div>
+                                        <div id="cbox-info" class="checkout-form-list create-account">
+                                            <p>Create an account by entering the information below. If you are a returning
+                                                customer please login at the top of the page.</p>
+                                            <label>Account password <span class="required">*</span></label>
+                                            <input placeholder="password" type="password">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="different-address">
+                                    <div class="ship-different-title">
+                                        <h3>
+                                            <label>Ship to a different address?</label>
+                                            <input id="ship-box" type="checkbox">
+                                        </h3>
+                                    </div>
+                                    <div id="ship-box-info" class="row">
+                                        <div class="col-md-12">
+                                            <div class="myniceselect country-select clearfix">
+                                                <label>Country <span class="required">*</span></label>
+                                                <select class="myniceselect nice-select wide">
+                                                    <option data-display="Bangladesh">Bangladesh</option>
+                                                    <option value="uk">London</option>
+                                                    <option value="rou">Romania</option>
+                                                    <option value="fr">French</option>
+                                                    <option value="de">Germany</option>
+                                                    <option value="aus">Australia</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <div class="checkout-form-list">
+                                                <label>First Name <span class="required">*</span></label>
+                                                <input placeholder="" type="text">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <div class="checkout-form-list">
+                                                <label>Last Name <span class="required">*</span></label>
+                                                <input placeholder="" type="text">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <div class="checkout-form-list">
+                                                <label>Company Name</label>
+                                                <input placeholder="" type="text">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <div class="checkout-form-list">
+                                                <label>Address <span class="required">*</span></label>
+                                                <input placeholder="Street address" type="text">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <div class="checkout-form-list">
+                                                <input placeholder="Apartment, suite, unit etc. (optional)" type="text">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <div class="checkout-form-list">
+                                                <label>Town / City <span class="required">*</span></label>
+                                                <input type="text">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <div class="checkout-form-list">
+                                                <label>State / County <span class="required">*</span></label>
+                                                <input placeholder="" type="text">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <div class="checkout-form-list">
+                                                <label>Postcode / Zip <span class="required">*</span></label>
+                                                <input placeholder="" type="text">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <div class="checkout-form-list">
+                                                <label>Email Address <span class="required">*</span></label>
+                                                <input placeholder="" type="email">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <div class="checkout-form-list">
+                                                <label>Phone <span class="required">*</span></label>
+                                                <input type="text">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="order-notes">
+                                        <div class="checkout-form-list checkout-form-list-2">
+                                            <label>Order Notes</label>
+                                            <textarea id="checkout-mess" cols="30" rows="10" placeholder="Notes about your order, e.g. special notes for delivery."></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="col-lg-6 col-12">
+                        <div class="your-order">
+                            <h3>Your order</h3>
+                            <div class="your-order-table table-responsive">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th class="cart-product-name">Product</th>
+                                            <th class="cart-product-total">Total</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr class="cart_item">
+                                            <td class="cart-product-name"> Vestibulum suscipit<strong class="product-quantity">
+                                            × 1</strong></td>
+                                            <td class="cart-product-total"><span class="amount">£165.00</span></td>
+                                        </tr>
+                                        <tr class="cart_item">
+                                            <td class="cart-product-name"> Vestibulum suscipit<strong class="product-quantity">
+                                            × 1</strong></td>
+                                            <td class="cart-product-total"><span class="amount">£165.00</span></td>
+                                        </tr>
+                                    </tbody>
+                                    <tfoot>
+                                        <tr class="cart-subtotal">
+                                            <th>Cart Subtotal</th>
+                                            <td><span class="amount">£215.00</span></td>
+                                        </tr>
+                                        <tr class="order-total">
+                                            <th>Order Total</th>
+                                            <td><strong><span class="amount">£215.00</span></strong></td>
+                                        </tr>
+                                    </tfoot>
+                                </table>
+                            </div>
+                            <div class="payment-method">
+                                <div class="payment-accordion">
+                                    <div id="accordion">
+                                        <div class="card">
+                                            <div class="card-header" id="#payment-1">
+                                                <h5 class="panel-title">
+                                                    <a href="javascript:void(0)" class="" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                                        Direct Bank Transfer.
+                                                    </a>
+                                                </h5>
+                                            </div>
+                                            <div id="collapseOne" class="collapse show" data-parent="#accordion">
+                                                <div class="card-body">
+                                                    <p>Make your payment directly into our bank account. Please use your Order
+                                                        ID as the payment
+                                                        reference. Your order won’t be shipped until the funds have cleared in
+                                                        our account.</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="card">
+                                            <div class="card-header" id="#payment-2">
+                                                <h5 class="panel-title">
+                                                    <a href="javascript:void(0)" class="collapsed" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                                                        Cheque Payment
+                                                    </a>
+                                                </h5>
+                                            </div>
+                                            <div id="collapseTwo" class="collapse" data-parent="#accordion">
+                                                <div class="card-body">
+                                                    <p>Make your payment directly into our bank account. Please use your Order
+                                                        ID as the payment
+                                                        reference. Your order won’t be shipped until the funds have cleared in
+                                                        our account.</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="card">
+                                            <div class="card-header" id="#payment-3">
+                                                <h5 class="panel-title">
+                                                    <a href="javascript:void(0)" class="collapsed" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                                                        PayPal
+                                                    </a>
+                                                </h5>
+                                            </div>
+                                            <div id="collapseThree" class="collapse" data-parent="#accordion">
+                                                <div class="card-body">
+                                                    <p>Make your payment directly into our bank account. Please use your Order
+                                                        ID as the payment
+                                                        reference. Your order won’t be shipped until the funds have cleared in
+                                                        our account.</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="order-button-payment">
+                                        <input value="Place order" type="submit">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+ @endsection
+
+@section ('script')
 @endsection

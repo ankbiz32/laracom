@@ -3,6 +3,7 @@
 
 @section ('content')
 
+<link rel="stylesheet" href="{{URL::to('/')}}/plugins/td-message/td-message.css"/>
     <div class="sp-area pt-100">
         <div class="container">
             <div class="sp-nav">
@@ -273,4 +274,5 @@
 
 
 @section ('script')
+    <script src="{{URL::to('/')}}/plugins/td-message/td-message.min.js"></script>
 @endsection

@@ -91,7 +91,7 @@
                                         <li class="cart-shipping">Shipping <span>0</span></li>
                                         <li class="cart-total">Total <span>{{$totalPrice}}</span></li>
                                     </ul>
-                                    <a href="javascript:void(0)" class="float-right quicky-btn ">PROCEED TO CHECKOUT</a>
+                                    <a href="{{route('checkout.index')}}" class="float-right quicky-btn ">PROCEED TO CHECKOUT</a>
                                 </div>
                             </div>
                         </div>

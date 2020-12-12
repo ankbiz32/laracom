@@ -13,7 +13,7 @@
     @section ('content')
         <style>
             .featured-products .slick-list{
-                padding: 0 10% 0 0;
+                padding: 0 15% 0 0;
             }
             @media(max-width:480px){
                 .featured-products .slick-list{
@@ -126,9 +126,9 @@
                         </div>
                     </div>
                 </div>
-                <div class="row">
+                <div class="row justify-content-center">
                     @foreach($categories as $catg)
-                    <a href="" class="col-md-4">
+                    <a href="{{ route( 'category.list', ['category'=>$catg->id, 'slug'=>$catg->meta_title] ) }}" class="col-md-4">
                         <div class="service-item flex-column align-items-center">
                             <div class="service-img mb-2 mb-sm-0">
                                 <img src="{{URL::to('/').'/'.$catg->img_src}}" height="70" style="object-fit:contain" alt="Category">
