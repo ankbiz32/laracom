@@ -19,24 +19,37 @@
                 <div class="row">
                     <div class="col-12">
                         <div class="coupon-accordion">
-                            <h3>Returning customer? <span id="showlogin">Click here to login</span></h3>
+                        @guest
+                            <h3 id="showlogin">Returning customer? <span >Click here to login</span></h3>
                             <div id="checkout-login" class="coupon-content">
                                 <div class="coupon-info">
-                                    <p class="coupon-text">Quisque gravida turpis sit amet nulla posuere lacinia. Cras sed est
-                                        sit amet ipsum luctus.</p>
-                                    <form action="javascript:void(0)">
+                                    <p class="coupon-text mb-3">Please enter your registered e-mail & password to login.</p>
+                                    <form method="POST" action="{{ route('login') }}">
+                                        @csrf
                                         <p class="form-row-first">
-                                            <label>Username or email <span class="required">*</span></label>
-                                            <input type="text">
+                                            <label>E-mail <span class="required">*</span></label>
+                                            <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus>
+                                            @error('email')
+                                                <span class="invalid-feedback" role="alert">
+                                                    <strong>{{ $message }}</strong>
+                                                </span>
+                                            @enderror
                                         </p>
                                         <p class="form-row-last">
                                             <label>Password <span class="required">*</span></label>
-                                            <input type="text">
+                                            <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="current-password">
+                                            @error('password')
+                                                <span class="invalid-feedback" role="alert">
+                                                    <strong>{{ $message }}</strong>
+                                                </span>
+                                            @enderror
                                         </p>
-                                        <p class="form-row">
-                                            <input value="Login" type="submit">
+                                        <p class="form-row align-items-end">
+                                            <button type="submit" class="quicky-btn text-center quicky-btn_fullwidth square-btn">
+                                                {{ __('Login') }}
+                                            </button>
                                             <label>
-                                                <input type="checkbox">
+                                                <input type="checkbox" class="ml-4" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}>
                                                 Remember me
                                             </label>
                                         </p>
@@ -44,7 +57,8 @@
                                     </form>
                                 </div>
                             </div>
-                            <h3>Have a coupon? <span id="showcoupon">Click here to enter your code</span></h3>
+                        @endguest
+                            <!-- <h3>Have a coupon? <span id="showcoupon">Click here to enter your code</span></h3>
                             <div id="checkout_coupon" class="coupon-checkout-content">
                                 <div class="coupon-info">
                                     <form action="javascript:void(0)">
@@ -54,7 +68,7 @@
                                         </p>
                                     </form>
                                 </div>
-                            </div>
+                            </div> -->
                         </div>
                     </div>
                 </div>

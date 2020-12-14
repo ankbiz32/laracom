@@ -34,6 +34,9 @@ class LoginController extends Controller
         if (Auth::user()->role == 'Admin') {
             return 'dashboard';
         }
+        elseif (Auth::user()->role == 'Customer') {
+            return Session::get('backUrl') ? Session::get('backUrl') :   $this->redirectTo;
+        }
         else {
             return '/';
         }
@@ -46,5 +49,15 @@ class LoginController extends Controller
     public function __construct()
     {
         $this->middleware('guest')->except('logout');
+        Session::put('backUrl', URL::previous());
+    }
+
+    public function showLoginForm()
+    {
+        if(!session()->has('url.intended'))
+        {
+            session(['url.intended' => url()->previous()]);
+        }
+        return view('auth.login');
     }
 }
