@@ -74,7 +74,7 @@
                 </div>
                 <div class="row">
                     <div class="col-lg-6 col-12">
-                        <form method="POST" action="{{ route('checkout') }}">
+                        <form method="POST" action="{{ route('checkout') }}" id="details_form">
                             @csrf
                             <div class="checkbox-form">
                                 <h3>Billing Details</h3>
@@ -82,13 +82,14 @@
                                     <div class="col-md-12">
                                         <div class="country-select clearfix">
                                             <label>Country *</label>
-                                            <select class="myniceselect nice-select wide @error('country') is-invalid @enderror" name="country">
-                                                <option data-display="Bangladesh">Bangladesh</option>
+                                            <select class="myniceselect nice-select wide @error('country') is-invalid @enderror" name="country" required>
+                                                <option value="in">India</option>
                                                 <option value="uk">London</option>
-                                                <option value="rou">Romania</option>
-                                                <option value="fr">French</option>
+                                                <option value="jpn">Japan</option>
+                                                <option value="fr">France</option>
                                                 <option value="de">Germany</option>
                                                 <option value="aus">Australia</option>
+                                                <option value="usa">USA</option>
                                             </select>
                                             @error('country')
                                                 <span class="invalid-feedback" role="alert">
@@ -100,7 +101,7 @@
                                     <div class="col-md-6">
                                         <div class="checkout-form-list">
                                             <label>Name <span class="required">*</span></label>
-                                            <input placeholder="" name="name" type="text" class="@error('name') is-invalid @enderror" value="{{ old('name') }}">
+                                            <input placeholder="" name="name" type="text" class="@error('name') is-invalid @enderror" value="{{ old('name') }}" required>
                                             @error('name')
                                                 <span class="invalid-feedback" role="alert">
                                                     <strong>{{ $message }}</strong>
@@ -111,7 +112,7 @@
                                     <div class="col-md-6">
                                         <div class="checkout-form-list">
                                             <label>Email id<span class="required">*</span></label>
-                                            <input name="email" value="{{old('email')}}" class="@error('email') is-invalid @enderror" type="email">
+                                            <input name="email" placeholder="youremail@xyz.com" value="{{old('email')}}" class="@error('email') is-invalid @enderror" type="email" required>
                                             @error('email')
                                                 <span class="invalid-feedback" role="alert">
                                                     <strong>{{ $message }}</strong>
@@ -121,8 +122,8 @@
                                     </div>
                                     <div class="col-md-6">
                                         <div class="checkout-form-list">
-                                            <label>Phone <span class="required">*</span></label>
-                                            <input name="phone" value="{{old('phone')}}" class="@error('phone') is-invalid @enderror"  type="text">
+                                            <label>Phone <small>(with country code)</small> <span class="required">*</span></label>
+                                            <input name="phone" value="{{old('phone')}}" placeholder="For eg: +918888888888" class="digits @error('phone') is-invalid @enderror"  type="text" required>
                                         </div>
                                         @error('phone')
                                             <span class="invalid-feedback" role="alert">
@@ -133,7 +134,7 @@
                                     <div class="col-md-6">
                                         <div class="checkout-form-list">
                                             <label> Postcode / Zip<span class="required">*</span></label>
-                                            <input type="text" name="zipcode" value="{{old('zipcode')}}" class="@error('zipcode') is-invalid @enderror" >
+                                            <input type="text" name="zipcode" value="{{old('zipcode')}}" class="@error('zipcode') is-invalid @enderror" required>
                                             @error('zipcode')
                                                 <span class="invalid-feedback" role="alert">
                                                     <strong>{{ $message }}</strong>
@@ -143,8 +144,8 @@
                                     </div>
                                     <div class="col-md-12">
                                         <div class="checkout-form-list">
-                                            <label> Full adress<span class="required">*</span></label>
-                                            <textarea name="address" maxlength="300" class="form-control @error('address') is-invalid @enderror" rows="3">{{old('address')}}</textarea>
+                                            <label> Full address<span class="required">*</span></label>
+                                            <textarea name="address" data-rule-maxlength="300" maxlength="300" class="form-control @error('address') is-invalid @enderror" rows="3" required>{{old('address')}}</textarea>
                                             @error('address')
                                                 <span class="invalid-feedback" role="alert">
                                                     <strong>{{ $message }}</strong>
@@ -163,7 +164,7 @@
                                             <p>Create an account by entering the information below. If you are a returning
                                                 customer please login at the top of the page.</p>
                                             <label>Set password <span class="required">*</span></label>
-                                            <input placeholder="password" type="password" name="new_password">
+                                            <input autocomplete="new-password" type="password" name="new_password" required>
                                         </div>
                                     </div>
                                     @endguest
@@ -179,13 +180,14 @@
                                         <div class="col-md-12">
                                             <div class="country-select clearfix">
                                                 <label>Country *</label>
-                                                <select class="myniceselect nice-select wide @error('dcountry') is-invalid @enderror" name="dcountry" >
-                                                    <option data-display="Bangladesh">Bangladesh</option>
+                                                <select class="myniceselect sh nice-select wide @error('dcountry') is-invalid @enderror" name="dcountry" >
+                                                    <option value="in">India</option>
                                                     <option value="uk">London</option>
-                                                    <option value="rou">Romania</option>
-                                                    <option value="fr">French</option>
+                                                    <option value="jon">Japan</option>
+                                                    <option value="fr">France</option>
                                                     <option value="de">Germany</option>
                                                     <option value="aus">Australia</option>
+                                                    <option value="usa">USA</option>
                                                 </select>
                                                 @error('dcountry')
                                                     <span class="invalid-feedback" role="alert">
@@ -197,7 +199,7 @@
                                         <div class="col-md-6">
                                             <div class="checkout-form-list">
                                                 <label>Phone <span class="required">*</span></label>
-                                                <input name="dphone" value="{{old('dphone')}}" class="@error('dphone') is-invalid @enderror"  type="text" >
+                                                <input name="dphone" value="{{old('dphone')}}" class="sh @error('dphone') is-invalid @enderror"  type="text" >
                                             </div>
                                             @error('dphone')
                                                 <span class="invalid-feedback" role="alert">
@@ -208,7 +210,7 @@
                                         <div class="col-md-6">
                                             <div class="checkout-form-list">
                                                 <label> Postcode / Zip<span class="required">*</span></label>
-                                                <input type="text" name="dzipcode" value="{{old('dzipcode')}}" class="@error('dzipcode') is-invalid @enderror" >
+                                                <input type="text" name="dzipcode" value="{{old('dzipcode')}}" class="sh @error('dzipcode') is-invalid @enderror" >
                                                 @error('dzipcode')
                                                     <span class="invalid-feedback" role="alert">
                                                         <strong>{{ $message }}</strong>
@@ -218,8 +220,8 @@
                                         </div>
                                         <div class="col-md-12">
                                             <div class="checkout-form-list">
-                                                <label> Full adress<span class="required">*</span></label>
-                                                <textarea name="daddress" maxlength="300" class="form-control @error('daddress') is-invalid @enderror" rows="3">{{old('daddress')}}</textarea>
+                                                <label> Full address<span class="required">*</span></label>
+                                                <textarea name="daddress" maxlength="300" class="sh form-control @error('daddress') is-invalid @enderror" rows="3">{{old('daddress')}}</textarea>
                                                 @error('daddress')
                                                     <span class="invalid-feedback" role="alert">
                                                         <strong>{{ $message }}</strong>
@@ -231,7 +233,7 @@
                                     <div class="order-notes">
                                         <div class="checkout-form-list checkout-form-list-2">
                                             <label>Order Notes</label>
-                                            <textarea id="checkout-mess" class="bg-white" cols="30" rows="10" placeholder="Notes about your order, e.g. special notes for delivery."></textarea>
+                                            <textarea id="checkout-mess" name="note" class="bg-white" cols="30" rows="10" placeholder="Notes about your order, e.g. special notes for delivery."></textarea>
                                         </div>
                                     </div>
                                 </div>
@@ -334,7 +336,7 @@
                                         </div>
                                     </div>
                                     <div class="order-button-payment">
-                                        <input value="Place order" type="submit">
+                                        <button class="quicky-btn btn-block" id="order">PLACE ORDER</button>
                                     </div>
                                 </div>
                             </div>
@@ -348,4 +350,20 @@
 
 @section ('script')
     <script src="{{URL::to('/')}}/plugins/jquery-validation/jquery.validate.min.js"></script>
+    <script>
+    $( "#order" ).click(function() {
+        $('#cbox').click();
+        if($('#details_form').valid()){
+            $('#details_form').submit();
+        }
+    });
+    $('#ship-box').change(function() {
+        if(this.checked) {
+            $('.sh').addClass('required');
+        }
+        else{
+            $('.sh').removeClass('required');  
+        }    
+    });
+    </script>
 @endsection

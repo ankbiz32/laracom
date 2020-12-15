@@ -17,13 +17,12 @@ class CreateOrdersTable extends Migration
             $table->id();
             $table->integer('user_id');
             $table->string('name');
-            $table->string('amount');
-            $table->text('cart');
-            $table->string('phonenumber');
-            $table->string('country');
-            $table->string('city');
-            $table->text('address');
+            $table->text('email');
+            $table->string('phone');
             $table->integer('zipcode');
+            $table->text('address');
+            $table->string('country');
+            $table->string('amount');
             $table->tinyInteger('is_paid');
             $table->string('payment_type');
             $table->integer('payment_id')->nullable();

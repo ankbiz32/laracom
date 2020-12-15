@@ -6,6 +6,9 @@
 .is-invalid{
     border: 1px solid #d00000 !important;
 }
+label.error{
+    color: #d00000;
+}
 .quicky-btn{
     display: inline-block;
     margin-top: 8px !important;

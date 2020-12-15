@@ -10,6 +10,10 @@ class Order extends Model
         return $this->belongsTo(User::class);
     }
 
+    public function order_details(){
+        return $this->hasMany(Order_details::class);
+    }
+
     public function payment()
     {
         return $this->hasOne(Payment::class);
