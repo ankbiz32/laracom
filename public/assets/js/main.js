@@ -265,8 +265,13 @@
 
 	// showlogin toggle
 	$('#ship-box').on('click', function () {
-		$('#ship-box-info').slideToggle(1000);
+		$('#ship-box-info').slideToggle(1000, function() {
+			if ($(this).is(':visible'))
+				$(this).css('display','flex');
+		});
 	});
+
+
 
 	/*----------------------------------------*/
 	/* FAQ Accordion

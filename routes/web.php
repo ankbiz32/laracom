@@ -103,7 +103,7 @@ Route::get('/cart/remove/{id}','CartController@remove')->name('cart.remove');
 Route::post('/cart/update', 'CartController@update')->name('cart.update');
 
 Route::get('/checkout','CheckoutController@index')->name('checkout.index');
-Route::post('/checkout','CheckoutController@checkout')->name('checkout')->middleware('auth');
+Route::post('/checkout','CheckoutController@checkout')->name('checkout');
 
 Route::get('/user/order','OrderController@show')->name('order.show')->middleware('auth');
 

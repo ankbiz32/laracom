@@ -16,15 +16,19 @@ class CheckoutController extends Controller
         if(!Session::has('cart')){
             return view('cart.index');
         }
-        $oldCart = Session::get('cart');
-        $cart = new Cart($oldCart);
-        $total = $cart->totalPrice;
+        
+        $oldCart= Session::get('cart');
+        $cart= new Cart($oldCart);
+        $products = $cart->items;
+        $totalPrice = $cart->totalPrice;
+        $totalQuantity= $cart->totalQuantity;
         $user = Auth::user();
-        return view('checkout.index',compact('total','user'));
+        return view('checkout.index', compact ('products','totalPrice','user','totalQuantity'));
     }
 
     public function checkout(Request $request)
     {
+        dd($request);
         $this->validate(request(), [
             'name' => 'required|string',
             'phonenumber' => 'required|regex:/^([0-9\s\-\+\(\)]*)$/|min:8',

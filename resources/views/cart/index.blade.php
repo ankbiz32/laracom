@@ -88,7 +88,7 @@
                                     <h2>Cart totals</h2>
                                     <ul class="mb-3">
                                         <li class="cart-subtotal">Subtotal <span>{{$totalPrice}}</span></li>
-                                        <li class="cart-shipping">Shipping <span>0</span></li>
+                                        <li class="cart-shipping">Taxes <span>0</span></li>
                                         <li class="cart-total">Total <span>{{$totalPrice}}</span></li>
                                     </ul>
                                     <a href="{{route('checkout.index')}}" class="float-right quicky-btn ">PROCEED TO CHECKOUT</a>

@@ -74,14 +74,15 @@
                 </div>
                 <div class="row">
                     <div class="col-lg-6 col-12">
-                        <form action="javascript:void(0)">
+                        <form method="POST" action="{{ route('checkout') }}">
+                            @csrf
                             <div class="checkbox-form">
                                 <h3>Billing Details</h3>
                                 <div class="row">
                                     <div class="col-md-12">
                                         <div class="country-select clearfix">
-                                            <label>Country <span class="required">*</span></label>
-                                            <select class="myniceselect nice-select wide">
+                                            <label>Country *</label>
+                                            <select class="myniceselect nice-select wide @error('country') is-invalid @enderror" name="country">
                                                 <option data-display="Bangladesh">Bangladesh</option>
                                                 <option value="uk">London</option>
                                                 <option value="rou">Romania</option>
@@ -89,92 +90,96 @@
                                                 <option value="de">Germany</option>
                                                 <option value="aus">Australia</option>
                                             </select>
+                                            @error('country')
+                                                <span class="invalid-feedback" role="alert">
+                                                    <strong>{{ $message }}</strong>
+                                                </span>
+                                            @enderror
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="checkout-form-list">
-                                            <label>First Name <span class="required">*</span></label>
-                                            <input placeholder="" type="text">
+                                            <label>Name <span class="required">*</span></label>
+                                            <input placeholder="" name="name" type="text" class="@error('name') is-invalid @enderror" value="{{ old('name') }}">
+                                            @error('name')
+                                                <span class="invalid-feedback" role="alert">
+                                                    <strong>{{ $message }}</strong>
+                                                </span>
+                                            @enderror
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="checkout-form-list">
-                                            <label>Last Name <span class="required">*</span></label>
-                                            <input placeholder="" type="text">
-                                        </div>
-                                    </div>
-                                    <div class="col-md-12">
-                                        <div class="checkout-form-list">
-                                            <label>Company Name</label>
-                                            <input placeholder="" type="text">
-                                        </div>
-                                    </div>
-                                    <div class="col-md-12">
-                                        <div class="checkout-form-list">
-                                            <label>Address <span class="required">*</span></label>
-                                            <input placeholder="Street address" type="text">
-                                        </div>
-                                    </div>
-                                    <div class="col-md-12">
-                                        <div class="checkout-form-list">
-                                            <input placeholder="Apartment, suite, unit etc. (optional)" type="text">
-                                        </div>
-                                    </div>
-                                    <div class="col-md-12">
-                                        <div class="checkout-form-list">
-                                            <label>Town / City <span class="required">*</span></label>
-                                            <input type="text">
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="checkout-form-list">
-                                            <label>State / County <span class="required">*</span></label>
-                                            <input placeholder="" type="text">
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="checkout-form-list">
-                                            <label>Postcode / Zip <span class="required">*</span></label>
-                                            <input placeholder="" type="text">
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="checkout-form-list">
-                                            <label>Email Address <span class="required">*</span></label>
-                                            <input placeholder="" type="email">
+                                            <label>Email id<span class="required">*</span></label>
+                                            <input name="email" value="{{old('email')}}" class="@error('email') is-invalid @enderror" type="email">
+                                            @error('email')
+                                                <span class="invalid-feedback" role="alert">
+                                                    <strong>{{ $message }}</strong>
+                                                </span>
+                                            @enderror
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="checkout-form-list">
                                             <label>Phone <span class="required">*</span></label>
-                                            <input type="text">
+                                            <input name="phone" value="{{old('phone')}}" class="@error('phone') is-invalid @enderror"  type="text">
+                                        </div>
+                                        @error('phone')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                        @enderror
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="checkout-form-list">
+                                            <label> Postcode / Zip<span class="required">*</span></label>
+                                            <input type="text" name="zipcode" value="{{old('zipcode')}}" class="@error('zipcode') is-invalid @enderror" >
+                                            @error('zipcode')
+                                                <span class="invalid-feedback" role="alert">
+                                                    <strong>{{ $message }}</strong>
+                                                </span>
+                                            @enderror
                                         </div>
                                     </div>
                                     <div class="col-md-12">
+                                        <div class="checkout-form-list">
+                                            <label> Full adress<span class="required">*</span></label>
+                                            <textarea name="address" maxlength="300" class="form-control @error('address') is-invalid @enderror" rows="3">{{old('address')}}</textarea>
+                                            @error('address')
+                                                <span class="invalid-feedback" role="alert">
+                                                    <strong>{{ $message }}</strong>
+                                                </span>
+                                            @enderror
+                                        </div>
+                                    </div>
+                                    
+                                    @guest
+                                    <div class="col-md-12">
                                         <div class="checkout-form-list create-acc">
-                                            <input id="cbox" type="checkbox">
+                                            <input id="cbox" name="new_account" type="checkbox">
                                             <label>Create an account?</label>
                                         </div>
                                         <div id="cbox-info" class="checkout-form-list create-account">
                                             <p>Create an account by entering the information below. If you are a returning
                                                 customer please login at the top of the page.</p>
-                                            <label>Account password <span class="required">*</span></label>
-                                            <input placeholder="password" type="password">
+                                            <label>Set password <span class="required">*</span></label>
+                                            <input placeholder="password" type="password" name="new_password">
                                         </div>
                                     </div>
+                                    @endguest
                                 </div>
                                 <div class="different-address">
                                     <div class="ship-different-title">
                                         <h3>
                                             <label>Ship to a different address?</label>
-                                            <input id="ship-box" type="checkbox">
+                                            <input id="ship-box" name="different_shipping" type="checkbox">
                                         </h3>
                                     </div>
                                     <div id="ship-box-info" class="row">
                                         <div class="col-md-12">
-                                            <div class="myniceselect country-select clearfix">
-                                                <label>Country <span class="required">*</span></label>
-                                                <select class="myniceselect nice-select wide">
+                                            <div class="country-select clearfix">
+                                                <label>Country *</label>
+                                                <select class="myniceselect nice-select wide @error('dcountry') is-invalid @enderror" name="dcountry" >
                                                     <option data-display="Bangladesh">Bangladesh</option>
                                                     <option value="uk">London</option>
                                                     <option value="rou">Romania</option>
@@ -182,72 +187,51 @@
                                                     <option value="de">Germany</option>
                                                     <option value="aus">Australia</option>
                                                 </select>
+                                                @error('dcountry')
+                                                    <span class="invalid-feedback" role="alert">
+                                                        <strong>{{ $message }}</strong>
+                                                    </span>
+                                                @enderror
                                             </div>
                                         </div>
-                                        <div class="col-md-12">
-                                            <div class="checkout-form-list">
-                                                <label>First Name <span class="required">*</span></label>
-                                                <input placeholder="" type="text">
-                                            </div>
-                                        </div>
-                                        <div class="col-md-12">
-                                            <div class="checkout-form-list">
-                                                <label>Last Name <span class="required">*</span></label>
-                                                <input placeholder="" type="text">
-                                            </div>
-                                        </div>
-                                        <div class="col-md-12">
-                                            <div class="checkout-form-list">
-                                                <label>Company Name</label>
-                                                <input placeholder="" type="text">
-                                            </div>
-                                        </div>
-                                        <div class="col-md-12">
-                                            <div class="checkout-form-list">
-                                                <label>Address <span class="required">*</span></label>
-                                                <input placeholder="Street address" type="text">
-                                            </div>
-                                        </div>
-                                        <div class="col-md-12">
-                                            <div class="checkout-form-list">
-                                                <input placeholder="Apartment, suite, unit etc. (optional)" type="text">
-                                            </div>
-                                        </div>
-                                        <div class="col-md-12">
-                                            <div class="checkout-form-list">
-                                                <label>Town / City <span class="required">*</span></label>
-                                                <input type="text">
-                                            </div>
-                                        </div>
-                                        <div class="col-md-12">
-                                            <div class="checkout-form-list">
-                                                <label>State / County <span class="required">*</span></label>
-                                                <input placeholder="" type="text">
-                                            </div>
-                                        </div>
-                                        <div class="col-md-12">
-                                            <div class="checkout-form-list">
-                                                <label>Postcode / Zip <span class="required">*</span></label>
-                                                <input placeholder="" type="text">
-                                            </div>
-                                        </div>
-                                        <div class="col-md-12">
-                                            <div class="checkout-form-list">
-                                                <label>Email Address <span class="required">*</span></label>
-                                                <input placeholder="" type="email">
-                                            </div>
-                                        </div>
-                                        <div class="col-md-12">
+                                        <div class="col-md-6">
                                             <div class="checkout-form-list">
                                                 <label>Phone <span class="required">*</span></label>
-                                                <input type="text">
+                                                <input name="dphone" value="{{old('dphone')}}" class="@error('dphone') is-invalid @enderror"  type="text" >
+                                            </div>
+                                            @error('dphone')
+                                                <span class="invalid-feedback" role="alert">
+                                                    <strong>{{ $message }}</strong>
+                                                </span>
+                                            @enderror
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="checkout-form-list">
+                                                <label> Postcode / Zip<span class="required">*</span></label>
+                                                <input type="text" name="dzipcode" value="{{old('dzipcode')}}" class="@error('dzipcode') is-invalid @enderror" >
+                                                @error('dzipcode')
+                                                    <span class="invalid-feedback" role="alert">
+                                                        <strong>{{ $message }}</strong>
+                                                    </span>
+                                                @enderror
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <div class="checkout-form-list">
+                                                <label> Full adress<span class="required">*</span></label>
+                                                <textarea name="daddress" maxlength="300" class="form-control @error('daddress') is-invalid @enderror" rows="3">{{old('daddress')}}</textarea>
+                                                @error('daddress')
+                                                    <span class="invalid-feedback" role="alert">
+                                                        <strong>{{ $message }}</strong>
+                                                    </span>
+                                                @enderror
                                             </div>
                                         </div>
                                     </div>
                                     <div class="order-notes">
                                         <div class="checkout-form-list checkout-form-list-2">
                                             <label>Order Notes</label>
-                                            <textarea id="checkout-mess" cols="30" rows="10" placeholder="Notes about your order, e.g. special notes for delivery."></textarea>
+                                            <textarea id="checkout-mess" class="bg-white" cols="30" rows="10" placeholder="Notes about your order, e.g. special notes for delivery."></textarea>
                                         </div>
                                     </div>
                                 </div>
@@ -255,36 +239,41 @@
                         </form>
                     </div>
                     <div class="col-lg-6 col-12">
-                        <div class="your-order">
+                        <div class="your-order px-sm-5 px-3">
                             <h3>Your order</h3>
                             <div class="your-order-table table-responsive">
                                 <table class="table">
                                     <thead>
                                         <tr>
-                                            <th class="cart-product-name">Product</th>
-                                            <th class="cart-product-total">Total</th>
+                                            <th class="cart-product-name text-left"><strong>Product</strong></th>
+                                            <th class="cart-product-total text-right"><strong>Total</strong></th>
                                         </tr>
                                     </thead>
                                     <tbody>
+                                    @foreach ($products as $key => $value)
                                         <tr class="cart_item">
-                                            <td class="cart-product-name"> Vestibulum suscipit<strong class="product-quantity">
-                                            × 1</strong></td>
-                                            <td class="cart-product-total"><span class="amount">£165.00</span></td>
+                                            <td class="cart-product-name pl-0"> {{ $value['item']->name}}<strong class="product-quantity">
+                                            × {{ $value['quantity']}}</strong></td>
+                                            <td class="cart-product-total pr-0 text-right"><span class="amount">£{{ $value['quantity'] * $value['price']}}</span></td>
                                         </tr>
-                                        <tr class="cart_item">
-                                            <td class="cart-product-name"> Vestibulum suscipit<strong class="product-quantity">
-                                            × 1</strong></td>
-                                            <td class="cart-product-total"><span class="amount">£165.00</span></td>
-                                        </tr>
+                                    @endforeach
                                     </tbody>
                                     <tfoot>
                                         <tr class="cart-subtotal">
-                                            <th>Cart Subtotal</th>
-                                            <td><span class="amount">£215.00</span></td>
+                                            <th class="pl-0">Cart Subtotal</th>
+                                            <td class="pr-0 text-right"><span class="amount">£{{$totalPrice}}</span></td>
+                                        </tr>
+                                        <tr class="cart-subtotal">
+                                            <th class="pl-0">Taxes</th>
+                                            <td class="pr-0 text-right"><span class="amount">£0</span></td>
+                                        </tr>
+                                        <tr class="cart-subtotal">
+                                            <th class="pl-0">Shipping</th>
+                                            <td class="pr-0 text-right"><span class="amount">£0</span></td>
                                         </tr>
                                         <tr class="order-total">
-                                            <th>Order Total</th>
-                                            <td><strong><span class="amount">£215.00</span></strong></td>
+                                            <th class="pl-0">Order Total</th>
+                                            <td class="pr-0 text-right"><strong><span class="amount">£{{$totalPrice}}</span></strong></td>
                                         </tr>
                                     </tfoot>
                                 </table>
@@ -358,4 +347,5 @@
  @endsection
 
 @section ('script')
+    <script src="{{URL::to('/')}}/plugins/jquery-validation/jquery.validate.min.js"></script>
 @endsection

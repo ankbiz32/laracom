@@ -3,6 +3,9 @@
 /* D Yellow #DA9C18 */
 /* Text black #343434 */
 
+.is-invalid{
+    border: 1px solid #d00000 !important;
+}
 .quicky-btn{
     display: inline-block;
     margin-top: 8px !important;
