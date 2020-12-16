@@ -2,18 +2,6 @@
 
 @section ('content')
 
-        <div class="breadcrumb-area">
-            <div class="container">
-                <div class="breadcrumb-content">
-                    <h2>Checkout</h2>
-                    <ul>
-                        <li><a href="{{URL('/')}}">Home</a></li>
-                        <li class="active">Checkout</li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-
         <div class="checkout-area">
             <div class="container">
                 <div class="row">

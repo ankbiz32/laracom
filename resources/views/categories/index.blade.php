@@ -4,10 +4,10 @@
   <div class="breadcrumb-area">
       <div class="container">
           <div class="breadcrumb-content">
-              <h2>Tags</h2>
+              <h2>Categories</h2>
               <ul>
                   <li><a href="{{URL('/')}}">Home</a></li>
-                  <li class="active">Tags</li>
+                  <li class="active">category</li>
               </ul>
           </div>
       </div>
