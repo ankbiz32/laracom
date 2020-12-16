@@ -18,15 +18,21 @@ class CreateOrdersTable extends Migration
             $table->integer('user_id');
             $table->string('name');
             $table->text('email');
+            $table->string('amount');
             $table->string('phone');
             $table->integer('zipcode');
             $table->text('address');
             $table->string('country');
-            $table->string('amount');
-            $table->tinyInteger('is_paid');
+            $table->tinyInteger('ship_to_different_address')->default(0);
+            $table->string('ship_phone')->nullable();
+            $table->integer('ship_zipcode')->nullable();
+            $table->text('ship_address')->nullable();
+            $table->string('ship_country')->nullable();
+            $table->tinyInteger('is_paid')->default(1);
             $table->string('payment_type');
             $table->integer('payment_id')->nullable();
             $table->string('order_status')->default('ORDERED');
+            $table->string('note')->nullable();
             $table->timestamps();
         });
     }

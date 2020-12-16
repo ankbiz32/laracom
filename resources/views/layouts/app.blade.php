@@ -27,6 +27,7 @@
     <link rel="stylesheet" href="{{URL::to('/')}}/assets/css/plugins/jquery-ui.min.css">
     <link rel="stylesheet" href="{{URL::to('/')}}/assets/css/plugins/nice-select.css">
     <link rel="stylesheet" href="{{URL::to('/')}}/assets/css/plugins/timecircles.css">
+    <link rel="stylesheet" href="{{URL::to('/')}}/plugins/td-message/td-message.css"/>
 
     <!-- Vendor & Plugins CSS (Please remove the comment from below vendor.min.css & plugins.min.css for better website load performance and remove css files from the above) -->
     <!--
@@ -764,6 +765,7 @@
     <script src="{{URL::to('/')}}/assets/js/plugins/waypoints.min.js"></script>
     <script src="{{URL::to('/')}}/assets/js/plugins/jquery.zoom.min.js"></script>
     <script src="{{URL::to('/')}}/assets/js/plugins/timecircles.js"></script>
+    <script src="{{URL::to('/')}}/plugins/td-message/td-message.min.js"></script>
 
     <!-- Vendor & Plugins JS (Please remove the comment from below vendor.min.js & plugins.min.js for better website load performance and remove js files from avobe) -->
     <!--

@@ -287,7 +287,7 @@
                                             <div class="card-header" id="#payment-1">
                                                 <h5 class="panel-title">
                                                     <a href="javascript:void(0)" class="" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                                                        Direct Bank Transfer.
+                                                        Cash on delivery
                                                     </a>
                                                 </h5>
                                             </div>
@@ -301,27 +301,10 @@
                                             </div>
                                         </div>
                                         <div class="card">
-                                            <div class="card-header" id="#payment-2">
-                                                <h5 class="panel-title">
-                                                    <a href="javascript:void(0)" class="collapsed" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                                                        Cheque Payment
-                                                    </a>
-                                                </h5>
-                                            </div>
-                                            <div id="collapseTwo" class="collapse" data-parent="#accordion">
-                                                <div class="card-body">
-                                                    <p>Make your payment directly into our bank account. Please use your Order
-                                                        ID as the payment
-                                                        reference. Your order won’t be shipped until the funds have cleared in
-                                                        our account.</p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="card">
                                             <div class="card-header" id="#payment-3">
                                                 <h5 class="panel-title">
                                                     <a href="javascript:void(0)" class="collapsed" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-                                                        PayPal
+                                                        Razorpay
                                                     </a>
                                                 </h5>
                                             </div>

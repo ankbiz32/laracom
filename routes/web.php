@@ -104,6 +104,7 @@ Route::post('/cart/update', 'CartController@update')->name('cart.update');
 
 Route::get('/checkout','CheckoutController@index')->name('checkout.index');
 Route::post('/checkout','CheckoutController@checkout')->name('checkout');
+Route::get('/checkout/success','CheckoutController@success')->name('checkout.success');
 
 Route::get('/user/order','OrderController@show')->name('order.show')->middleware('auth');
 
