@@ -40,16 +40,7 @@ class AdminController extends Controller
             $reminder = Reminder::find(1);
         }
 
-        $gross = Order::get();
-        $gross->transform(function($order,$key){
-            $order->cart = unserialize($order->cart);
-            return $order;
-        });
-
-        foreach ($gross as $x){
-           $totalgross+= $x->cart->totalPrice;
-        }
-
+        $totalgross=0;
 
 
         return view('admin.dashboard',compact('latest','totaluser','totalorder','totalproduct','totalgross','reminder'));
