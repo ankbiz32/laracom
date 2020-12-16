@@ -70,14 +70,8 @@ class AdminController extends Controller
 
     public function show_order($id)
     {
-        $ids =DB::table('orders')->where('id',$id)->get();
-
-        $order =DB::table('orders')->where('id',$id)->get();
-        $order->transform(function($order,$key){
-            $order->cart = unserialize($order->cart);
-            return $order;
-        });
-        return view('admin.showorder',compact('order','ids'));
+        $order =Order::findOrFail($id);
+        return view('admin.showorder',compact('order'));
     }
 
     public function update_order(Request $request)

@@ -190,7 +190,7 @@
                     name: 'created_at',
                     render: function (data, type, full, meta) {
                     var cdate= new Date(data);
-                    return cdate.getDate() + '-' + cdate.getMonth() + '-' + cdate.getFullYear();
+                    return cdate.getDate() + '/' + cdate.getMonth() + '/' + cdate.getFullYear().toString().substr(-2)+ ' &nbsp; ' + cdate.getHours()+ ':' + cdate.getMinutes();
                     },
                     orderable: true,
                     searchable: true

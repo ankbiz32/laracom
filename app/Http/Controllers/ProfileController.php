@@ -6,6 +6,11 @@ use Illuminate\Http\Request;
 
 class ProfileController extends Controller
 {
+    public function show(User $user){
+        $this->authorize('update',$user->profile);
+        return view('profiles.edit', compact('user'));
+    }
+
     public function edit(User $user){
         $this->authorize('update',$user->profile);
         return view('profiles.edit', compact('user'));

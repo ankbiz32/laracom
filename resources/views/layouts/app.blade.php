@@ -134,10 +134,10 @@
                                                             @guest
                                                                 <a href="{{ route('login') }}">{{ __('Login') }}</a>
                                                                 @if (Route::has('register'))
-                                                                    <a href="{{ route('register') }}">{{ __('Register') }}</a>
+                                                                    <a href="{{ route('register',['user'=>Auth::user()->id ]) }}">{{ __('Register') }}</a>
                                                                 @endif
                                                             @else
-                                                                <a href="javascript:void(0)">{{ Auth::user()->name }}</a>
+                                                                <a href="{{route('profile.edit')}}">{{ Auth::user()->name }}</a>
                                                                 <a href="{{ route('logout') }}"
                                                                 onclick="event.preventDefault();
                                                                                 document.getElementById('logout-form').submit();">

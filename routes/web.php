@@ -108,6 +108,7 @@ Route::get('/checkout/success','CheckoutController@success')->name('checkout.suc
 
 Route::get('/user/order','OrderController@show')->name('order.show')->middleware('auth');
 
+Route::get('/profile/{user}','ProfileController@index')->name('profile.show')->middleware('auth');
 Route::get('/profile/{user}/edit','ProfileController@edit')->name('profile.edit')->middleware('auth');
 Route::patch('/profile/{user}','ProfileController@update')->name('profile.update')->middleware('auth');
 
