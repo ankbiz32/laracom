@@ -65,7 +65,7 @@
                                                                 <td>{{date('M d, Y',strtotime($o->created_at))}}</td>
                                                                 <td>{{$o->order_status}}</td>
                                                                 <td>Rs. {{$o->amount}} for {{count($o->order_details)}} items</td>
-                                                                <td><a href="javascript:void(0)" class="quicky-btn-2 quicky-btn_sm"><span>View</span></a>
+                                                                <td><a href="javascript:void(0)" class="modal-btn quicky-btn-2 quicky-btn_sm"><span>View</span></a>
                                                                 </td>
                                                             </tr>
                                                         @endforeach
@@ -214,6 +214,126 @@
             <!-- Account Page Area End Here -->
         </main>
 
+        <div class="modal fade modal-wrapper" id="order_details" style="display: none;" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                        <div class="modal-inner-area sp-area row">
+                            <div class="col-xl-5 col-lg-6">
+                            </div>
+                            <div class="col-xl-7 col-lg-6">
+                                <div class="sp-content">
+                                    <div class="sp-heading">
+                                        <h5><a href="#">Moonstar Clock</a></h5>
+                                    </div>
+                                    <div class="rating-box">
+                                        <ul>
+                                            <li><i class="zmdi zmdi-star"></i></li>
+                                            <li><i class="zmdi zmdi-star"></i></li>
+                                            <li><i class="zmdi zmdi-star"></i></li>
+                                            <li class="silver-color"><i class="zmdi zmdi-star"></i></li>
+                                            <li class="silver-color"><i class="zmdi zmdi-star"></i></li>
+                                        </ul>
+                                    </div>
+                                    <div class="price-box">
+                                        <span class="new-price new-price-2 ml-0">$194.00</span>
+                                        <span class="old-price">$241.00</span>
+                                    </div>
+                                    <div class="sp-essential_stuff">
+                                        <ul>
+                                            <li>Brands <a href="javascript:void(0)">Buxton</a></li>
+                                            <li>Product Code: <a href="javascript:void(0)">Product 16</a></li>
+                                            <li>Reward Points: <a href="javascript:void(0)">100</a></li>
+                                            <li>Availability: <a href="javascript:void(0)">In Stock</a></li>
+                                            <li>EX Tax: <a href="javascript:void(0)"><span>$453.35</span></a></li>
+                                            <li>Price in reward points: <a href="javascript:void(0)">400</a></li>
+                                        </ul>
+                                    </div>
+                                    <div class="color-list_area">
+                                        <div class="color-list_heading">
+                                            <h4>Available Options</h4>
+                                        </div>
+                                        <span class="sub-title">Color</span>
+                                        <div class="color-list">
+                                            <a href="javascript:void(0)" class="single-color active" data-swatch-color="red">
+                                                <span class="bg-red_color"></span>
+                                                <span class="color-text">Red (+$150)</span>
+                                            </a>
+                                            <a href="javascript:void(0)" class="single-color" data-swatch-color="orange">
+                                                <span class="burnt-orange_color"></span>
+                                                <span class="color-text">Orange (+$170)</span>
+                                            </a>
+                                            <a href="javascript:void(0)" class="single-color" data-swatch-color="brown">
+                                                <span class="brown_color"></span>
+                                                <span class="color-text">Brown (+$120)</span>
+                                            </a>
+                                            <a href="javascript:void(0)" class="single-color" data-swatch-color="umber">
+                                                <span class="raw-umber_color"></span>
+                                                <span class="color-text">Umber (+$125)</span>
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <div class="quantity">
+                                        <label>Quantity</label>
+                                        <div class="cart-plus-minus">
+                                            <input class="cart-plus-minus-box" value="1" type="text">
+                                            <div class="dec qtybutton"><i class="zmdi zmdi-chevron-down"></i></div>
+                                            <div class="inc qtybutton"><i class="zmdi zmdi-chevron-up"></i></div>
+                                        <div class="dec qtybutton"><i class="zmdi zmdi-chevron-down"></i></div><div class="inc qtybutton"><i class="zmdi zmdi-chevron-up"></i></div></div>
+                                    </div>
+                                    <div class="quicky-group_btn">
+                                        <ul>
+                                            <li><a href="cart.html" class="add-to_cart">Add To Cart</a></li>
+                                            <li><a href="wishlist.html"><i class="zmdi zmdi-favorite-outline"></i></a></li>
+                                            <li><a href="compare.html"><i class="zmdi zmdi-shuffle"></i></a></li>
+                                        </ul>
+                                    </div>
+                                    <div class="quicky-tag-line">
+                                        <h6>Tags:</h6>
+                                        <a href="javascript:void(0)">clock,</a>
+                                        <a href="javascript:void(0)">watch,</a>
+                                        <a href="javascript:void(0)">bag</a>
+                                    </div>
+                                    <div class="quicky-social_link">
+                                        <ul>
+                                            <li class="facebook">
+                                                <a href="https://www.facebook.com" data-toggle="tooltip" target="_blank" title="" data-original-title="Facebook">
+                                                    <i class="fab fa-facebook"></i>
+                                                </a>
+                                            </li>
+                                            <li class="twitter">
+                                                <a href="https://twitter.com" data-toggle="tooltip" target="_blank" title="" data-original-title="Twitter">
+                                                    <i class="fab fa-twitter-square"></i>
+                                                </a>
+                                            </li>
+                                            <li class="youtube">
+                                                <a href="https://www.youtube.com" data-toggle="tooltip" target="_blank" title="" data-original-title="Youtube">
+                                                    <i class="fab fa-youtube"></i>
+                                                </a>
+                                            </li>
+                                            <li class="google-plus">
+                                                <a href="https://www.plus.google.com/discover" data-toggle="tooltip" target="_blank" title="" data-original-title="Google Plus">
+                                                    <i class="fab fa-google-plus"></i>
+                                                </a>
+                                            </li>
+                                            <li class="instagram">
+                                                <a href="https://www.instagram.com/" data-toggle="tooltip" target="_blank" title="" data-original-title="Instagram">
+                                                    <i class="fab fa-instagram"></i>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
     @endsection
 
     @section ('script')
@@ -225,6 +345,10 @@
             }
             else{
             }
+        });
+
+        $(document).on("click", ".modal-btn", function(){
+            $('#order_details').modal('show');
         });
     </script>
     

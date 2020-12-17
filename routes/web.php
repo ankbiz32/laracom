@@ -111,6 +111,7 @@ Route::get('/user/order','OrderController@show')->name('order.show')->middleware
 Route::get('/profile/{user}','ProfileController@edit')->name('profile.edit')->middleware('auth');
 Route::patch('/profile/{user}','ProfileController@update')->name('profile.update')->middleware('auth');
 Route::patch('/profile/{user}/password','ProfileController@password')->name('profile.password')->middleware('auth');
+Route::post('/product/quickView', 'ProductController@quickView')->name('order.view')->middleware('auth');
 
 Auth::routes();
 
