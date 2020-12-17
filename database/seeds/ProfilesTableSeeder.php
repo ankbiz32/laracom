@@ -17,8 +17,6 @@ class ProfilesTableSeeder extends Seeder
                 'id'=>1,
                 'user_id'=>1,
                 'phonenumber'=>'011151552928',
-                'country'=>'Singapore',
-                'city'=>'Singapore',
                 'address'=>'Buangkok Green 512-4a',
                 'zipcode'=>42132
             ],
@@ -26,8 +24,6 @@ class ProfilesTableSeeder extends Seeder
                 'id'=>2,
                 'user_id'=>2,
                 'phonenumber'=>'08215551234',
-                'country'=>'Indonesia',
-                'city'=>'Medan',
                 'address'=>'Danau Toba',
                 'zipcode'=>27321
             ],

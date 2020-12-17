@@ -42,12 +42,14 @@
                         <div class="form-group row">
                             <label class="col-sm-4 col-form-label text-md-right" for="category">{{ __('Country') }}</label>
                             <div class="col-sm-6">
-                                <select name="country" id="addCountry" class="form-control select2" style="width: 100%;" required>
+                                <select name="country_id" id="addCountry" class="form-control select2" style="width: 100%;" required>
                                     @if($countrylist)
                                         <option value="" disabled>Select Country</option>
                                         @foreach($countrylist as $c)
                                         <option value="{{ $c->id }}">{{ $c->name }}</option>
                                         @endforeach
+                                        <option value="in">India</option>
+                                        <option value="usa">USA</option>
                                     @else
                                         <option value="" disabled>No country found. Add some country first.</option>
                                     @endif
@@ -79,7 +81,7 @@
 
                         <div class="form-group row mb-0">
                             <div class="col-md-6 offset-md-4">
-                                <button type="submit" class="btn btn-primary">
+                                <button type="submit" class="btn-block quicky-btn">
                                     {{ __('Register') }}
                                 </button>
                             </div>

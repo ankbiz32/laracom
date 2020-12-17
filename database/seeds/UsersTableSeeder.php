@@ -18,14 +18,16 @@ class UsersTableSeeder extends Seeder
                 'name'=>'Admin',
                 'email'=>'admin@admin.com',
                 'password'=>Hash::make('admin'),
-                'role'=>'Admin'
+                'role'=>'Admin',
+                'country_id'=>'0'
             ],
             [
                 'id'=>2,
                 'name'=>'Dawn Roe',
                 'email'=>'user@gmail.com',
                 'password'=>Hash::make('user'),
-                'role'=>'Customer'
+                'role'=>'Customer',
+                'country_id'=>'in'
             ],
         ]);
     }

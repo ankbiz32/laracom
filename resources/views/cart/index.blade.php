@@ -1,5 +1,4 @@
 @extends('layouts.app')
-<link rel="stylesheet" href="{{URL::to('/')}}/plugins/td-message/td-message.css"/>
 <style>
     th{
         font-weight:bold !important;
@@ -111,7 +110,6 @@
 @endsection
 
 @section ('script')
-<script src="{{URL::to('/')}}/plugins/td-message/td-message.min.js"></script>
     <script>
         function update(e){
             if(e.val()<1){

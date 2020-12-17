@@ -1,4 +1,3 @@
-
 <!doctype html>
 <html class="no-js" lang="en">
 
@@ -134,10 +133,10 @@
                                                             @guest
                                                                 <a href="{{ route('login') }}">{{ __('Login') }}</a>
                                                                 @if (Route::has('register'))
-                                                                    <a href="{{ route('register',['user'=>Auth::user()->id ]) }}">{{ __('Register') }}</a>
+                                                                    <a href="{{ route('register') }}">{{ __('Register') }}</a>
                                                                 @endif
                                                             @else
-                                                                <a href="{{route('profile.edit')}}">{{ Auth::user()->name }}</a>
+                                                                <a href="{{route('profile.edit',['user'=>Auth::user()->id ])}}">{{ Auth::user()->name }}</a>
                                                                 <a href="{{ route('logout') }}"
                                                                 onclick="event.preventDefault();
                                                                                 document.getElementById('logout-form').submit();">
@@ -784,6 +783,17 @@
     @endif
 
     <!-- For notifications -->
+    @if($errors->any())
+        <script>
+            $.message({
+                type: "warning",
+                text: "Please fill the required fields or check the information that you submitted.",
+                duration: 5000,
+                positon: "top-right",
+                showClose: true
+            });
+        </script>
+    @endif
     @if(Session::get('info'))
         <script>
             $.message({

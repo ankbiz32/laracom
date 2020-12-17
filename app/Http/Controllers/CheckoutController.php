@@ -7,6 +7,7 @@ use Session;
 use Auth;
 use App\Cart;
 use App\Order;
+use App\Profile;
 use App\Order_details;
 use App\User;
 use Illuminate\Support\Facades\Hash;
@@ -66,6 +67,13 @@ class CheckoutController extends Controller
             $user->is_active = 1;
             $user->save();
             $uid=$user->id;
+
+            $profile = new Profile();
+            $profile->user_id = $uid;
+            $profile->phonenumber = $request->input('phone');
+            $profile->address = $request->input('address');
+            $profile->zipcode = $request->input('zipcode');
+            $profile->save();
         }
 
         $oldCart = Session::get('cart');

@@ -89,7 +89,7 @@
                                     <div class="col-md-6">
                                         <div class="checkout-form-list">
                                             <label>Name <span class="required">*</span></label>
-                                            <input placeholder="" name="name" type="text" class="@error('name') is-invalid @enderror" value="{{ old('name') }}" required>
+                                            <input placeholder="" name="name" type="text" class="@error('name') is-invalid @enderror" value="{{ @old('name') ??( $user->name ?? '')}}" required>
                                             @error('name')
                                                 <span class="invalid-feedback" role="alert">
                                                     <strong>{{ $message }}</strong>
@@ -100,7 +100,7 @@
                                     <div class="col-md-6">
                                         <div class="checkout-form-list">
                                             <label>Email id<span class="required">*</span></label>
-                                            <input name="email" placeholder="youremail@xyz.com" value="{{old('email')}}" class="@error('email') is-invalid @enderror" type="email" required>
+                                            <input name="email" placeholder="youremail@xyz.com" value="{{old('email') ??( $user->email ?? '')}}" class="@error('email') is-invalid @enderror" type="email" required>
                                             @error('email')
                                                 <span class="invalid-feedback" role="alert">
                                                     <strong>{{ $message }}</strong>
@@ -111,7 +111,7 @@
                                     <div class="col-md-6">
                                         <div class="checkout-form-list">
                                             <label>Phone <small>(with country code)</small> <span class="required">*</span></label>
-                                            <input name="phone" value="{{old('phone')}}" placeholder="For eg: +918888888888" class="digits @error('phone') is-invalid @enderror"  type="text" required>
+                                            <input name="phone" value="{{old('phone') ??( $user->profile->phonenumber ?? '')}}" placeholder="For eg: +918888888888" class="digits @error('phone') is-invalid @enderror"  type="text" required>
                                         </div>
                                         @error('phone')
                                             <span class="invalid-feedback" role="alert">
@@ -122,7 +122,7 @@
                                     <div class="col-md-6">
                                         <div class="checkout-form-list">
                                             <label> Postcode / Zip<span class="required">*</span></label>
-                                            <input type="text" name="zipcode" value="{{old('zipcode')}}" class="@error('zipcode') is-invalid @enderror" required>
+                                            <input type="text" name="zipcode" value="{{old('zipcode') ??( $user->profile->zipcode ?? '')}}" class="@error('zipcode') is-invalid @enderror" required>
                                             @error('zipcode')
                                                 <span class="invalid-feedback" role="alert">
                                                     <strong>{{ $message }}</strong>
@@ -133,7 +133,7 @@
                                     <div class="col-md-12">
                                         <div class="checkout-form-list">
                                             <label> Full address<span class="required">*</span></label>
-                                            <textarea name="address" data-rule-maxlength="300" maxlength="300" class="form-control @error('address') is-invalid @enderror" rows="3" required>{{old('address')}}</textarea>
+                                            <textarea name="address" data-rule-maxlength="300" maxlength="300" class="form-control @error('address') is-invalid @enderror" rows="3" required>{{old('address') ??( $user->profile->address ?? '')}}</textarea>
                                             @error('address')
                                                 <span class="invalid-feedback" role="alert">
                                                     <strong>{{ $message }}</strong>
@@ -322,19 +322,19 @@
 @section ('script')
     <script src="{{URL::to('/')}}/plugins/jquery-validation/jquery.validate.min.js"></script>
     <script>
-    $( "#order" ).click(function() {
-        $('#cbox').click();
-        if($('#details_form').valid()){
-            $('#details_form').submit();
-        }
-    });
-    $('#ship-box').change(function() {
-        if(this.checked) {
-            $('.sh').addClass('required');
-        }
-        else{
-            $('.sh').removeClass('required');  
-        }    
-    });
+        $( "#order" ).click(function() {
+            $('#cbox').click();
+            if($('#details_form').valid()){
+                $('#details_form').submit();
+            }
+        });
+        $('#ship-box').change(function() {
+            if(this.checked) {
+                $('.sh').addClass('required');
+            }
+            else{
+                $('.sh').removeClass('required');  
+            }    
+        });
     </script>
 @endsection
