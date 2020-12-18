@@ -50,6 +50,11 @@ class User extends Authenticatable
         return $this->hasOne(Profile::class);
     }
 
+    public function wishlist()
+    {
+        return $this->hasOne(Wishlist::class);
+    }
+
     public function orders()
     {
         return $this->hasMany(Order::class);

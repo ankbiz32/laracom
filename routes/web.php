@@ -106,12 +106,18 @@ Route::get('/checkout','CheckoutController@index')->name('checkout.index');
 Route::post('/checkout','CheckoutController@checkout')->name('checkout');
 Route::get('/checkout/success','CheckoutController@success')->name('checkout.success');
 
-Route::get('/user/order','OrderController@show')->name('order.show')->middleware('auth');
+Route::post('/user/order','OrderController@show')->name('order.show')->middleware('auth');
 
 Route::get('/profile/{user}','ProfileController@edit')->name('profile.edit')->middleware('auth');
 Route::patch('/profile/{user}','ProfileController@update')->name('profile.update')->middleware('auth');
 Route::patch('/profile/{user}/password','ProfileController@password')->name('profile.password')->middleware('auth');
 Route::post('/product/quickView', 'ProductController@quickView')->name('order.view')->middleware('auth');
+
+Route::get('/admin-wishlist','AdminController@wishlist')->name('admin.wishlist')->middleware(['auth','admin']);
+Route::get('/wishlist','WishlistController@index')->name('wishlist.index')->middleware('auth');
+Route::get('/wishlist/add/{id}','WishlistController@add')->name('wishlist.add')->middleware('auth');
+Route::get('/wishlist/remove/{id}','WishlistController@remove')->name('wishlist.remove')->middleware('auth');
+Route::get('/wishlist/update/{id}', 'WishlistController@update')->name('wishlist.update')->middleware('auth');
 
 Auth::routes();
 
