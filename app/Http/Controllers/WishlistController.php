@@ -38,11 +38,11 @@ class WishlistController extends Controller
         return redirect()->back()->with('success','Removed from wishlist');
     }
     
-    public function update(Request $request)
+    public function update($id)
     {
-        $wl=Wishlist::findOrFail($request->id);
+        $wl=Wishlist::findOrFail($id);
         Wishlist::where('id',$id)->delete();
-        return redirect()->route('cart.add',['product'=>$request->id]);
+        return redirect()->route('cart.add',['product'=>$wl->product->id]);
         // return redirect()->back()->with('success','Product moved to cart');
     }
 

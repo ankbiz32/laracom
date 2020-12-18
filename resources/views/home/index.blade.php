@@ -248,7 +248,14 @@
                                         @endif
                                         <div class="add-actions">
                                             <ul>
-                                                <li><a href="#" data-toggle="tooltip" data-placement="top" title="Add To Wishlist"><i class="icon-heart"></i></a>
+                                                <li>
+                                                    @if($product->wishlist)
+                                                    <a href="{{route('wishlist.remove', ['id'=>$product->wishlist->id])}}" data-toggle="tooltip" data-placement="top" title="Wishlisted"><i class="icon-heart"></i>
+                                                    </a>
+                                                    @else
+                                                    <a href="{{route('wishlist.add', ['id'=>$product->id])}}" data-toggle="tooltip" data-placement="top" title="Add to wishlist"><i class="icon-heart"></i>
+                                                    </a>
+                                                    @endif
                                                 </li>
 
                                                 <li><a href="{{ route('product.show',['product'=>$product->id,'slug'=>$product->url_slug]) }}" data-toggle="tooltip" data-placement="top" title="View product"><i class="icon-eye"></i></a>

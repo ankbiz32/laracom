@@ -95,8 +95,12 @@
                                     @if($data['inventory']->in_stock)
                                         <li class="mr-2"><a href="{{ route('cart.add',['product'=>$data['main']->id]) }}" class="quicky-btn btn-block text-center quicky-btn_fullwidth square-btn">Add to cart</a></li>
                                     @endif
-                                    <li class=""><a class="qty-wishlist_btn" href="wishlist.html" data-toggle="tooltip" title="Add To Wishlist"><i class="zmdi zmdi-favorite-outline"></i></a>
-                                    </li>
+
+                                    @if($data['main']->wishlist)
+                                        <li class=""><a class="qty-wishlist_btn" href="{{route('wishlist.remove', ['id'=>$data['main']->wishlist->id])}}" data-toggle="tooltip" title="Wishlisted"><i class="zmdi zmdi-favorite"></i></a></li>
+                                    @else
+                                        <li class=""><a class="qty-wishlist_btn" href="{{route('wishlist.add', ['id'=>$data['main']->id])}}" data-toggle="tooltip" title="Add To Wishlist"><i class="zmdi zmdi-favorite-outline"></i></a></li>
+                                    @endif
                                 </ul>
                             </div>
                             <div class="quicky-tag-line">
