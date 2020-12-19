@@ -27,6 +27,7 @@
     <link rel="stylesheet" href="{{URL::to('/')}}/assets/css/plugins/nice-select.css">
     <link rel="stylesheet" href="{{URL::to('/')}}/assets/css/plugins/timecircles.css">
     <link rel="stylesheet" href="{{URL::to('/')}}/plugins/td-message/td-message.css"/>
+    <script src="{{URL::to('/')}}/assets/js/vendor/jquery-1.12.4.min.js"></script>
 
     <!-- Vendor & Plugins CSS (Please remove the comment from below vendor.min.css & plugins.min.css for better website load performance and remove css files from the above) -->
     <!--
@@ -749,7 +750,6 @@
     </div>
 
 
-    <script src="{{URL::to('/')}}/assets/js/vendor/jquery-1.12.4.min.js"></script>
     <script src="{{URL::to('/')}}/assets/js/vendor/modernizr-2.8.3.min.js"></script>
     <script src="{{URL::to('/')}}/assets/js/vendor/popper.min.js"></script>
     <script src="{{URL::to('/')}}/assets/js/vendor/bootstrap.min.js"></script>
@@ -809,7 +809,7 @@
             $.message({
                 type: "success",
                 text: "{!!Session::get('success')!!}",
-                duration: 2000,
+                duration: 5000,
                 positon: "top-right",
                 showClose: true
             });

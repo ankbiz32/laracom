@@ -136,8 +136,10 @@
   overflow: hidden;
   border-radius: 4px;
   box-shadow: 0 1px 8px rgba(0, 0, 0, .15);
-  color: rgba(0, 0, 0, .65);
-  background: hsla(0, 0%, 100%, .95);
+  /* color: rgba(0, 0, 0, .65);
+  background: hsla(0, 0%, 100%, .95); */
+  color: #fff;
+  background: #000000ee;
   pointer-events: all;
   position: relative;
 }
@@ -159,7 +161,7 @@
 .td-message-container .td-message .td-content {
   line-height: 1.6;
   padding: 0 14px;
-  color: #777;
+  color: #eee;
 }
 
 .td-message-container .td-message .td-close button {
@@ -168,7 +170,7 @@
   background: none;
   cursor: pointer;
   font-size: 15px;
-  color: #646464;
+  color: #eee;
   font-weight: 600;
   padding: 0;
   width: 20px;

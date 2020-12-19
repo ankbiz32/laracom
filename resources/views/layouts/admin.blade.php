@@ -189,6 +189,12 @@
                 </li>
                 </ul>
             </li>
+            <li class="nav-item">
+                <a href="{{route('admin.wishlist')}}" class="nav-link py-3">
+                    <i class="fas fa-heart nav-icon"></i>
+                    <p>Wishlists</p>
+                </a>
+            </li>
 
             <li class="nav-header pt-2 text-grey" style="opacity: .5">FRONTEND</li>
             <li class="nav-item">

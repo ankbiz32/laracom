@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Product;
 use App\Category;
+use App\Wishlist;
 use Illuminate\Http\Request;
 use DB;
 
@@ -40,6 +41,10 @@ class HomeController extends Controller
             $sort = $request->get('sort');
             $minP=(int)$range[0][0];
             $maxP=(int)$range[0][1];
+            $wl=Wishlist::where('user_id',auth()->user()->id)->get();
+            foreach($wl as $w){
+                $a[$w->id]=$w->product_id;
+            }
             if(!empty($price))
             {
                 $products = DB::table('products')
@@ -82,10 +87,18 @@ class HomeController extends Controller
                                                 <img src="'.URL('/').'/'.$product->image.'" style="width:100%; height:200px; -o-object-fit:cover; object-fit:cover;" alt="Product Image">
                                             </a>
                                             <div class="add-actions">
-                                                <ul>
-                                                    <li><a href="#" data-toggle="tooltip" data-placement="top" title="Add To Wishlist"><i class="icon-heart"></i></a>
-                                                    </li>
-
+                                                <ul>';
+                                                if(in_array($product->id,$a)) {
+                                                    $output .='
+                                                        <li><a href="'.URL('/').'/wishlist/remove/'.array_keys($a,$product->id)[0].'" data-toggle="tooltip" data-placement="top" title="Wishlisted"><i class="icon-heart"></i></a>
+                                                        </li>';
+                                                }
+                                                else{
+                                                    $output .='
+                                                        <li><a href="'.URL('/').'/wishlist/add/'.$product->id.'" data-toggle="tooltip" data-placement="top" title="Add To Wishlist"><i class="icon-heart"></i></a>
+                                                        </li>';
+                                                }
+                        $output .='
                                                     <li><a href="'. route('product.show',['product'=>$product->id,'slug'=>$product->url_slug]) .'" data-toggle="tooltip" data-placement="top" title="View product"><i class="icon-eye"></i></a>
                                                     </li>
                                                 </ul>
@@ -164,10 +177,18 @@ class HomeController extends Controller
                                                 </div>
                                             </div>
                                             <div class="add-actions">
-                                                <ul>
-                                                    <li><a href="#" data-toggle="tooltip" data-placement="top" title="Add To Wishlist"><i class="icon-heart"></i></a>
-                                                    </li>
-
+                                                <ul>';
+                                                if(in_array($product->id,$a)) {
+                                                    $output .='
+                                                        <li><a href="'.URL('/').'/wishlist/remove/'.array_keys($a,$product->id)[0].'" data-toggle="tooltip" data-placement="top" title="Wishlisted"><i class="icon-heart"></i></a>
+                                                        </li>';
+                                                }
+                                                else{
+                                                    $output .='
+                                                        <li><a href="'.URL('/').'/wishlist/add/'.$product->id.'" data-toggle="tooltip" data-placement="top" title="Add To Wishlist"><i class="icon-heart"></i></a>
+                                                        </li>';
+                                                }
+                        $output .='
                                                     <li><a href="'. route('product.show',['product'=>$product->id,'slug'=>$product->url_slug]) .'" data-toggle="tooltip" data-placement="top" title="View product"><i class="icon-eye"></i></a>
                                                     </li>
                                                     </li>
@@ -218,6 +239,10 @@ class HomeController extends Controller
             $sort = $request->get('sort');
             $minP=(int)$range[0][0];
             $maxP=(int)$range[0][1];
+            $wl=Wishlist::where('user_id',auth()->user()->id)->get();
+            foreach($wl as $w){
+                $a[$w->id]=$w->product_id;
+            }
             if(!empty($price))
             { 
                 $categ = Category::findOrFail($request->get('cid'));
@@ -265,10 +290,18 @@ class HomeController extends Controller
                                                 <img src="'.URL('/').'/'.$product->image.'" style="width:100%; height:200px; -o-object-fit:cover; object-fit:cover;" alt="Product Image">
                                             </a>
                                             <div class="add-actions">
-                                                <ul>
-                                                    <li><a href="#" data-toggle="tooltip" data-placement="top" title="Add To Wishlist"><i class="icon-heart"></i></a>
-                                                    </li>
-
+                                                <ul>';
+                                                if(in_array($product->id,$a)) {
+                                                    $output .='
+                                                        <li><a href="'.URL('/').'/wishlist/remove/'.array_keys($a,$product->id)[0].'" data-toggle="tooltip" data-placement="top" title="Wishlisted"><i class="icon-heart"></i></a>
+                                                        </li>';
+                                                }
+                                                else{
+                                                    $output .='
+                                                        <li><a href="'.URL('/').'/wishlist/add/'.$product->id.'" data-toggle="tooltip" data-placement="top" title="Add To Wishlist"><i class="icon-heart"></i></a>
+                                                        </li>';
+                                                }
+                        $output .='
                                                     <li><a href="'. route('product.show',['product'=>$product->id,'slug'=>$product->url_slug]) .'" data-toggle="tooltip" data-placement="top" title="View product"><i class="icon-eye"></i></a>
                                                     </li>
                                                 </ul>
@@ -347,10 +380,18 @@ class HomeController extends Controller
                                                 </div>
                                             </div>
                                             <div class="add-actions">
-                                                <ul>
-                                                    <li><a href="#" data-toggle="tooltip" data-placement="top" title="Add To Wishlist"><i class="icon-heart"></i></a>
-                                                    </li>
-
+                                                <ul>';
+                                                if(in_array($product->id,$a)) {
+                                                    $output .='
+                                                        <li><a href="'.URL('/').'/wishlist/remove/'.array_keys($a,$product->id)[0].'" data-toggle="tooltip" data-placement="top" title="Wishlisted"><i class="icon-heart"></i></a>
+                                                        </li>';
+                                                }
+                                                else{
+                                                    $output .='
+                                                        <li><a href="'.URL('/').'/wishlist/add/'.$product->id.'" data-toggle="tooltip" data-placement="top" title="Add To Wishlist"><i class="icon-heart"></i></a>
+                                                        </li>';
+                                                }
+                        $output .='
                                                     <li><a href="'. route('product.show',['product'=>$product->id,'slug'=>$product->url_slug]) .'" data-toggle="tooltip" data-placement="top" title="View product"><i class="icon-eye"></i></a>
                                                     </li>
                                                     </li>

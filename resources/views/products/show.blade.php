@@ -107,7 +107,7 @@
                                 <h6>Tags:</h6>
                                 <?php $tags= json_decode($data['main']->tags) ?>
                                 @foreach($tags as $t)
-                                    <a href="javascript:void(0)">{{$t}}
+                                    <a href="{{ route( 'tag.list', ['tag'=>$t] ) }}">{{$t}}
                                     @if(!$loop->last)
                                         ,
                                     @endif

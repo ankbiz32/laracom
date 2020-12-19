@@ -5,6 +5,7 @@ use App\Order;
 use App\User;
 use App\Product;
 use App\Profile;
+use App\Wishlist;
 use App\Reminder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -206,6 +207,38 @@ class AdminController extends Controller
         }
         $request->session()->flash('success', 'Role updated !');
         return response()->json(['success'=>'Role updated!']);
+    }
+
+    public function wishlist(Request $request)
+    {
+        if ($request->ajax()) {
+            $result = Wishlist::all()->groupBy('product_id');
+            return Datatables::of($result)
+                ->addIndexColumn()
+                ->addColumn('id', function($row){
+                        return $row[0]->product_id;
+                })
+                ->addColumn('product', function($row){
+                        return $row[0]->product->name;
+                })
+                ->addColumn('img_src', function($row){
+                        return $row[0]->product->image;
+                })
+                ->addColumn('stock', function($row){
+                    if($row[0]->product->ProductInventory->in_stock){
+                        return '<p class="text-success">In Stock</p>';
+                    }
+                    else{
+                        return '<p class="text-danger">Out of stock</p>';
+                    }
+                })
+                ->addColumn('count', function($row){
+                        return $row->count();
+                })
+                ->rawColumns(['stock'])
+                ->make(true);
+        }
+        return view('admin.wishlist');
     }
 
 }
