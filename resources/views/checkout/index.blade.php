@@ -1,3 +1,4 @@
+
 @extends('layouts.app')
 
 @section ('content')
@@ -100,7 +101,7 @@
                                     <div class="col-md-6">
                                         <div class="checkout-form-list">
                                             <label>Email id<span class="required">*</span></label>
-                                            <input name="email" placeholder="youremail@xyz.com" value="{{old('email') ??( $user->email ?? '')}}" class="@error('email') is-invalid @enderror" type="email" required>
+                                            <input name="email" id="new_email" placeholder="youremail@xyz.com" value="{{old('email') ??( $user->email ?? '')}}" class="@error('email') is-invalid @enderror" type="email" required>
                                             @error('email')
                                                 <span class="invalid-feedback" role="alert">
                                                     <strong>{{ $message }}</strong>
@@ -146,7 +147,7 @@
                                     <div class="col-md-12">
                                         <div class="checkout-form-list create-acc">
                                             <input id="cbox" name="new_account" type="checkbox">
-                                            <label>Create an account?</label>
+                                            <label for="cbox">Create an account?</label>
                                         </div>
                                         <div id="cbox-info" class="checkout-form-list create-account">
                                             <p>Create an account by entering the information below. If you are a returning
@@ -307,7 +308,7 @@
                                         </div>
                                     </div>
                                     <div class="order-button-payment">
-                                        <button class="quicky-btn btn-block" id="order">PLACE ORDER</button>
+                                        <button class="quicky-btn btn-block" data-amount="{{$totalPrice}}" id="order">PLACE ORDER</button>
                                     </div>
                                 </div>
                             </div>
@@ -321,13 +322,66 @@
 
 @section ('script')
     <script src="{{URL::to('/')}}/plugins/jquery-validation/jquery.validate.min.js"></script>
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
     <script>
+        var SITEURL = '{{URL::to('')}}';
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+
         $( "#order" ).click(function() {
             $('#cbox').click();
             if($('#details_form').valid()){
-                $('#details_form').submit();
+                var totalAmount = $(this).attr("data-amount");
+                var options = {
+                    "key": "{{env('RAZORPAY_KEY')}}",
+                    "amount": (totalAmount*100),
+                    "name": $("input[name=name]").val(),
+                    "description": "Bhukyra test Payment",
+                    "image": "{{URL('/')}}/photo/emblem.png",
+                    "order_id": "{{$oid}}",
+                    "handler": function (response){
+                        if(!response.error){
+                            $.ajax({
+                                url: SITEURL + '/paysuccess',
+                                type: 'post',
+                                dataType: 'json',
+                                data: {
+                                    razorpay_payment_id: response.razorpay_payment_id , 
+                                    razorpay_order_id: response.razorpay_order_id , 
+                                    razorpay_signature: response.razorpay_sifnature ,
+                                    res : response,
+                                }, 
+                                success: function (msg) {
+                                    window.location.href = SITEURL + '/razor-thank-you';
+                                }
+                            });
+                        }else{
+                            $.message({
+                                type: "error",
+                                text: "<strong>Payment error</strong> <br> Your order was not placed. <br> Please refresh this page & try again.",
+                                duration: 15000,
+                                positon: "top-right",
+                                showClose: true
+                            });
+                        }
+                    },
+                    "prefill": {
+                        "contact": $("input[name=phone]").val(),
+                        "email":   $("#new_email").val(),
+                    },
+                    "theme": {
+                        "color": "#415B34"
+                    }
+                };
+                var rzp1 = new Razorpay(options);
+                rzp1.open();
+                // $('#details_form').submit();
             }
         });
+
         $('#ship-box').change(function() {
             if(this.checked) {
                 $('.sh').addClass('required');

@@ -9,8 +9,8 @@
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.js"></script>  
 </head>
 <body>
-
-    <a href="javascript:void(0)" class="btn btn-sm btn-primary float-right buy_now" data-amount="1000" data-id="1">Order Now</a> 
+<h2>{{$oid}}</h2>
+   <h1 class="text-center"><a href="javascript:void(0)" class="btn btn-sm btn-primary buy_now" data-amount="1000" data-id="1">Order Now</a> </h1> 
 
 
     <script src="https://checkout.razorpay.com/v1/checkout.js"></script>

@@ -155,10 +155,13 @@ class ProductController extends Controller
             // $query = json_decode($request->get('query'));
             // $attribute_detail_id = json_decode($request->get('attribute_detail_id'));
             $a= array();
-            $wl=Wishlist::where('user_id',auth()->user()->id)->get();
-            foreach($wl as $w){
-                $a[$w->id]=$w->product_id;
+            if(auth()->user()){
+                $wl=Wishlist::where('user_id',auth()->user()->id)->get();
+                foreach($wl as $w){
+                    $a[$w->id]=$w->product_id;
+                }
             }
+            
             $price = json_decode($request->get('price'));
             $sort = $request->get('sort');
             preg_match_all('!\d+!', $price, $range);

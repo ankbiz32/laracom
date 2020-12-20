@@ -119,7 +119,6 @@ Route::get('/wishlist/add/{id}','WishlistController@add')->name('wishlist.add')-
 Route::get('/wishlist/remove/{id}','WishlistController@remove')->name('wishlist.remove')->middleware('auth');
 Route::get('/wishlist/update/{id}', 'WishlistController@update')->name('wishlist.update')->middleware('auth');
 
-Route::get('product', 'PaymentController@index');
 Route::post('paysuccess', 'PaymentController@paysuccess');
 Route::get('razor-thank-you', 'PaymentController@thankYou');
 

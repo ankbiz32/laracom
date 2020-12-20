@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Razorpay\Api\Api;
 use Illuminate\Http\Request;
 use Session;
 use Auth;
@@ -26,8 +27,14 @@ class CheckoutController extends Controller
         $products = $cart->items;
         $totalPrice = $cart->totalPrice;
         $totalQuantity= $cart->totalQuantity;
+        $api = new Api(env('RAZORPAY_KEY'), env('RAZORPAY_SECRET'));
+        $order = $api->order->create(array(
+            'amount' => $cart->totalPrice * 100,
+            'currency' => 'INR'
+            ));
+        $oid=$order['id'];
         $user = Auth::user();
-        return view('checkout.index', compact ('products','totalPrice','user','totalQuantity'));
+        return view('checkout.index', compact ('products','totalPrice','user','totalQuantity','oid'));
     }
 
     public function checkout(Request $request)
