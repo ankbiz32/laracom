@@ -20,9 +20,14 @@
                             <div class="col-6 ">Order no. :</div>
                             <div class="col-6">#{{$info['order_no']}}</div>
                             <div class="col-6 ">Payment method :</div>
-                            <div class="col-6">Cash on delivery</div>
+                            <div class="col-6">{{$info['pay_mode']}}</div>
                             <div class="col-6 ">Order amount :</div>
                             <div class="col-6">{{$info['amount']}}</div>
+                            @if($info['pay_ref']!='')
+                                <div class="col-6 ">Payment ref :</div>
+                                <div class="col-6">{{$info['pay_ref']}}</div>
+                            @endif
+                            <br> <br>
                             <div class="col-6 ">Shipping address :</div>
                             <div class="col-6">{{$info['address']}}</div>
                             <div class="col-6 ">Shipping country :</div>

@@ -120,6 +120,8 @@ class CheckoutController extends Controller
         $info['order_no']=$order->id;
         $info['name']=$order->name;
         $info['amount']=$order->amount;
+        $info['pay_mode']='Pay on delivery';
+        $info['pay_ref']='';
         $info['items']=$cart->items;
         $info['address']=$order->address;
         $info['country']=$order->country;

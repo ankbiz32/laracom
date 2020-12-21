@@ -29,8 +29,8 @@ class CreateOrdersTable extends Migration
             $table->text('ship_address')->nullable();
             $table->string('ship_country')->nullable();
             $table->tinyInteger('is_paid')->default(1);
-            $table->string('payment_type');
-            $table->integer('payment_id')->nullable();
+            $table->string('payment_type')->default('COD');
+            $table->string('payment_id')->nullable();
             $table->string('order_status')->default('ORDERED');
             $table->string('note')->nullable();
             $table->timestamps();

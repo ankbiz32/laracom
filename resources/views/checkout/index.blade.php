@@ -275,12 +275,15 @@
                                         <div class="card">
                                             <div class="card-header" id="#payment-1">
                                                 <h5 class="panel-title">
-                                                    <a href="javascript:void(0)" class="" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                                    <label for="cod_check" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                                        <input type="radio" name="payment_type" value="cod" id="cod_check" required> Pay on delivery
+                                                    </label>
+                                                    <!-- <a href="javascript:void(0)" class="" >
                                                         Cash on delivery
-                                                    </a>
+                                                    </a> -->
                                                 </h5>
                                             </div>
-                                            <div id="collapseOne" class="collapse show" data-parent="#accordion">
+                                            <div id="collapseOne" class="collapse" data-parent="#accordion">
                                                 <div class="card-body">
                                                     <p>Make your payment directly into our bank account. Please use your Order
                                                         ID as the payment
@@ -292,12 +295,12 @@
                                         <div class="card">
                                             <div class="card-header" id="#payment-3">
                                                 <h5 class="panel-title">
-                                                    <a href="javascript:void(0)" class="collapsed" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-                                                        Razorpay
-                                                    </a>
+                                                    <label for="online_check" data-toggle="collapse" data-target="#collapseThree" aria-expanded="true" aria-controls="collapseThree">
+                                                        <input name="payment_type" type="radio" value="online" id="online_check" required checked> Pay now
+                                                    </label>
                                                 </h5>
                                             </div>
-                                            <div id="collapseThree" class="collapse" data-parent="#accordion">
+                                            <div id="collapseThree" class="collapse show" data-parent="#accordion">
                                                 <div class="card-body">
                                                     <p>Make your payment directly into our bank account. Please use your Order
                                                         ID as the payment
@@ -334,51 +337,67 @@
         $( "#order" ).click(function() {
             $('#cbox').click();
             if($('#details_form').valid()){
-                var totalAmount = $(this).attr("data-amount");
-                var options = {
-                    "key": "{{env('RAZORPAY_KEY')}}",
-                    "amount": (totalAmount*100),
-                    "name": $("input[name=name]").val(),
-                    "description": "Bhukyra test Payment",
-                    "image": "{{URL('/')}}/photo/emblem.png",
-                    "order_id": "{{$oid}}",
-                    "handler": function (response){
-                        if(!response.error){
-                            $.ajax({
-                                url: SITEURL + '/paysuccess',
-                                type: 'post',
-                                dataType: 'json',
-                                data: {
-                                    razorpay_payment_id: response.razorpay_payment_id , 
-                                    razorpay_order_id: response.razorpay_order_id , 
-                                    razorpay_signature: response.razorpay_sifnature ,
-                                    res : response,
-                                }, 
-                                success: function (msg) {
-                                    window.location.href = SITEURL + '/razor-thank-you';
+                if($('input[name=payment_type]:checked').val()){
+                    if($('input[name=payment_type]:checked').val()=='online'){ 
+                        var totalAmount = $(this).attr("data-amount");
+                        var options = {
+                            "key": "{{env('RAZORPAY_KEY')}}",
+                            "amount": (totalAmount*100),
+                            "name": $("input[name=name]").val(),
+                            "description": "Bhukyra test Payment",
+                            "image": "{{URL('/')}}/photo/emblem.png",
+                            "order_id": "{{$oid}}",
+                            "handler": function (response){
+                                if(!response.error){
+                                    $input = $('<input type="hidden" name="rpid"/>').val(response.razorpay_payment_id);
+                                    $('#details_form').append($input);
+                                    $input = $('<input type="hidden" name="roid"/>').val(response.razorpay_order_id);
+                                    $('#details_form').append($input);
+                                    $input = $('<input type="hidden" name="rs"/>').val(response.razorpay_signature);
+                                    $('#details_form').append($input);
+
+                                    $.ajax({
+                                        url: SITEURL + '/paysuccess',
+                                        type: 'post',
+                                        dataType: 'json',
+                                        data: $('#details_form').serialize() , 
+                                        success: function (msg) {
+                                            window.location.href = SITEURL + '/thank-you';
+                                        }
+                                    });
+                                }else{
+                                    $.message({
+                                        type: "error",
+                                        text: "<strong>Payment error</strong> <br> Your order was not placed. <br> Please refresh this page & try again.",
+                                        duration: 15000,
+                                        positon: "top-right",
+                                        showClose: true
+                                    });
                                 }
-                            });
-                        }else{
-                            $.message({
-                                type: "error",
-                                text: "<strong>Payment error</strong> <br> Your order was not placed. <br> Please refresh this page & try again.",
-                                duration: 15000,
-                                positon: "top-right",
-                                showClose: true
-                            });
-                        }
-                    },
-                    "prefill": {
-                        "contact": $("input[name=phone]").val(),
-                        "email":   $("#new_email").val(),
-                    },
-                    "theme": {
-                        "color": "#415B34"
+                            },
+                            "prefill": {
+                                "contact": $("input[name=phone]").val(),
+                                "email":   $("#new_email").val(),
+                            },
+                            "theme": {
+                                "color": "#415B34"
+                            }
+                        };
+                        var rzp1 = new Razorpay(options);
+                        rzp1.open();
                     }
-                };
-                var rzp1 = new Razorpay(options);
-                rzp1.open();
-                // $('#details_form').submit();
+                    else{
+                        $('#details_form').submit();
+                    }
+                }
+                else{
+                    $.message({
+                        text: " Please select a payment method.",
+                        duration: 5000,
+                        positon: "top-right",
+                        showClose: true
+                    });
+                }
             }
         });
 
