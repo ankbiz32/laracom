@@ -29,8 +29,8 @@
                 <div class="col-12">
                     @if(Session::has('cart') && $totalQuantity >0)
                     <form action="javascript:void(0)">
-                        <div class="table-content table-responsive">
-                            <table class="table">
+                        <div class="table-content table-responsive cart--items">
+                            <table class="table table-borderless">
                                 <thead>
                                     <tr>
                                         <th class="quicky-product-thumbnail">images</th>
@@ -44,20 +44,20 @@
                                 <tbody>
                                     @foreach ($products as $key => $value)
                                     <tr>
-                                        <td class="quicky-product-thumbnail"><a href="{{ route('product.show',['product'=>$value['item']->id,'slug'=>$value['item']->url_slug]) }}"><img height="80" width="100" style="object-fit:contain" src="{{URL::to('/').'/'. $value['item']->image }}" alt="Cart Thumbnail"></a></td>
-                                        <td class="quicky-product-name"><a href="{{ route('product.show',['product'=>$value['item']->id,'slug'=>$value['item']->url_slug]) }}">{{ $value['item']->name }}</a></td>
-                                        <td class="quicky-product-price"><span class="amount">{{ $value['price']}}</span></td>
-                                        <td class="quantity">
-                                            <div class="cart-plus-minus ">
+                                        <td data-label="Image: " class="quicky-product-thumbnail"><a href="{{ route('product.show',['product'=>$value['item']->id,'slug'=>$value['item']->url_slug]) }}"><img height="80" width="100" style="object-fit:contain" src="{{URL::to('/').'/'. $value['item']->image }}" alt="Cart Thumbnail"></a></td>
+                                        <td data-label="Name: " class="quicky-product-name"><a href="{{ route('product.show',['product'=>$value['item']->id,'slug'=>$value['item']->url_slug]) }}">{{ $value['item']->name }}</a></td>
+                                        <td data-label="Price: " class="quicky-product-price"><span class="amount">{{ $value['price']}}</span></td>
+                                        <td data-label="Qty: " class="quantity">
+                                            <div class="cart-plus-minus float-right float-sm-none">
                                                 <input class="cart-plus-minus-box" value="{{ $value['quantity']}}" data-max="{{$value['item']->max_order_qty}}" type="number" min=0 max="{{$value['item']->max_order_qty}}" data-id="{{encrypt($value['item']->id)}}" readonly>
                                                 <div class="dec qtybutton"><i class="zmdi zmdi-chevron-down"></i></div>
                                                 <div class="inc qtybutton"><i class="zmdi zmdi-chevron-up"></i></div>
                                             </div>
                                             <!-- <label class="mt-2"><small>Max: {{ $value['item']->max_order_qty}}</small></label> -->
                                         </td>
-                                        <td class="product-subtotal"><span class="amount">{{ $value['quantity'] * $value['price']}}</span></td>
-                                        <td class="quicky-product-remove"><a href="{{ route('cart.remove',['id'=> $key]) }}"><i class="zmdi zmdi-close"
-                                            title="Remove"></i></a></td>
+                                        <td data-label="Sub total: " class="product-subtotal"><span class="amount">{{ $value['quantity'] * $value['price']}}</span></td>
+                                        <td class="quicky-product-remove"><a href="{{ route('cart.remove',['id'=> $key]) }}" class="d-flex d-sm-block align-items-center justify-content-center"><i class="zmdi zmdi-close text-danger"
+                                            title="Remove"> </i><small class="d-inline d-sm-none text-danger" >&nbsp;Remove this product</small></a></td>
                                     </tr>
                                     @endforeach
                                 </tbody>

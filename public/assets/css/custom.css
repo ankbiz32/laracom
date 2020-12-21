@@ -54,6 +54,74 @@ label.error{
     .offcanvas-inner_logo a img, .header-logo_area a img{
         height: 45px;
     }
+    .cart--items .table {
+        display: block;
+        background: none;
+        border: none;
+    }
+    .cart--items .table thead {
+        display: none;
+    }
+
+    .cart--items .table tbody {
+        display: block;
+    }
+
+    .cart--items .table tbody tr {
+        display: block;
+        background-color: #fff;
+    }
+
+    .cart--items .table tbody tr + tr {
+        margin-top: 30px;
+    }
+
+    .cart--items .table tbody tr td {
+        display: block;
+        position: relative;
+        padding-left: 160px;
+        text-align: right;
+        overflow: hidden;
+        border: none;
+    }
+    .cart--items .table tbody tr td.quicky-product-thumbnail, .cart--items .table tbody tr td.quicky-product-name{
+        display: inline;
+        padding-left: 0;
+    }
+    
+
+    .quicky-cart-area .table-content table td:nth-child(3) {
+        padding: 18px 10px;
+    }
+    .cart--items .table tbody tr td.quicky-product-price{
+        width: 100%;
+    }
+
+    .cart--items .table tbody tr td:after {
+        content: attr( data-label );
+        display: block;
+        position: absolute;
+        top: 50%;
+        left: 15px;
+        margin-top: -14px;
+        color: #222;
+        font-family: "Montserrat", sans-serif;
+        font-size: 16px;
+        line-height: 26px;
+    }
+    .cart--items .table tbody tr td.quicky-product-thumbnail::after, .cart--items .table tbody tr td.quicky-product-name::after{
+        display: none;
+    }
+    .cart--items .table tbody tr td.quicky-product-remove{
+        padding-left: 0;
+    }
+    .cart--items .table tbody tr td .quantity {
+        float: right;
+    }
+
+    .cart--items .table tbody tr td .remove {
+        display: inline-block;
+    }
 }
 
 @media (max-width: 479px) {
