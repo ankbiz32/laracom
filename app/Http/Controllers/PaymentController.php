@@ -130,5 +130,12 @@
         abort(404);
     }
 
+    public function info(Request $request)
+    {
+        $api = new Api(env('RAZORPAY_KEY'), env('RAZORPAY_SECRET'));
+        $payment = $api->payment->fetch($request->pid);
+        var_dump('<pre>',$payment);
+    }
+
 
  }

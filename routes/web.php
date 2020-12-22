@@ -25,6 +25,9 @@ Route::post('/order', 'AdminController@update_order')->name('admin.updateorder')
 Route::post('/order/bulkupdate', 'AdminController@update_order_bulk')->name('admin.updateorderbulk')->middleware(['auth','admin']);
 Route::get('/order/{id}', 'AdminController@show_order')->name('admin.showorder')->middleware(['auth','admin']);
 
+/*-- Admin Txns --*/
+Route::get('/transactions', 'AdminController@transactions')->name('admin.txn')->middleware(['auth','admin']);
+
 /*-- Admin Users --*/
 Route::get('/users', 'AdminController@user')->name('admin.user')->middleware(['auth','admin']);
 Route::post('/users/status', 'AdminController@userStatus')->name('user.status')->middleware(['auth','admin']);
@@ -121,6 +124,7 @@ Route::get('/wishlist/update/{id}', 'WishlistController@update')->name('wishlist
 
 Route::post('paysuccess', 'PaymentController@paysuccess');
 Route::get('thank-you', 'PaymentController@thankYou');
+Route::get('txn/{pid}', 'PaymentController@info')->name('txn.info')->middleware(['auth','admin']);
 
 Auth::routes();
 

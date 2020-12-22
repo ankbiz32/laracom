@@ -44,8 +44,8 @@
                                 <tbody>
                                     @foreach ($products as $key => $value)
                                     <tr>
-                                        <td data-label="Image: " class="quicky-product-thumbnail"><a href="{{ route('product.show',['product'=>$value['item']->id,'slug'=>$value['item']->url_slug]) }}"><img height="80" width="100" style="object-fit:contain" src="{{URL::to('/').'/'. $value['item']->image }}" alt="Cart Thumbnail"></a></td>
-                                        <td data-label="Name: " class="quicky-product-name"><a href="{{ route('product.show',['product'=>$value['item']->id,'slug'=>$value['item']->url_slug]) }}">{{ $value['item']->name }}</a></td>
+                                        <td class="quicky-product-thumbnail"><a href="{{ route('product.show',['product'=>$value['item']->id,'slug'=>$value['item']->url_slug]) }}"><img height="80" style="object-fit:contain" src="{{URL::to('/').'/'. $value['item']->image }}" alt="Cart Thumbnail"></a></td>
+                                        <td class="quicky-product-name"><strong><a href="{{ route('product.show',['product'=>$value['item']->id,'slug'=>$value['item']->url_slug]) }}">{{ $value['item']->name }}</a></strong></td>
                                         <td data-label="Price: " class="quicky-product-price"><span class="amount">{{ $value['price']}}</span></td>
                                         <td data-label="Qty: " class="quantity">
                                             <div class="cart-plus-minus float-right float-sm-none">

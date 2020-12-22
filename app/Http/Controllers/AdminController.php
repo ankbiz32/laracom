@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 use App\Order;
+use App\Payment;
 use App\User;
 use App\Product;
 use App\Profile;
@@ -55,6 +56,21 @@ class AdminController extends Controller
             return Datatables::of($result)
                 ->addIndexColumn()
                 ->addColumn('check', '<input type="checkbox" class="rowSelector" data-id="{{ $id }}">')
+                ->addColumn('type', function($row){
+                    if($row->payment_id){
+                        $btn = '
+                                <p class="mb-0">'.$row->payment_type.'</p>
+                                <a href="'.route('txn.info',['pid'=>$row->payment_id]).'" title="Payment reference" class="link">#'.$row->payment_id.'</a>
+                            ';
+                        return $btn;
+                    }
+                    else{
+                        $btn = '
+                                <p class="mb-0">'.$row->payment_type.'</p>
+                            ';
+                        return $btn;
+                    }
+                })
                 ->addColumn('action', function($row){
                     $btn = '
                             <a href="'.route('admin.showorder',['id'=>$row->id]).'" title="View Order" class="btn btn-sm btn-warning m-1"><i class="fa fa-eye"></i></a>
@@ -63,7 +79,7 @@ class AdminController extends Controller
                         ';
                     return $btn;
                 })
-                ->rawColumns(['action', 'check'])
+                ->rawColumns(['action','type', 'check'])
                 ->make(true);
         }
         return view('admin.order');
@@ -101,6 +117,19 @@ class AdminController extends Controller
         }
         $request->session()->flash('success', 'Status updated !');
         return response()->json(['success'=>'Status updated!']);
+    }
+
+
+    public function transactions(Request $request)
+    {
+
+        if ($request->ajax()) {
+            $result = Payment::orderBy('created_at','DESC')->get();
+            return Datatables::of($result)
+                ->addIndexColumn()
+                ->make(true);
+        }
+        return view('admin.transactions');
     }
 
     public function user(Request $request)

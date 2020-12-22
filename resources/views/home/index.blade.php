@@ -236,7 +236,7 @@
                                             <img src="{{ $product->image }}" style="width:100%; height:250px; -o-object-fit:contain; object-fit:contain;" alt="Product Image">
                                         </a>
                                         @if(!$product->ProductInventory->in_stock)
-                                            <span class="sticker">Out of stock</span>
+                                            <span class="sticker bg-light pt-2 px-2 shadow shadow-md"><strong>Out of stock</strong></span>
                                         @else
                                             @if($product->ProductDiscount->has_discount)
                                                 @if($product->ProductDiscount->type == 'FLAT')
@@ -263,7 +263,7 @@
                                             </ul>
                                         </div>
                                     </div>
-                                    <div class="product-content">
+                                    <div class="product-content ">
                                         <div class="product-desc_info">
                                             <h3 class="product-name"><a href="{{ route('product.show',['product'=>$product->id,'slug'=>$product->url_slug]) }}">{{ $product->name }}</a></h3>
                                             <div class="price-box">

@@ -54,12 +54,19 @@ label.error{
     .offcanvas-inner_logo a img, .header-logo_area a img{
         height: 45px;
     }
+    .quicky-cart-area {
+        padding-top: 50px;
+        padding-bottom: 0px;
+    }
     .cart--items .table {
         display: block;
         background: none;
         border: none;
     }
-    .cart--items .table thead {
+    .cart--items .table *{
+        font-size: 14px;
+    }
+    .cart--items .table thead, .cart--items .table .product-subtotal {
         display: none;
     }
 
@@ -79,19 +86,18 @@ label.error{
     .cart--items .table tbody tr td {
         display: block;
         position: relative;
+        padding: 10px 0;
         padding-left: 160px;
         text-align: right;
         overflow: hidden;
         border: none;
     }
     .cart--items .table tbody tr td.quicky-product-thumbnail, .cart--items .table tbody tr td.quicky-product-name{
-        display: inline;
-        padding-left: 0;
+        padding-left:0; text-align: center;
     }
-    
 
     .quicky-cart-area .table-content table td:nth-child(3) {
-        padding: 18px 10px;
+        padding: 10px 10px;
     }
     .cart--items .table tbody tr td.quicky-product-price{
         width: 100%;
@@ -103,24 +109,23 @@ label.error{
         position: absolute;
         top: 50%;
         left: 15px;
+        font-size: 14px;
         margin-top: -14px;
         color: #222;
         font-family: "Montserrat", sans-serif;
-        font-size: 16px;
         line-height: 26px;
     }
-    .cart--items .table tbody tr td.quicky-product-thumbnail::after, .cart--items .table tbody tr td.quicky-product-name::after{
-        display: none;
-    }
+   
     .cart--items .table tbody tr td.quicky-product-remove{
-        padding-left: 0;
-    }
-    .cart--items .table tbody tr td .quantity {
-        float: right;
-    }
+        padding:0;
 
-    .cart--items .table tbody tr td .remove {
-        display: inline-block;
+    }
+    .cart--items .table tbody tr td.quicky-product-remove a{
+        background-color: #f3f3f3;
+        padding:10px 0 10px;
+        border-bottom-left-radius:8px ;
+        border-bottom-right-radius:8px ;
+
     }
 }
 

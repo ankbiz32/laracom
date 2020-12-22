@@ -384,6 +384,31 @@
                             }
                         };
                         var rzp1 = new Razorpay(options);
+                        rzp1.on('payment.failed', function (response){
+                            $.message({
+                                type: "error",
+                                text: "<strong>Payment error</strong> <br> Your order was not placed. <br> Please refresh this page & try again.",
+                                duration: 15000,
+                                positon: "top-right",
+                                showClose: true
+                            });
+                            $.ajax({
+                                url: SITEURL + '/payfailed',
+                                type: 'post',
+                                dataType: 'json',
+                                data: $('#details_form').serialize() , 
+                                success: function (msg) {
+                                    window.location.href = SITEURL + '/thank-you';
+                                }
+                            });
+                            alert(response.error.code);
+                            alert(response.error.description);
+                            alert(response.error.source);
+                            alert(response.error.step);
+                            alert(response.error.reason);
+                            alert(response.error.metadata.order_id);
+                            alert(response.error.metadata.payment_id);
+                        });
                         rzp1.open();
                     }
                     else{

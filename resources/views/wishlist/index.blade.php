@@ -35,7 +35,7 @@
                                     <tbody>
                                     @foreach($wishlist as $w)
                                         <tr>
-                                            <td class="quicky-product-thumbnail"><a href="{{ route('product.show',['product'=>$w->product_id,'slug'=>$w->product->url_slug]) }})"><img src="{{ $w->product->image }}" height="80" alt=" Wishlist Thumbnail"></a>
+                                            <td class="quicky-product-thumbnail"><a href="{{ route('product.show',['product'=>$w->product_id,'slug'=>$w->product->url_slug]) }})"><img src="{{ $w->product->image }}" style="object-fit:contain" height="80" alt=" Wishlist Thumbnail"></a>
                                             </td>
                                             <td class="quicky-product-name"><a href="{{ route('product.show',['product'=>$w->product_id,'slug'=>$w->product->url_slug]) }}">{{ $w->product->name }}</a></td>
                                             <td class="quicky-product-price"><span class="amount">${{ $w->product->ProductDiscount->new_price }}</span></td>
