@@ -1,3 +1,5 @@
+
+
 @extends('layouts.admin')
 
 @section ('css')
@@ -69,7 +71,7 @@
                     </div>
                     <div class="card card-body">
                         <div class="table-responsive">
-                        <table class="table table-hover yajra-datatable">
+                        <table class="table table-hover yajra-datatable" id="txnTable">
                             <span class="dropdown ml-auto bulk-span">
                                 <a class="dropdown-toggle btn btn-default btn-bulk" style="display:none ;" data-toggle="dropdown" href="javascript:;" aria-expanded="false">
                                     UPDATE SELECTED ORDERS STATUS<span class="caret"></span>
@@ -84,11 +86,12 @@
                             </span>
                             <thead>
                             <tr>
-                                <th scope="col"><input type="checkbox" class="allSelector"></th>
                                 <th scope="col">Payment Ref.</th>
                                 <th scope="col">Total Amt.</th>
                                 <th scope="col">Order no.</th>
-                                <th scope="col">Payment Date</th>
+                                <th scope="col">Paid by</th>
+                                <th scope="col">Date</th>
+                                <th scope="col">Action</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -121,42 +124,30 @@
         var table = $('.yajra-datatable').DataTable({
             processing: true,
             serverSide: true,
-            ajax: "{{ route('admin.transactions') }}",
+            ajax: "{{ route('admin.txn') }}",
             columns: [
-                // {data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: true, searchable: true},
-                {data: 'check', name: 'check', orderable: false, searchable: true},
-                {data: 'id', name: 'id', orderable: true, searchable: true},
-                {data: 'amount', name: 'amount', orderable: true, searchable: true},
-                {data: 'type', name: 'type', orderable: true, searchable: true},
-                {data: 'is_paid', name: 'is_paid',
+                {
+                    data: 'vendor_payment_id', name: 'vendor_payment_id',
                     render: function (data, type, full, meta) {
-                        if(data==1){
-                            var stat= '<span class="text-success d-block text-center">PAID</span>';
-                            return stat;
-                        }
-                        else{
-                            var stat= '<p class="text-warning d-block text-center">PENDING</p>';
-                            return stat;
-                        }
+                        info='#'+data;
+                        return info;
                     },
-                orderable: true, searchable: true},
-                {data: 'order_status', name: 'order_status', orderable: true, searchable: true},
+                    orderable: true, searchable: true
+                },
+                {data: 'payment_amount', name: 'payment_amount', orderable: true, searchable: true},
+                {data: 'order_id', name: 'order_id', orderable: true, searchable: true},
+                {data: 'email', name: 'email', orderable: true, searchable: true},
                 {
                     data: 'created_at',
                     name: 'created_at',
                     render: function (data, type, full, meta) {
-                    var cdate= new Date(data);
-                    return cdate.getDate() + '/' + cdate.getMonth() + '/' + cdate.getFullYear().toString().substr(-2)+ ' &nbsp; ' + cdate.getHours()+ ':' + cdate.getMinutes();
+                        var cdate= new Date(data);
+                        return cdate.getDate() + '/' + cdate.getMonth() + '/' + cdate.getFullYear().toString().substr(-2)+ ' &nbsp; ' + cdate.getHours()+ ':' + cdate.getMinutes();
                     },
                     orderable: true,
                     searchable: true
                 },
-                {
-                    data: 'action',
-                    name: 'action',
-                    orderable: true,
-                    searchable: true
-                },
+                {data: 'action', name: 'action', orderable: true, searchable: true},
             ],
             order: [[ 1, 'desc' ]]
         });
@@ -171,7 +162,18 @@
 
     });
 
+    
+
 </script>
 
+<?php if(isset($_GET['pay_ref'])){ 
+    $cl=urldecode($_GET['pay_ref']);
+?>
+    <script>
+        $(document).ready(function(){
+            $('#txnTable').DataTable().search('<?=$cl?>').draw();
+        });
+    </script>
+<?php }?>
 
 @endsection

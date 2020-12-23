@@ -15,13 +15,12 @@ class CreatePaymentTable extends Migration
     {
         Schema::create('payment', function (Blueprint $table) {
             $table->increments('id');
+            $table->string('order_id')->nullable();
             $table->string('payment_amount');
-            $table->string('currency_code')->nullable();
             $table->string('vendor_order_id');
             $table->string('vendor_payment_id');
             $table->string('vendor_signature');
             $table->string('vendor_errors');
-            $table->string('payment_status');
             $table->timestamps();
         });
     }

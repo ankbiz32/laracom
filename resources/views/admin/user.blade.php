@@ -65,7 +65,7 @@
                     </div>
                     <div class="card card-body">
                         <div class="table-responsive">
-                        <table class="table table-hover yajra-datatable" style="position:relative">
+                        <table class="table table-hover yajra-datatable" id="userTable" style="position:relative">
                             <span class="dropdown ml-auto bulk-span">
                                 <a class="dropdown-toggle btn btn-default btn-bulk" style="display: none;" data-toggle="dropdown" href="javascript:;" aria-expanded="false">
                                     BULK ACTION<span class="caret"></span>
@@ -346,6 +346,16 @@ function changeStatus(act){
 
 </script>
 
+
+<?php if(isset($_GET['email'])){ 
+    $cl=urldecode($_GET['email']);
+?>
+    <script>
+        $(document).ready(function(){
+            $('#userTable').DataTable().search('<?=$cl?>').draw();
+        });
+    </script>
+<?php }?>
 
 @endsection
 

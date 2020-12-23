@@ -69,7 +69,7 @@
                     </div>
                     <div class="card card-body">
                         <div class="table-responsive">
-                        <table class="table table-hover yajra-datatable">
+                        <table class="table table-hover yajra-datatable" id="orderTable">
                             <span class="dropdown ml-auto bulk-span">
                                 <a class="dropdown-toggle btn btn-default btn-bulk" style="display:none ;" data-toggle="dropdown" href="javascript:;" aria-expanded="false">
                                     UPDATE SELECTED ORDERS STATUS<span class="caret"></span>
@@ -271,5 +271,14 @@
 
 </script>
 
+<?php if(isset($_GET['order'])){ 
+    $cl=urldecode($_GET['order']);
+?>
+    <script>
+        $(document).ready(function(){
+            $('#orderTable').DataTable().search('<?=$cl?>').draw();
+        });
+    </script>
+<?php }?>
 
 @endsection

@@ -49,8 +49,6 @@ Route::resource('admin-tags', 'TagController');
 Route::post('/admin-brands/editBrand', 'BrandController@editBrand')->name('admin-brand.editBrand')->middleware(['auth','admin']);
 Route::resource('admin-brands', 'BrandController');
 
-Route::get('/admin-transactions', 'ProductController@lisTransactions')->name('admin.transactions')->middleware(['auth','admin']);
-
 Route::get('/admin-product', 'ProductController@listProducts')->name('admin.product')->middleware(['auth','admin']);
 Route::get('/admin-product/add', 'ProductController@form')->name('admin.addform')->middleware(['auth','admin']);
 Route::post('/admin-product/add', 'ProductController@create')->name('product.create')->middleware(['auth','admin']);

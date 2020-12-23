@@ -392,22 +392,22 @@
                                 positon: "top-right",
                                 showClose: true
                             });
-                            $.ajax({
-                                url: SITEURL + '/payfailed',
-                                type: 'post',
-                                dataType: 'json',
-                                data: $('#details_form').serialize() , 
-                                success: function (msg) {
-                                    window.location.href = SITEURL + '/thank-you';
-                                }
-                            });
-                            alert(response.error.code);
-                            alert(response.error.description);
-                            alert(response.error.source);
-                            alert(response.error.step);
-                            alert(response.error.reason);
-                            alert(response.error.metadata.order_id);
-                            alert(response.error.metadata.payment_id);
+                            // $.ajax({
+                            //     url: SITEURL + '/payfailed',
+                            //     type: 'post',
+                            //     dataType: 'json',
+                            //     data: $('#details_form').serialize() , 
+                            //     success: function (msg) {
+                            //         window.location.href = SITEURL + '/thank-you';
+                            //     }
+                            // });
+                            // alert(response.error.code);
+                            // alert(response.error.description);
+                            // alert(response.error.source);
+                            // alert(response.error.step);
+                            // alert(response.error.reason);
+                            // alert(response.error.metadata.order_id);
+                            // alert(response.error.metadata.payment_id);
                         });
                         rzp1.open();
                     }

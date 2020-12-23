@@ -60,7 +60,7 @@ class AdminController extends Controller
                     if($row->payment_id){
                         $btn = '
                                 <p class="mb-0">'.$row->payment_type.'</p>
-                                <a href="'.route('txn.info',['pid'=>$row->payment_id]).'" title="Payment reference" class="link">#'.$row->payment_id.'</a>
+                                <a href="'.URL('/').'/transactions?pay_ref='.urlencode($row->payment_id).'" title="Payment reference" class="link">#'.$row->payment_id.'</a>
                             ';
                         return $btn;
                     }
@@ -122,11 +122,23 @@ class AdminController extends Controller
 
     public function transactions(Request $request)
     {
-
         if ($request->ajax()) {
             $result = Payment::orderBy('created_at','DESC')->get();
             return Datatables::of($result)
                 ->addIndexColumn()
+                ->addColumn('email', function($row){
+                    $btn = '
+                            <a href="'.URL('/').'/users?email='.urlencode($row->order->email).'" title="User email" class="link">'.$row->order->email.'</a>
+                        ';
+                    return $btn;
+                })
+                ->addColumn('action', function($row){
+                    $btn = '
+                            <a target="_blank" href="'.route('txn.info',['pid'=>$row->vendor_payment_id]).'" title="View raw info" class="btn btn-sm btn-default m-1">View raw info</a>
+                        ';
+                    return $btn;
+                })
+                ->rawColumns(['email','action'])
                 ->make(true);
         }
         return view('admin.transactions');

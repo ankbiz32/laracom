@@ -93,6 +93,7 @@
         
         $payment = new Payment();
         $payment->payment_amount =$cart->totalPrice;
+        $payment->order_id =$order->id;
         $payment->vendor_payment_id =$request->input('rpid');
         $payment->vendor_order_id =$request->input('roid');
         $payment->vendor_signature =$request->input('rs');
@@ -134,8 +135,8 @@
     {
         $api = new Api(env('RAZORPAY_KEY'), env('RAZORPAY_SECRET'));
         $payment = $api->payment->fetch($request->pid);
-        var_dump('<pre>',$payment);
+        echo '<pre>';
+        var_dump($payment);
     }
-
 
  }
