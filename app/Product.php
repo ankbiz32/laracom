@@ -51,4 +51,8 @@ class Product extends Model
     {
         return $this->hasOne(Wishlist::class);
     }
+    
+    public function country(){
+        return $this->belongsTo(Country::class, 'country_iso_code', 'country_iso_code');
+    }
 }

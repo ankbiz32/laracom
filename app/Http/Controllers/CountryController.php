@@ -18,7 +18,7 @@ class CountryController extends Controller
      */
     public function index()
     {
-        $countries = DB::select('select * from countries');
+        $countries = Country::get();
         return view('admin.country',['countries'=>$countries]);
     }
 
@@ -40,9 +40,21 @@ class CountryController extends Controller
      */
     public function store(Request $request)
     {
+        $this->validate(request(),[
+            'country_name'=>'required|string',
+            'country_iso_code'=>'required|unique:countries|string',
+            'currency'=>'required|string',
+            'currency_symbol'=>'required|string',
+            'locale_code'=>'required|string',
+            'locale_name'=>'required|string',
+        ]);
         $country = new Country;
-        $country->name=$request->input('name');
-        $country->language=$request->input('language');
+        $country->country_name=$request->input('country_name');
+        $country->country_iso_code=$request->input('country_iso_code');
+        $country->currency=$request->input('currency');
+        $country->currency_symbol=$request->input('currency_symbol');
+        $country->locale_code=$request->input('locale_code');
+        $country->locale_name=$request->input('locale_name');
         $country->save();
         return redirect()->route('admin.country')->with('success','Country added !');
     }
@@ -79,11 +91,23 @@ class CountryController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $this->validate(request(),[
+            'country_name'=>'required|string',
+            'country_iso_code'=>'required|unique:countries|string',
+            'currency'=>'required|string',
+            'currency_symbol'=>'required|string',
+            'locale_code'=>'required|string',
+            'locale_name'=>'required|string',
+        ]);
         $country = Country::find($id);
-        $country->name = $request->get('name'); 
-        $country->language = $request->get('language'); 
+        $country->country_name=$request->input('country_name');
+        $country->country_iso_code=$request->input('country_iso_code');
+        $country->currency=$request->input('currency');
+        $country->currency_symbol=$request->input('currency_symbol');
+        $country->locale_code=$request->input('locale_code');
+        $country->locale_name=$request->input('locale_name');
         $country->update();
-        return redirect()->route('admin.country')->with('success','Country update !');
+        return redirect()->route('admin.country')->with('success','Country updated !');
 
     }
 

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Product;
 use App\Category;
 use App\Wishlist;
+use App\Country;
 use Illuminate\Http\Request;
 use DB;
 
@@ -12,13 +13,16 @@ class HomeController extends Controller
 {
     public function index(Request $request)
     {
-        // dd(geoip($request->ip())); //For dynamic ip address
-        // dd(geoip('178.18.25.0')); //For static ip address
-        // dd($products = Product::where('country_iso_code',geoip($request->ip())->iso_code)->take(4)->get());
-        $categories = Category::where('parent_id', '=', 0)->get();
-        $products = Product::where('is_active',1)->orderBy('id', 'DESC')->get();
-        return view('home.index',compact('products','categories'));
+        dd(session('country_iso'));
+        // $iso=geoip($request->ip())->iso_code; //For dynamic ip address
+        $iso=geoip('85.214.132.117')->iso_code; //For static ip address
+        $country = Country::where('country_iso_code', $iso)->get();
+        if($country){
 
+        }
+        $categories = Category::where('parent_id', '=', 0)->get();
+        $products = Product::where('is_active',1)->where('country_iso_code',$iso)->orderBy('id', 'DESC')->get();
+        return view('home.index',compact('products','categories'));
     }
 
     public function tag($tag)

@@ -24,6 +24,7 @@ class CreateProductsTable extends Migration
             $table->tinyInteger('is_todays_deal')->default(0);
             $table->string('tags');
             $table->string('url_slug')->nullable();
+            $table->string('country_iso_code')->default('IN');
             $table->integer('is_active')->default(1);
             $table->timestamps();
         });
