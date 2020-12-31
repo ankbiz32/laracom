@@ -16,6 +16,7 @@ class CreateTagsTable extends Migration
         Schema::create('tags', function (Blueprint $table) {
             $table->increments('id');
             $table->string('tag');
+            $table->string('country_iso_code')->default('IN');
             $table->timestamps();
         });
     }

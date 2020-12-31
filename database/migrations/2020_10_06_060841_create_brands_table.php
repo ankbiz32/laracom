@@ -17,6 +17,7 @@ class CreateBrandsTable extends Migration
             $table->increments('id');
             $table->string('name');
             $table->string('img_src');
+            $table->string('country_iso_code')->default('IN');
             $table->timestamps();
         });
     }

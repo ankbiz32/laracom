@@ -87,6 +87,7 @@
                                 <th scope="col">Image</th>
                                 <th scope="col">Name</th>
                                 <th scope="col">Price</th>
+                                <th scope="col">Country</th>
                                 <th scope="col">Stock</th>
                                 <th scope="col">Status</th>
                                 <th scope="col">Action</th>
@@ -136,6 +137,7 @@
                     },
                     {data: 'name', name: 'name', orderable: true, searchable: true},
                     {data: 'newprice', name: 'newprice', orderable: true, searchable: true},
+                    {data: 'country', name: 'country', orderable: true, searchable: true},
                     {
                         data: 'stock',
                         name: 'stock',

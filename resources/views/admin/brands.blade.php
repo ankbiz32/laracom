@@ -4,6 +4,28 @@
 <link rel="stylesheet" href="plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
 <link rel="stylesheet" href="plugins/datatables-select/css/select.bootstrap4.css">
 <link rel="stylesheet" href="plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
+<link rel="stylesheet" href="{{URL::to('/')}}/plugins/select2/css/select2.min.css">
+<link rel="stylesheet" href="{{URL::to('/')}}/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css">
+<link rel="stylesheet" href="{{URL::to('/')}}/plugins/tags/bootstrap-tagsinput.css">
+<style>
+    .select2-selection__choice{
+        background-color:#007bff !important;
+        border:none !important;
+    }
+    .select2-selection__choice span{
+        color:white !important;
+    }
+    .custom-switch .custom-control-label::after{
+        background:white !important;
+        box-shadow: 1px 1px 5px #00000088;
+    }
+    .select2-container--default .select2-selection--single , .select2-selection--multiple {
+        border: 1px solid #ddd !important;
+    }
+    .select2-selection__arrow {
+        top:0.12rem !important;
+    }
+</style>
 @endsection
 
 
@@ -71,6 +93,21 @@
                 <input type="text" name="name" class="form-control" placeholder="Enter brand name here" required>
             </div>
             <div class="input-group mt-2">
+                <label class="col-form-label mr-3" for="country_iso_code">{{ __('Brand available in') }}: <span class="req"> *</span></label>
+                <select name="country_iso_code[]" id="country_iso_code" class="select2 form-control @error('country_iso_code') is-invalid @enderror" required multiple>
+                    @if($countries)
+                        @foreach($countries as $cn)
+                        <option value="{{ $cn->country_iso_code }}" @if($cn->country_iso_code=='IN') selected @endif>{{ $cn->country_name.' ('.$cn->country_iso_code.')' }}</option>
+                        @endforeach
+                    @else
+                        <option value="" disabled>No countries found. Add some countries first.</option>
+                    @endif
+                </select>
+                @error('country_iso_code')
+                    <small class="text-danger">{{$message}}</small>
+                @enderror
+            </div>
+            <div class="input-group mt-2">
                 <label class="col-form-label mr-3">Brand Image:</label>
                 <div class="custom-file">
                     <input type="file" class="custom-file-input @error('img_src') is-invalid @enderror" id="customFile" name="img_src" accept=".jpg, .jpeg, .png, .bmp, .svg" required>
@@ -136,6 +173,8 @@
     <script src="plugins/datatables-buttons/js/buttons.bootstrap4.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.0/jquery.validate.js"></script>
     <script src="{{URL::to('/')}}/plugins/bs-custom-file-input/bs-custom-file-input.min.js"></script>
+    <script src="{{URL::to('/')}}/plugins/select2/js/select2.full.min.js"></script>
+    <script src="{{URL::to('/')}}/plugins/tags/bootstrap-tagsinput.js"></script>
 
 
 <script type="text/javascript">
@@ -149,7 +188,8 @@ function confirmation(ev){
 }
 
 $(function () {
-
+    
+    $('.select2').select2();
     bsCustomFileInput.init();
 
     var table = $('.yajra-datatable').DataTable({
@@ -196,6 +236,11 @@ $(function () {
 });
 
 </script>
+<style>
+    .select2 .select2-container{
+        flex:1 1 0 !important;
+    }
+</style>
 
 
 @endsection

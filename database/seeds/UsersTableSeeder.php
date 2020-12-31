@@ -19,7 +19,7 @@ class UsersTableSeeder extends Seeder
                 'email'=>'admin@admin.com',
                 'password'=>Hash::make('admin'),
                 'role'=>'Admin',
-                'country_id'=>'0'
+                'country_iso_code'=>'0'
             ],
             [
                 'id'=>2,
@@ -27,7 +27,7 @@ class UsersTableSeeder extends Seeder
                 'email'=>'user@gmail.com',
                 'password'=>Hash::make('user'),
                 'role'=>'Customer',
-                'country_id'=>'in'
+                'country_iso_code'=>'IN'
             ],
         ]);
     }

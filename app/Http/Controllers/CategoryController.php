@@ -3,10 +3,12 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Category;
+use App\Country;
 use File;
 class CategoryController extends Controller {
 
     public function treeView(){
+        $countries = Country::get();
         $Categorys = Category::where('parent_id', '=', 0)->get();
         if(count($Categorys)){
             $tree='<ul id="navigation" class="filetree"><li class="tree-view"></li>';
@@ -21,7 +23,7 @@ class CategoryController extends Controller {
             $tree=null;
         }
         // return $tree;
-        return view('admin.category',compact('tree'));
+        return view('admin.category',compact('tree','countries'));
     }
 
     public function childView($Category){
@@ -44,27 +46,31 @@ class CategoryController extends Controller {
     {
         $this->validate(request(),[
             'image'=>'image',
+            'country_iso_code'=>'required',
             'name'=>'required|string'
         ]);
 
-        $category = new Category();
-        $category->name=request('name');
-        $category->parent_id=request('parent_id');
-        $category->meta_description=request('meta_description');
-        if(request('meta_title'))
-        {
-            $category->meta_title=str_slug(request('meta_title'), '-');
-        }
-        else{
-            $category->meta_title=str_slug(request('name'), '-');
-        }
-        if(request('image'))
-        {
-            $imagepath = $request->image->store('categories','public');
-            $category->img_src=$imagepath;
-        }
+        foreach(request('country_iso_code') as $iso){
+            $category = new Category();
+            $category->name=request('name');
+            $category->parent_id=request('parent_id');
+            $category->country_iso_code=$iso;
+            $category->meta_description=request('meta_description');
+            if(request('meta_title'))
+            {
+                $category->meta_title=str_slug(request('meta_title'), '-');
+            }
+            else{
+                $category->meta_title=str_slug(request('name'), '-');
+            }
+            if(request('image'))
+            {
+                $imagepath = $request->image->store('categories','public');
+                $category->img_src=$imagepath;
+            }
 
-        $category->save();
+            $category->save();
+        }
         if(request('parent_id')==0){
             return redirect()->route('admin.categories')->with('success','Category added !');
         }
@@ -81,14 +87,15 @@ class CategoryController extends Controller {
 
     public function edit(Request $request)
     {
-        // dd($request);
         $this->validate(request(),[
             'image'=>'image',
+            'country_iso_code'=>'required',
             'name'=>'required|string'
         ]);
         $category = Category::findOrFail(request('id'));
 
         $category->name=request('name');
+        $category->country_iso_code=request('country_iso_code');
         $category->meta_description=request('meta_description');
         if(request('meta_title'))
         {

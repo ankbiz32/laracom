@@ -18,6 +18,7 @@ use App\ProductSeo;
 use App\Category;
 use App\Cart;
 use App\Wishlist;
+use App\Country;
 use Illuminate\Http\Request;
 use Validator,Redirect,Response;
 use DB;
@@ -75,6 +76,9 @@ class ProductController extends Controller
                             <a href="'.route('product.remove',['id'=>$row->id]).'" onclick="confirmation(event)" class="btn btn-danger m-1">REMOVE</a>
                         ';
                     return $btn;
+                })
+                ->addColumn('country', function($row){
+                    return $txt= $row->country->country_name.' ('.$row->country_iso_code.')' ;
                 })
                 ->addColumn('newprice', function($row){
                     if($row->ProductDiscount->has_discount){
@@ -382,10 +386,11 @@ class ProductController extends Controller
         $categories=$this->categories_dropdown();
         $tags = Tag::get();
         $brands = Brand::get();
+        $countries = Country::get();
         $attributes = Attribute::get(["name","id"]);
         $attribute_details = AttributeDetail::get(["name","id"]);
 
-        return view('admin.addproduct', compact (['categories','tags','brands','attributes','attribute_details']));
+        return view('admin.addproduct', compact (['categories','tags','brands','countries','attributes','attribute_details']));
     }
 
     public function create(Request $request)
@@ -397,113 +402,118 @@ class ProductController extends Controller
             'brand'=>'required',
             'tags'=>'required',
             'max_order_qty'=>'required|integer',
-            'image'=>'required|image'
+            'image'=>'required|image',
+            'country_iso_code'=>'required',
         ]);
 
-        $imagepath = $request->image->store('products','public');
+        foreach(request('country_iso_code') as $iso){
 
-        // Save critical details
-        $product = new Product();
-        $product->name=request('name');
-        $product->price=request('price');
-        $product->brand_id=request('brand');
-        $product->image=$imagepath;
-        $product->max_order_qty=request('max_order_qty');
-        $product->tags=json_encode(request('tags'));
-        $product->url_slug=str_slug(request('name'), '-');
-        $product->save();
+            $imagepath = $request->image->store('products','public');
 
-        // Save category product relation
-        $dataSet = [];
-        foreach (request('category') as $ctgid) {
-            $dataSet[] = [
-                'category_id'  => $ctgid,
-                'product_id'    => $product->id,
-                'created_at'       => date('Y-m-d H:i:s'),
-                'updated_at'       => date('Y-m-d H:i:s')
-            ];
-        }
-        DB::table('category_product')->insert($dataSet);
+            // Save critical details
+            $product = new Product();
+            $product->name=request('name');
+            $product->price=request('price');
+            $product->brand_id=request('brand');
+            $product->image=$imagepath;
+            $product->max_order_qty=request('max_order_qty');
+            $product->tags=json_encode(request('tags'));
+            $product->url_slug=str_slug(request('name'), '-');
+            $product->country_iso_code=$iso;
+            $product->save();
 
-        // Save product discount detail
-        $product_discount = new ProductDiscount;
-        if(request('has_discount'))
-        {
-            $product_discount->product_id = $product->id;
-            $product_discount->has_discount=1;
-            $product_discount->type=request('discount_type');
-            $product_discount->rate=request('discount_rate');
-            if (request('discount_type')=='FLAT'){
-                $product_discount->new_price=request('discount_rate');
+            // Save category product relation
+            $dataSet = [];
+            foreach (request('category') as $ctgid) {
+                $dataSet[] = [
+                    'category_id'  => $ctgid,
+                    'product_id'    => $product->id,
+                    'created_at'       => date('Y-m-d H:i:s'),
+                    'updated_at'       => date('Y-m-d H:i:s')
+                ];
             }
-            else{
-                $product_discount->new_price=( (100 - request('discount_rate')) / 100 ) * $product->price ;
-            }
-        }
-        else{
-            $product_discount->product_id = $product->id;
-            $product_discount->has_discount=0;
-            $product_discount->type='';
-            $product_discount->rate=$product->price;
-            $product_discount->new_price=$product->price;
-        }
-        $product_discount->save();
+            DB::table('category_product')->insert($dataSet);
 
-        // Save product descr detail
-        $product_description = new ProductDescription;
-        $product_description->product_id = $product->id;
-        $product_description->short_des=request('short_des');
-        $product_description->full_des=request('full_des');
-        $product_description->save();
-
-        // Save product SEO detail
-        $product_seo = new ProductSeo;
-        $product_seo->product_id = $product->id;
-        if(request('meta_title')==''){
-            $product_seo->title =request('name');
-        }else{
-            $product_seo->title =request('meta_title');
-        }
-        $product_seo->description=request('meta_descr');
-        $product_seo->save();
-
-        // Save product inventory detail
-        $product_inventory = new ProductInventory;
-        $product_inventory->product_id = $product->id;
-        $product_inventory->sku=request('sku');
-        $product_inventory->in_stock=request('in_stock');
-        $product_inventory->save();
-
-        // Save product attributes detail
-        $attribute_ids = $request->input("attribute_id");
-        $attribute_detail_ids = $request->input("attribute_detail_id");
-        if(!empty($attribute_ids)){
-            foreach($attribute_ids as $k=>$v){
-                if(!empty($v) and !empty($attribute_detail_ids[$k])){
-                    $product_attribute = new ProductAttribute;
-                    $product_attribute->product_id = $product->id;
-                    $product_attribute->attribute_id=$v;
-                    $product_attribute->attribute_detail_id=$attribute_detail_ids[$k];
-                    $product_attribute->save();
+            // Save product discount detail
+            $product_discount = new ProductDiscount;
+            if(request('has_discount'))
+            {
+                $product_discount->product_id = $product->id;
+                $product_discount->has_discount=1;
+                $product_discount->type=request('discount_type');
+                $product_discount->rate=request('discount_rate');
+                if (request('discount_type')=='FLAT'){
+                    $product_discount->new_price=request('discount_rate');
+                }
+                else{
+                    $product_discount->new_price=( (100 - request('discount_rate')) / 100 ) * $product->price ;
                 }
             }
-        }
+            else{
+                $product_discount->product_id = $product->id;
+                $product_discount->has_discount=0;
+                $product_discount->type='';
+                $product_discount->rate=$product->price;
+                $product_discount->new_price=$product->price;
+            }
+            $product_discount->save();
 
-        // Save product additional images
-        if($request->hasfile('multi_img'))
-        {
-           foreach(request('multi_img') as $img)
-           {
-               $multiimagepath = $img->store('products','public');
-               DB::table('product_images')->insert(
-                   ['img_src' => $multiimagepath, 'product_id' => $product->id]
-               );
-           }
-        }
+            // Save product descr detail
+            $product_description = new ProductDescription;
+            $product_description->product_id = $product->id;
+            $product_description->short_des=request('short_des');
+            $product_description->full_des=request('full_des');
+            $product_description->save();
 
-        // Additional/New tags are saved in diff table
-        foreach(request('tags') as $tag){
-            Tag::firstOrCreate(['tag' => $tag]);
+            // Save product SEO detail
+            $product_seo = new ProductSeo;
+            $product_seo->product_id = $product->id;
+            if(request('meta_title')==''){
+                $product_seo->title =request('name');
+            }else{
+                $product_seo->title =request('meta_title');
+            }
+            $product_seo->description=request('meta_descr');
+            $product_seo->save();
+
+            // Save product inventory detail
+            $product_inventory = new ProductInventory;
+            $product_inventory->product_id = $product->id;
+            $product_inventory->sku=request('sku');
+            $product_inventory->in_stock=request('in_stock');
+            $product_inventory->save();
+
+            // Save product attributes detail
+            $attribute_ids = $request->input("attribute_id");
+            $attribute_detail_ids = $request->input("attribute_detail_id");
+            if(!empty($attribute_ids)){
+                foreach($attribute_ids as $k=>$v){
+                    if(!empty($v) and !empty($attribute_detail_ids[$k])){
+                        $product_attribute = new ProductAttribute;
+                        $product_attribute->product_id = $product->id;
+                        $product_attribute->attribute_id=$v;
+                        $product_attribute->attribute_detail_id=$attribute_detail_ids[$k];
+                        $product_attribute->save();
+                    }
+                }
+            }
+
+            // Save product additional images
+            if($request->hasfile('multi_img'))
+            {
+            foreach(request('multi_img') as $img)
+            {
+                $multiimagepath = $img->store('products','public');
+                DB::table('product_images')->insert(
+                    ['img_src' => $multiimagepath, 'product_id' => $product->id]
+                );
+            }
+            }
+
+            // Additional/New tags are saved in diff table
+            foreach(request('tags') as $tag){
+                Tag::firstOrCreate(['tag' => $tag]);
+            }
         }
 
         return redirect()->route('admin.product')->with('success','Product added !');
@@ -511,21 +521,22 @@ class ProductController extends Controller
 
     public function editform($id)
     {
-
         $product = Product::findOrFail($id);
         $categories=$this->categories_dropdown();
         $tags = Tag::get();
         $brands = Brand::get();
         $attributes = Attribute::get();
+        $countries = Country::get();
         $attribute_details = AttributeDetail::get();
         $productImageList = ProductImage::where('product_id',$id);
 
-        return view('admin.editproduct',compact('product','categories','tags','brands','attributes','attribute_details'));
+        return view('admin.editproduct',compact('product','categories','countries','tags','brands','attributes','attribute_details'));
     }
 
     public function edit(Request $request,$id)
     {
         $product = Product::findOrFail($id);
+        $product->country_iso_code=$request->get('country_iso_code');
         $product->brand_id=$request->get('brand');
         $product->name=$request->get('name');
         $product->price=$request->get('price');

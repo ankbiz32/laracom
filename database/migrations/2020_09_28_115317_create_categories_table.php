@@ -17,6 +17,7 @@ class CreateCategoriesTable extends Migration
             $table->increments('id');
             $table->text('parent_id')->default(0);
             $table->string('name');
+            $table->string('country_iso_code')->default('IN');
             $table->string('img_src')->nullable();
             $table->string('meta_title')->nullable();
             $table->string('meta_description')->nullable();

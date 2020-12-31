@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Brand;
+use App\Country;
 use Illuminate\Http\Request;
 use DataTables;
 
@@ -15,6 +16,7 @@ class BrandController extends Controller
      */
     public function index(Request $request)
     {
+        $countries = Country::get();
         if ($request->ajax()) {
             $result = Brand::get();
             return Datatables::of($result)
@@ -33,7 +35,7 @@ class BrandController extends Controller
                 ->rawColumns(['action'])
                 ->make(true);
         }
-        return view('admin.brands');
+        return view('admin.brands',compact('countries'));
     }
 
     /**

@@ -13,15 +13,8 @@ class HomeController extends Controller
 {
     public function index(Request $request)
     {
-        dd(session('country_iso'));
-        // $iso=geoip($request->ip())->iso_code; //For dynamic ip address
-        $iso=geoip('85.214.132.117')->iso_code; //For static ip address
-        $country = Country::where('country_iso_code', $iso)->get();
-        if($country){
-
-        }
         $categories = Category::where('parent_id', '=', 0)->get();
-        $products = Product::where('is_active',1)->where('country_iso_code',$iso)->orderBy('id', 'DESC')->get();
+        $products = Product::where('is_active',1)->where('country_iso_code',$_SESSION['country_iso_code'])->orderBy('id', 'DESC')->get();
         return view('home.index',compact('products','categories'));
     }
 

@@ -2,7 +2,9 @@
 
 namespace App\Http\Middleware;
 
-use Closure;
+use App\Country;
+use App\Product;
+use Closure, Session;
 
 class CheckCountry
 {
@@ -15,19 +17,28 @@ class CheckCountry
      */
     public function handle($request, Closure $next)
     {
-        if (session('country_iso')) {
-            session(['country_iso' => 'IN']);
-        }
-        else{
-            $iso=geoip('85.214.132.117')->iso_code; //For static ip address
-            $country = Country::where('country_iso_code', $iso)->get();
-            if($country){
-                session(['country_iso' => $country]);
+        session_start();
+        if (!isset($_SESSION['country_iso_code'])) 
+        {
+            $__iso=geoip($request->ip())->iso_code; //For dynamic ip address
+            // $__iso = geoip('109.40.243.183')->iso_code;
+            $__available = Country::where('country_iso_code', $__iso)->first();
+            if($__available){
+                if(count($__available->products)){
+                    $_SESSION['country_iso_code']=$__iso;
+                }
+                else{
+                    $_SESSION['country_iso_code']='IN';
+                }
             }
             else{
-                session(['country_iso' => 'IN']);
+                $_SESSION['country_iso_code']='IN';
             }
         }
         return $next($request);
     }
 }
+
+// Germany IP -> 109.40.243.183
+// India IP -> 182.70.210.1
+// Korea IP -> 23.251.224.0

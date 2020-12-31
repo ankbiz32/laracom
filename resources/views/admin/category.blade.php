@@ -3,6 +3,28 @@
 
 @section ('css')
     <link rel="stylesheet" href="plugins/jquery-treeview/css/jquery-treeview.css" />
+    <link rel="stylesheet" href="{{URL::to('/')}}/plugins/select2/css/select2.min.css">
+    <link rel="stylesheet" href="{{URL::to('/')}}/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css">
+    <link rel="stylesheet" href="{{URL::to('/')}}/plugins/tags/bootstrap-tagsinput.css">
+    <style>
+        .select2-selection__choice{
+            background-color:#007bff !important;
+            border:none !important;
+        }
+        .select2-selection__choice span{
+            color:white !important;
+        }
+        .custom-switch .custom-control-label::after{
+            background:white !important;
+            box-shadow: 1px 1px 5px #00000088;
+        }
+        .select2-container--default .select2-selection--single , .select2-selection--multiple {
+            border: 1px solid #ddd !important;
+        }
+        .select2-selection__arrow {
+            top:0.12rem !important;
+        }
+    </style>
 @endsection ('css')
 
 
@@ -144,6 +166,27 @@
                                                 </div>
                                             </div>
                                         </div>
+                                        <div class="col">
+                                            <div class="form-group row">
+                                                <label class="col-sm-3 col-form-label" for="country_iso_code">{{ __('Category available in') }}: <span class="req"> *</span></label>
+                                                <div class="col-sm-7">
+                                                    <div class="input-group ">
+                                                        <select name="country_iso_code[]" id="country_iso_code" class="select2 form-control @error('country_iso_code') is-invalid @enderror" style="width: 100%;" required multiple>
+                                                            @if($countries)
+                                                                @foreach($countries as $cn)
+                                                                <option value="{{ $cn->country_iso_code }}" @if($cn->country_iso_code=='IN') selected @endif>{{ $cn->country_name.' ('.$cn->country_iso_code.')' }}</option>
+                                                                @endforeach
+                                                            @else
+                                                                <option value="" disabled>No countries found. Add some countries first.</option>
+                                                            @endif
+                                                        </select>
+                                                    </div>
+                                                    @error('country_iso_code')
+                                                        <small class="text-danger">{{$message}}</small>
+                                                    @enderror
+                                                </div>
+                                            </div>
+                                        </div>
                                         <div class="col-12">
                                             <div class="form-group row">
                                                 <label class="col-sm-3 col-form-label" for="image">Category Image:</label>
@@ -213,74 +256,96 @@
                                 <form method="POST" class="editForm" action="{{ route('category.edit') }}" enctype="multipart/form-data" style="display:none">
                                     @csrf
                                     <div class="row">
-                                            <div class="col-12 mb-2">
-                                                <h6 class="text-muted ">GENERAL</h6>
-                                            </div>
-                                            <input type="hidden" class="main_id" id="main_id" name="id" required>
-                                            <input type="hidden" class="parent_id" id="parent_id" name="parent_id" required>
-                                            <div class="col-12">
-                                                <div class="form-group row">
-                                                    <label class="col-sm-3 col-form-label" for="name">Category name: <span class="req"> *</span></label>
-                                                    <div class="col-sm-7">
-                                                        <input id="nameE" type="text" class="form-control @error('name') is-invalid @enderror" name="name" required autocomplete="price" autofocus>
-                                                        @error('name')
-                                                            <small class="text-danger">{{$message}}</small>
-                                                        @enderror
-                                                    </div>
+                                        <div class="col-12 mb-2">
+                                            <h6 class="text-muted ">GENERAL</h6>
+                                        </div>
+                                        <input type="hidden" class="main_id" id="main_id" name="id" required>
+                                        <input type="hidden" class="parent_id" id="parent_id" name="parent_id" required>
+                                        <div class="col-12">
+                                            <div class="form-group row">
+                                                <label class="col-sm-3 col-form-label" for="name">Category name: <span class="req"> *</span></label>
+                                                <div class="col-sm-7">
+                                                    <input id="nameE" type="text" class="form-control @error('name') is-invalid @enderror" name="name" required autocomplete="price" autofocus>
+                                                    @error('name')
+                                                        <small class="text-danger">{{$message}}</small>
+                                                    @enderror
                                                 </div>
                                             </div>
-                                            <div class="col-12">
-                                                <div class="form-group row">
-                                                    <label class="col-sm-3 col-form-label" for="image">Category Image:</label>
-                                                    <div class="col-sm-7">
-                                                        <div class="custom-file">
-                                                            <input type="file" class="custom-file-input @error('image') is-invalid @enderror" id="customFile" name="image" accept=".jpg, .jpeg, .png, .bmp, .svg">
-                                                            <label class="custom-file-label" for="customFile">Choose file</label>
-                                                        </div>
-                                                        @error('image')
-                                                            <small class="text-danger">{{$message}}</small>
-                                                        @enderror
+                                        </div>
+                                        <div class="col">
+                                            <div class="form-group row">
+                                                <label class="col-sm-3 col-form-label" for="edit_country_iso_code">{{ __('Category available in') }}: <span class="req"> *</span></label>
+                                                <div class="col-sm-7">
+                                                    <div class="input-group ">
+                                                        <select name="country_iso_code" id="edit_country_iso_code" class="form-control @error('country_iso_code') is-invalid @enderror" style="width: 100%;" required>
+                                                            @if($countries)
+                                                                @foreach($countries as $cn)
+                                                                <option value="{{ $cn->country_iso_code }}">{{ $cn->country_name.' ('.$cn->country_iso_code.')' }}</option>
+                                                                @endforeach
+                                                            @else
+                                                                <option value="" disabled>No countries found. Add some countries first.</option>
+                                                            @endif
+                                                        </select>
+                                                    </div>
+                                                    @error('country_iso_code')
+                                                        <small class="text-danger">{{$message}}</small>
+                                                    @enderror
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="col-12">
+                                            <div class="form-group row">
+                                                <label class="col-sm-3 col-form-label" for="image">Category Image:</label>
+                                                <div class="col-sm-7">
+                                                    <div class="custom-file">
+                                                        <input type="file" class="custom-file-input @error('image') is-invalid @enderror" id="customFile" name="image" accept=".jpg, .jpeg, .png, .bmp, .svg">
+                                                        <label class="custom-file-label" for="customFile">Choose file</label>
+                                                    </div>
+                                                    @error('image')
+                                                        <small class="text-danger">{{$message}}</small>
+                                                    @enderror
 
-                                                        <img src="" id="currentImg" alt="Image" class="mt-2" height="40"> <br>
-                                                        <small id="currentImgMsg"></small>
-                                                    </div>
+                                                    <img src="" id="currentImg" alt="Image" class="mt-2" height="40"> <br>
+                                                    <small id="currentImgMsg"></small>
                                                 </div>
                                             </div>
-                                            <hr class="border">
-                                            <div class="col-12 mb-2">
-                                                <h6 class="text-muted ">SEO</h6>
-                                            </div>
-                                            <div class="col-12">
-                                                <div class="form-group row">
-                                                    <label class="col-sm-3 col-form-label" for="meta_title">Meta title:</label>
-                                                    <div class="col-sm-7">
-                                                        <input id="meta_titleE" type="text" class="form-control @error('meta_title') is-invalid @enderror" name="meta_title" autocomplete="meta_title" autofocus>
-                                                        @error('meta_title')
-                                                            <small class="text-danger">{{$message}}</small>
-                                                        @enderror
-                                                    </div>
+                                        </div>
+                                        <hr class="border">
+                                        <div class="col-12 mb-2">
+                                            <h6 class="text-muted ">SEO</h6>
+                                        </div>
+                                        <div class="col-12">
+                                            <div class="form-group row">
+                                                <label class="col-sm-3 col-form-label" for="meta_title">Meta title:</label>
+                                                <div class="col-sm-7">
+                                                    <input id="meta_titleE" type="text" class="form-control @error('meta_title') is-invalid @enderror" name="meta_title" autocomplete="meta_title" autofocus>
+                                                    @error('meta_title')
+                                                        <small class="text-danger">{{$message}}</small>
+                                                    @enderror
                                                 </div>
                                             </div>
-                                            <div class="col-12">
-                                                <div class="form-group row">
-                                                    <label class="col-sm-3 col-form-label" for="name">Meta Description: </label>
-                                                    <div class="col-sm-7">
-                                                        <textarea rows="5" id="meta_descriptionE" class="form-control @error('meta_description') is-invalid @enderror" name="meta_description"></textarea>
-                                                        @error('meta_description')
-                                                            <small class="text-danger">{{$message}}</small>
-                                                        @enderror
-                                                    </div>
+                                        </div>
+                                        <div class="col-12">
+                                            <div class="form-group row">
+                                                <label class="col-sm-3 col-form-label" for="name">Meta Description: </label>
+                                                <div class="col-sm-7">
+                                                    <textarea rows="5" id="meta_descriptionE" class="form-control @error('meta_description') is-invalid @enderror" name="meta_description"></textarea>
+                                                    @error('meta_description')
+                                                        <small class="text-danger">{{$message}}</small>
+                                                    @enderror
                                                 </div>
                                             </div>
-                                            <div class="col-12 mt-3">
-                                                <div class="form-group row">
-                                                    <label class="col-sm-3 col-form-label"></label>
-                                                    <div class="col-sm-9">
-                                                        <button type="submit" class="btn btn-primary mr-2">UPDATE CATEGORY</button>
-                                                        <a href="{{URL::to('/admin-categories')}}" class="btn btn-default mr-2 mr-sm-0">CANCEL</a>
-                                                    </div>
+                                        </div>
+                                        <div class="col-12 mt-3">
+                                            <div class="form-group row">
+                                                <label class="col-sm-3 col-form-label"></label>
+                                                <div class="col-sm-9">
+                                                    <button type="submit" class="btn btn-primary mr-2">UPDATE CATEGORY</button>
+                                                    <a href="{{URL::to('/admin-categories')}}" class="btn btn-default mr-2 mr-sm-0">CANCEL</a>
                                                 </div>
                                             </div>
+                                        </div>
                                     </div>
                                 </form>
 
@@ -297,13 +362,17 @@
     <script src="plugins/jquery-treeview/js/jquery-treeview.js"></script>
     <script type="text/javascript" src="plugins/jquery-treeview/js/jquery-treeview-demo.js"></script>
     <script src="{{URL::to('/')}}/plugins/bs-custom-file-input/bs-custom-file-input.min.js"></script>
+    <script src="{{URL::to('/')}}/plugins/select2/js/select2.full.min.js"></script>
+    <script src="{{URL::to('/')}}/plugins/tags/bootstrap-tagsinput.js"></script>
     <script>
         $(document).ready(function () {
+
+            $('.select2').select2();
             bsCustomFileInput.init();
 
             $('.showBtn').on("click", function(){
-                $('.noCat').hide()
-                $('.addCategory').fadeIn()
+                $('.noCat').hide();
+                $('.addCategory').fadeIn();
             });
 
             $('.addNewMaster').on("click", function(){
@@ -342,8 +411,11 @@
                     id: id
                 },
                 function(data, status){
+                    console.log(data[0].country_iso_code);
                     $('#parent_id').val(data[0].parent_id);
                     $('#nameE').val(data[0].name);
+                    $('#edit_country_iso_code option').removeAttr('selected');
+                    $('#edit_country_iso_code option[value='+data[0].country_iso_code+']').attr('selected', 'selected');
                     if(data[0].img_src!=null){
                         $('#currentImg').attr('src',data[0].img_src);
                         $('#currentImg').fadeIn();
