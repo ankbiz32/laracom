@@ -718,11 +718,14 @@ class ProductController extends Controller
 
 
     // FUNCTIONS FOR CATEGORIES DROPDOWN WITH PARENT NAME
-	public function categories_dropdown()
+	public function categories_dropdown($ciso=null)
     {
         $result = DB::table('categories')
-                     ->orderBy('name','DESC')
-                     ->get();
+                     ->orderBy('name','DESC');
+                     if($ciso){
+                        $result=$result->where('country_iso_code',$ciso);
+                     }
+                     $result=$result->get();
         if(count($result))
         {
 			foreach($result as $k=>$row){

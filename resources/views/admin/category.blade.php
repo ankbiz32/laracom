@@ -78,6 +78,28 @@
                                     </div>
                                 </div>
                             </div>
+                            
+                            <div class="col">
+                                <div class="form-group row">
+                                    <label class="col-sm-2 col-form-label" for="country_iso_code">{{ __('Category available in') }}: <span class="req"> *</span></label>
+                                    <div class="col-sm-7">
+                                        <div class="input-group ">
+                                            <select name="country_iso_code[]" id="country_iso_code" class="select2 form-control @error('country_iso_code') is-invalid @enderror" style="width: 100%;" required multiple>
+                                                @if($countries)
+                                                    @foreach($countries as $cn)
+                                                    <option value="{{ $cn->country_iso_code }}" @if($cn->country_iso_code=='IN') selected @endif>{{ $cn->country_name.' ('.$cn->country_iso_code.')' }}</option>
+                                                    @endforeach
+                                                @else
+                                                    <option value="" disabled>No countries found. Add some countries first.</option>
+                                                @endif
+                                            </select>
+                                        </div>
+                                        @error('country_iso_code')
+                                            <small class="text-danger">{{$message}}</small>
+                                        @enderror
+                                    </div>
+                                </div>
+                            </div>
                             <div class="col-12">
                                 <div class="form-group row">
                                     <label class="col-sm-2 col-form-label" for="image">Category Image:</label>

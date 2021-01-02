@@ -167,7 +167,7 @@ $(function () {
                 name: 'created_at',
                 render: function (data, type, full, meta) {
                    var cdate= new Date(data);
-                   return cdate.getDate() + '-' + cdate.getMonth() + '-' + cdate.getFullYear();
+                   return ('0' + (cdate.getDate())).slice(-2) + '-' + ('0' + (cdate.getMonth()+1)).slice(-2) + '-' + cdate.getFullYear();
                 },
                 orderable: true,
                 searchable: true

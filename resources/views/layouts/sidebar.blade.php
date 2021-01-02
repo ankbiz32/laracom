@@ -69,7 +69,7 @@
                                     </ul>
                                 </li>
                             @else
-                                <li><a href="{{ route( 'category.list', ['category'=>$ch->id, 'slug'=>$ch->meta_title] ) }}">{{$c->name}}</a></li>
+                                <li><a href="{{ route( 'category.list', ['category'=>$c->id, 'slug'=>$c->meta_title] ) }}">{{$c->name}}</a></li>
                             @endif
                         @endforeach
                             <li></li>

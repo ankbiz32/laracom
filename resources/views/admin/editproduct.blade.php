@@ -122,9 +122,9 @@
                                                         <option value="" disabled>Select categories</option>
                                                         @foreach($categories as $c)
                                                             @if(in_array($c->id, $catArray))
-                                                            <option value="{{ $c->id }}" selected="selected">{{ $c->full_name }}</option>
+                                                            <option value="{{ $c->id }}" selected="selected">{{ $c->full_name }} ({{ $c->country_iso_code }}) </option>
                                                             @else
-                                                            <option value="{{ $c->id }}">{{ $c->full_name }}</option>
+                                                            <option value="{{ $c->id }}">{{ $c->full_name }} ({{ $c->country_iso_code }}) </option>
                                                             @endif
                                                         @endforeach
                                                     @else
@@ -143,7 +143,11 @@
                                                     @if($brands)
                                                         <option value="" disabled>Select brand</option>
                                                         @foreach($brands as $b)
-                                                        <option value="{{ $b->id }}">{{ $b->name }}</option>
+                                                            @if($b->id==$product->brand_id)
+                                                                <option value="{{ $b->id }}" selected>{{ $b->name }} ({{ $b->country_iso_code }}) </option>
+                                                            @else
+                                                                <option value="{{ $b->id }}">{{ $b->name }} ({{ $b->country_iso_code }}) </option>
+                                                            @endif
                                                         @endforeach
                                                     @else
                                                         <option value="" disabled>No categories found. Add some brands first.</option>

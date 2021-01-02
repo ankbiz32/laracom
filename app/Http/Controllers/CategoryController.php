@@ -13,7 +13,7 @@ class CategoryController extends Controller {
         if(count($Categorys)){
             $tree='<ul id="navigation" class="filetree"><li class="tree-view"></li>';
             foreach ($Categorys as $Category) {
-                 $tree .='<li class="tree-view closed"><a class="tree-name text-md" href="javascript:;" data-id="'.$Category->id.'">'.$Category->name.'</a>';
+                 $tree .='<li class="tree-view closed"><a class="tree-name text-md" href="javascript:;" data-id="'.$Category->id.'">'.$Category->name.'<sup> '.$Category->country_iso_code.'</sup></a>';
                  if(count($Category->childs)) {
                     $tree .=$this->childView($Category);
                 }
@@ -30,10 +30,10 @@ class CategoryController extends Controller {
             $html ='<ul>';
             foreach ($Category->childs as $arr) {
                 if(count($arr->childs)){
-                        $html .='<li class="tree-view closed"><a href="javascript:;" class="tree-name text-md" data-id="'.$arr->id.'">'.$arr->name.'</a>';
+                        $html .='<li class="tree-view closed"><a href="javascript:;" class="tree-name text-md" data-id="'.$arr->id.'">'.$arr->name.'<sup> '.$arr->country_iso_code.'</sup></a>';
                     $html.= $this->childView($arr);
                 }else{
-                    $html .='<li class="tree-view"><a href="javascript:;" class="tree-name text-md" data-id="'.$arr->id.'">'.$arr->name.'</a>';
+                    $html .='<li class="tree-view"><a href="javascript:;" class="tree-name text-md" data-id="'.$arr->id.'">'.$arr->name.'<sup> '.$arr->country_iso_code.'</sup></a>';
                     $html .="</li>";
                 }
             }

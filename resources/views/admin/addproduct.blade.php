@@ -103,7 +103,7 @@
                                                     @if($categories)
                                                         <option value="" disabled>Select categories</option>
                                                         @foreach($categories as $c)
-                                                        <option value="{{ $c->id }}">{{ $c->full_name }}</option>
+                                                        <option value="{{ $c->id }}">{{ $c->full_name }} ({{ $c->country_iso_code }}) </option>
                                                         @endforeach
                                                     @else
                                                         <option value="" disabled>No categories found. Add some categories first.</option>
@@ -118,13 +118,13 @@
                                             <label class="col-sm-2 col-form-label" for="category">{{ __('Brand') }}<span class="req"> *</span></label>
                                             <div class="col-sm-10">
                                                 <select name="brand" id="addBrand" class="form-control select2" style="width: 100%;" required>
-                                                    @if($brands)
+                                                    @if(count($brands))
                                                         <option value="" disabled>Select brand</option>
                                                         @foreach($brands as $b)
-                                                        <option value="{{ $b->id }}">{{ $b->name }}</option>
+                                                        <option value="{{ $b->id }}">{{ $b->name }}  ({{ $b->country_iso_code }})</option>
                                                         @endforeach
                                                     @else
-                                                        <option value="" disabled>No categories found. Add some brands first.</option>
+                                                        <option value="" disabled>No brands found. Add some brands first.</option>
                                                     @endif
                                                 </select>
                                             </div>
@@ -164,7 +164,7 @@
                                             <div class="col-sm-10">
                                                 <select name="tags[]" id="tags" multiple class="form-control" style="width: 100%;" required>
                                                     @if($tags)
-                                                        <option value="" disabled>Select tags</option>
+                                                        <option value="" disabled>Start typing some tags...</option>
                                                         @foreach($tags as $t)
                                                         <option value="{{ $t->tag }}">{{ $t->tag }}</option>
                                                         @endforeach

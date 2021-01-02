@@ -23,7 +23,7 @@ class BrandController extends Controller
                 ->addIndexColumn()
                 ->addColumn('action', function($row){
                     $btn = '
-                            <a href="javascript:void(0)" data-toggle="modal" data-target="#edit" data-id="'.$row->id.'" data-name="'.$row->name.'" class="edit btn btn-info m-1">EDIT</a>
+                            <a href="javascript:void(0)" data-toggle="modal" data-target="#edit" data-id="'.$row->id.'" data-iso="'.$row->country_iso_code.'" data-name="'.$row->name.'" class="edit btn btn-info m-1">EDIT</a>
                             <form action="'.route('admin-brands.destroy', $row->id).'" data-formId="'.$row->id.'" class="d-inline" method="POST">
                                 <input type="hidden" name="_method" value="DELETE">
                                 <input type="hidden" name="_token" value="'.csrf_token().'">
@@ -31,6 +31,9 @@ class BrandController extends Controller
                             </form>
                         ';
                     return $btn;
+                })
+                ->addColumn('country', function($row){
+                    return $txt= $row->country->country_name.' ('.$row->country_iso_code.')' ;
                 })
                 ->rawColumns(['action'])
                 ->make(true);
@@ -61,16 +64,19 @@ class BrandController extends Controller
             'img_src'=>'image'
         ]);
 
-        $brand = new Brand();
-        $brand->name=request('name');
+        foreach(request('country_iso_code') as $iso){
+            $brand = new Brand();
+            $brand->name=request('name');
+            $brand->country_iso_code=$iso;
 
-        if($request->hasfile('img_src'))
-         {
-            $imagepath = $request->img_src->store('brands','public');
-            $brand->img_src=$imagepath;
-         }
+            if($request->hasfile('img_src'))
+            {
+                $imagepath = $request->img_src->store('brands','public');
+                $brand->img_src=$imagepath;
+            }
 
-        $brand->save();
+            $brand->save();
+        }
         return redirect()->route('admin-brands.index')->with('success','Brand added !');
     }
 
@@ -127,13 +133,14 @@ class BrandController extends Controller
         // dd($request);
         $this->validate(request(),[
             'name'=>'required|string',
+            'country_iso_code'=>'required',
             'img_src'=>'image',
             'id'=>'required'
         ]);
 
         $brand = Brand::findOrFail(request('id'));
-
         $brand->name=request('name');
+        $brand->country_iso_code=request('country_iso_code');
 
         if(request('img_src'))
         {

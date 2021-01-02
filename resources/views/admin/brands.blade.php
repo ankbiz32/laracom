@@ -61,6 +61,7 @@
                                 <th scope="col">ID</th>
                                 <th scope="col">Brand</th>
                                 <th scope="col">Image</th>
+                                <th scope="col">Country</th>
                                 <th scope="col">Created</th>
                                 <th scope="col">Action</th>
                             </tr>
@@ -88,13 +89,13 @@
             </button>
         </div>
         <div class="modal-body">
-            <div class="input-group">
-                <label class="col-form-label mr-3">Brand name:</label>
+            <div class="input-group d-block">
+                <label class="col-form-label mr-3">Brand name:  <span class="req"> *</span></label>
                 <input type="text" name="name" class="form-control" placeholder="Enter brand name here" required>
             </div>
             <div class="input-group mt-2">
                 <label class="col-form-label mr-3" for="country_iso_code">{{ __('Brand available in') }}: <span class="req"> *</span></label>
-                <select name="country_iso_code[]" id="country_iso_code" class="select2 form-control @error('country_iso_code') is-invalid @enderror" required multiple>
+                <select style="width:100%;" name="country_iso_code[]" id="country_iso_code" class="select2 form-control @error('country_iso_code') is-invalid @enderror" required multiple>
                     @if($countries)
                         @foreach($countries as $cn)
                         <option value="{{ $cn->country_iso_code }}" @if($cn->country_iso_code=='IN') selected @endif>{{ $cn->country_name.' ('.$cn->country_iso_code.')' }}</option>
@@ -107,8 +108,8 @@
                     <small class="text-danger">{{$message}}</small>
                 @enderror
             </div>
-            <div class="input-group mt-2">
-                <label class="col-form-label mr-3">Brand Image:</label>
+            <div class="input-group mt-2 d-block">
+                <label class="col-form-label mr-3">Brand Image: <span class="req"> *</span></label>
                 <div class="custom-file">
                     <input type="file" class="custom-file-input @error('img_src') is-invalid @enderror" id="customFile" name="img_src" accept=".jpg, .jpeg, .png, .bmp, .svg" required>
                     <label class="custom-file-label" for="customFile">Choose file</label>
@@ -138,11 +139,35 @@
         </div>
         <div class="modal-body">
             <input type="hidden" name="id" id="editBrandId" class="form-control" required>
-            <div class="input-group mt-2">
+            <div class="input-group mt-2 d-block">
                 <label class="col-form-label mr-3">Brand name:</label>
                 <input type="text" name="name" id="editBrandName" class="form-control" required>
             </div>
-            <div class="input-group mt-2">
+            <div class="input-group mt-2 d-block">
+                <label class=" col-form-label" for="edit_country_iso_code">{{ __('Brand available in') }}: <span class="req"> *</span></label>
+                <div class="input-group ">
+                    <select name="country_iso_code" id="edit_country_iso_code" class="select2 form-control @error('country_iso_code') is-invalid @enderror" style="width: 100%;" required>
+                        @if($countries)
+                            @foreach($countries as $cn)
+                            <option value="{{ $cn->country_iso_code }}">{{ $cn->country_name.' ('.$cn->country_iso_code.')' }}</option>
+                            @endforeach
+                        @else
+                            <option value="" disabled>No countries found. Add some countries first.</option>
+                        @endif
+                    </select>
+                </div>
+                @error('country_iso_code')
+                    <small class="text-danger">{{$message}}</small>
+                @enderror
+            </div>
+            <div class="col">
+                <div class="form-group row">
+                    <div class="col-sm-7">
+                        
+                    </div>
+                </div>
+            </div>
+            <div class="input-group mt-2 d-block">
                 <label class="col-form-label mr-3">Brand Image:</label>
                 <div class="custom-file">
                     <input type="file" class="custom-file-input @error('img_src') is-invalid @enderror" id="customFile1" name="img_src" accept=".jpg, .jpeg, .png, .bmp, .svg">
@@ -208,12 +233,13 @@ $(function () {
                 },
                 searchable: true
             },
+            {data: 'country', name: 'country', orderable: true, searchable: true},
             {
                 data: 'created_at',
                 name: 'created_at',
                 render: function (data, type, full, meta) {
                    var cdate= new Date(data);
-                   return cdate.getDate() + '-' + cdate.getMonth() + '-' + cdate.getFullYear();
+                   return cdate.getDate() + '-' + ('0' + (cdate.getMonth()+1)).slice(-2) + '-' + cdate.getFullYear();
                 },
                 orderable: true,
                 searchable: true
@@ -227,10 +253,14 @@ $(function () {
         var button = $(event.relatedTarget);
         var id = button.data('id');
         var name = button.data('name');
+        var iso = button.data('iso');
         var modal = $(this);
         modal.find('.modal-title').text('Edit brand "' + name + '"');
         modal.find('.modal-body input[name="id"]').val(id);
-        modal.find('.modal-body input[name="name"]').val(name)
+        modal.find('.modal-body input[name="name"]').val(name);
+        $('#edit_country_iso_code option').removeAttr('selected');
+        $('#edit_country_iso_code option[value='+iso+']').attr('selected', 'selected');
+        $('.select2').select2();
     })
 
 });
