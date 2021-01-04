@@ -116,7 +116,7 @@
                                             <label class="col-sm-2 col-form-label" for="category">{{ __('Category') }}<span class="req"> *</span></label>
 
                                             <div class="col-sm-10">
-                                                <select name="category[]" id="addproductcategory" multiple class="form-control select2" style="width: 100%;">
+                                                <select name="category[]" id="addproductcategory" multiple class="form-control select2" style="width: 100%;" required>
 
                                                     @if($categories)
                                                         <option value="" disabled>Select categories</option>

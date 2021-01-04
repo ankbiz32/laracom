@@ -55,6 +55,7 @@
                                 <div class="header-logo_area">
                                     <a href="{{URL::to('/')}}">
                                         <img src="{{URL::to('/')}}/assets/images/menu/logo/1.png" alt="Header Logo">
+                                        <small><small><sup>{{$_SESSION['country_iso_code']}}</sup></small> </small>
                                     </a>
                                 </div>
                                 <div class="main-menu_area d-none d-lg-block">
@@ -186,6 +187,7 @@
                         <div class="offcanvas-inner_logo">
                             <a href="javascript:void(0)">
                                 <img src="{{URL::to('/')}}/assets/images/menu/logo/1.png" alt="Header Logo">
+                                <small><small><sup>{{$_SESSION['country_iso_code']}}</sup></small> </small>
                             </a>
                         </div>
                         <nav class="offcanvas-navigation">
@@ -500,6 +502,7 @@
                                 <div class="logo-area">
                                     <a href="javascript:void(0)">
                                         <img src="{{URL::to('/')}}/assets/images/footer/1.png" alt="Logo" height="55">
+                                        <small><small><sup>{{$_SESSION['country_iso_code']}}</sup></small> </small>
                                     </a>
                                 </div>
                                 <p class="short-desc">Produce and supply various Health care items all over the world

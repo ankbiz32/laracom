@@ -13,7 +13,7 @@ class HomeController extends Controller
 {
     public function index(Request $request)
     {
-        $categories = Category::where('parent_id', '=', 0)->get();
+        $categories = Category::where('parent_id', '=', 0)->where('country_iso_code',$_SESSION['country_iso_code'])->get();
         $products = Product::where('is_active',1)->where('country_iso_code',$_SESSION['country_iso_code'])->orderBy('id', 'DESC')->get();
         return view('home.index',compact('products','categories'));
     }
@@ -39,6 +39,7 @@ class HomeController extends Controller
             $minP=(int)$range[0][0];
             $maxP=(int)$range[0][1];
             $wl=Wishlist::where('user_id',auth()->user()->id)->get();
+            $a=array();
             foreach($wl as $w){
                 $a[$w->id]=$w->product_id;
             }
@@ -218,7 +219,7 @@ class HomeController extends Controller
     public function category($category_id, $slug)
     {
         $cats = Category::findOrFail($category_id);
-        $categories = Category::where('parent_id', '=', 0)->get();
+        $categories = Category::where('parent_id', '=', 0)->where('country_iso_code', $_SESSION['country_iso_code'])->get();
         $tags = DB::table('tags')->get();
         $cid = $category_id;
         $maxPrice = Product::select('price')->max('price');
@@ -237,6 +238,7 @@ class HomeController extends Controller
             $minP=(int)$range[0][0];
             $maxP=(int)$range[0][1];
             $wl=Wishlist::where('user_id',auth()->user()->id)->get();
+            $a=array();
             foreach($wl as $w){
                 $a[$w->id]=$w->product_id;
             }

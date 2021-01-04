@@ -265,17 +265,17 @@
                                     </div>
                                     <div class="product-content ">
                                         <div class="product-desc_info">
-                                            <h3 class="product-name"><a href="{{ route('product.show',['product'=>$product->id,'slug'=>$product->url_slug]) }}">{{ $product->name }}</a></h3>
+                                            <h3 class="product-name"><a href="{{ route('product.show',['product'=>$product->id,'slug'=>$product->url_slug]) }}">AA {{ $product->name }}</a></h3>
                                             <div class="price-box">
                                             @if($product->ProductDiscount->has_discount)
-                                                <span class="old-price">₹{{ $product->price }}</span>
+                                                <span class="old-price">{{ $_SESSION['curr'].$product->price }}</span>
                                                 @if($product->ProductDiscount->type == 'FLAT')
-                                                    <span class="new-price">₹{{ $product->ProductDiscount->rate }}</span>
+                                                    <span class="new-price">{{ $_SESSION['curr'].$product->ProductDiscount->rate }}</span>
                                                 @else
-                                                    <span class="new-price">₹{{ ( (100 - $product->ProductDiscount->rate) / 100) * $product->price  }}</span>
+                                                    <span class="new-price">{{$_SESSION['curr']. ( (100 - $product->ProductDiscount->rate) / 100) * $product->price  }}</span>
                                                 @endif
                                             @else
-                                                <span class="new-price ml-0">₹{{ $product->price }}</span>
+                                                <span class="new-price ml-0">{{$_SESSION['curr']. $product->price }}</span>
                                             @endif
                                             </div>
                                             <div class="review-area d-flex justify-content-between align-items-center">

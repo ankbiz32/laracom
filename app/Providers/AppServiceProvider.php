@@ -35,13 +35,16 @@ class AppServiceProvider extends ServiceProvider
             if($__available){
                 if(count($__available->products)){
                     $_SESSION['country_iso_code']=$__iso;
+                    $_SESSION['curr']=$__available->currency_symbol.' ';
                 }
                 else{
                     $_SESSION['country_iso_code']='IN';
+                    $_SESSION['curr']='dsd ';
                 }
             }
             else{
                 $_SESSION['country_iso_code']='IN';
+                $_SESSION['curr']='dsd ';
             }
         }
         view()->composer(['layouts.app'],function ($view){
