@@ -27,7 +27,8 @@ class AppServiceProvider extends ServiceProvider
     public function boot(Request $request)
     { 
         session_start();
-        if (!isset($_SESSION['country_iso_code'])) 
+        // unset($_SESSION);
+        if ( !isset($_SESSION['country_iso_code']) || !isset($_SESSION['currency_code']) || !isset($_SESSION['curr']) || !isset($_SESSION['locale_code'])) 
         {
             $__iso=geoip($request->ip())->iso_code; //For dynamic ip address
             // $__iso = geoip('192.206.151.131')->iso_code;
@@ -35,16 +36,24 @@ class AppServiceProvider extends ServiceProvider
             if($__available){
                 if(count($__available->products)){
                     $_SESSION['country_iso_code']=$__iso;
+                    $_SESSION['currency_code']=$__available->currency.' ';
                     $_SESSION['curr']=$__available->currency_symbol.' ';
+                    $_SESSION['locale_code']=$__available->locale_code.' ';
                 }
                 else{
+                    $__this = Country::where('country_iso_code', 'IN')->first();
                     $_SESSION['country_iso_code']='IN';
-                    $_SESSION['curr']='dsd ';
+                    $_SESSION['currency_code']=$__this->currency.' ';
+                    $_SESSION['curr']=$__this->currency_symbol.' ';
+                    $_SESSION['locale_code']=$__this->locale_code.' ';
                 }
             }
             else{
+                $__available = Country::where('country_iso_code', $__iso)->first();
                 $_SESSION['country_iso_code']='IN';
-                $_SESSION['curr']='dsd ';
+                $_SESSION['currency_code']=$__this->currency.' ';
+                $_SESSION['curr']=$__this->currency_symbol.' ';
+                $_SESSION['locale_code']=$__this->locale_code.' ';
             }
         }
         view()->composer(['layouts.app'],function ($view){

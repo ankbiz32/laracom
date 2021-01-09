@@ -265,7 +265,7 @@
                                     </div>
                                     <div class="product-content ">
                                         <div class="product-desc_info">
-                                            <h3 class="product-name"><a href="{{ route('product.show',['product'=>$product->id,'slug'=>$product->url_slug]) }}">AA {{ $product->name }}</a></h3>
+                                            <h3 class="product-name"><a href="{{ route('product.show',['product'=>$product->id,'slug'=>$product->url_slug]) }}">{{ $product->name }}</a></h3>
                                             <div class="price-box">
                                             @if($product->ProductDiscount->has_discount)
                                                 <span class="old-price">{{ $_SESSION['curr'].$product->price }}</span>

@@ -29,10 +29,10 @@ class ProductController extends Controller
 {
     public function index()
     {
-        $categories = Category::where('parent_id', '=', 0)->get();
+        $categories = Category::where('parent_id', '=', 0)->where('country_iso_code',$_SESSION['country_iso_code'])->get();
         $tags = DB::table('tags')->limit(5)->get();
-        $maxPrice = Product::select('price')->max('price');
-        $minPrice = Product::select('price')->min('price');
+        $maxPrice = Product::where('country_iso_code',$_SESSION['country_iso_code'])->select('price')->max('price');
+        $minPrice = Product::where('country_iso_code',$_SESSION['country_iso_code'])->select('price')->min('price');
         return view('products.index',compact(['tags','categories','maxPrice','minPrice']));
     }
 
@@ -177,6 +177,7 @@ class ProductController extends Controller
                         ->leftJoin('product_discounts', 'products.id', '=', 'product_discounts.product_id')
                         ->leftJoin('product_descriptions', 'products.id', '=', 'product_descriptions.product_id')
                         ->where('products.is_active','=',1)
+                        ->where('product.country_iso_code',$_SESSION['country_iso_code'])
                         ->whereBetween('product_discounts.new_price', [$minP, $maxP])
                         ->select('products.*', 'product_discounts.has_discount', 'product_discounts.new_price','product_descriptions.short_des');
                     if($sort=='plth'){
@@ -192,6 +193,7 @@ class ProductController extends Controller
                         ->leftJoin('product_discounts', 'products.id', '=', 'product_discounts.product_id')
                         ->leftJoin('product_descriptions', 'products.id', '=', 'product_descriptions.product_id')
                         ->where('products.is_active','=',1)
+                        ->where('product.country_iso_code',$_SESSION['country_iso_code'])
                         ->select('products.*', 'product_discounts.has_discount', 'product_discounts.new_price','product_descriptions.short_des')
                         ->get();
             }
@@ -347,7 +349,7 @@ class ProductController extends Controller
 
     public function show(Product $product)
     {
-        if($product->is_active){
+        if($product->is_active && $product->country_iso_code==$_SESSION['country_iso_code']){
             $data['main'] = $product;
             $data['images'] = $product->productImage;
             $data['descr'] = $product->ProductDescription;
