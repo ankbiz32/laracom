@@ -296,11 +296,28 @@
                                             <div class="card-header" id="#payment-3">
                                                 <h5 class="panel-title">
                                                     <label for="online_check" data-toggle="collapse" data-target="#collapseThree" aria-expanded="true" aria-controls="collapseThree">
-                                                        <input name="payment_type" type="radio" value="online" id="online_check" required checked> Pay now
+                                                        <input name="payment_type" type="radio" value="online" id="online_check" required checked> Pay with Razorpay
                                                     </label>
                                                 </h5>
                                             </div>
-                                            <div id="collapseThree" class="collapse show" data-parent="#accordion">
+                                            <div id="collapseThree" class="collapse" data-parent="#accordion">
+                                                <div class="card-body">
+                                                    <p>Make your payment directly into our bank account. Please use your Order
+                                                        ID as the payment
+                                                        reference. Your order won’t be shipped until the funds have cleared in
+                                                        our account.</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="card">
+                                            <div class="card-header" id="#payment-2">
+                                                <h5 class="panel-title">
+                                                    <label for="hdfc_check" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
+                                                        <input name="payment_type" type="radio" value="hdfc" id="hdfc_check" required checked> Pay with HDFC
+                                                    </label>
+                                                </h5>
+                                            </div>
+                                            <div id="collapseTwo" class="collapse show" data-parent="#accordion">
                                                 <div class="card-body">
                                                     <p>Make your payment directly into our bank account. Please use your Order
                                                         ID as the payment
@@ -410,6 +427,31 @@
                             // alert(response.error.metadata.payment_id);
                         });
                         rzp1.open();
+                    }
+                    else if($('input[name=payment_type]:checked').val()=='hdfc'){ 
+                        var totalAmount = $(this).attr("data-amount");
+                        var d = new Date().getTime();
+                        $input = $('<input type="text" name="merchant_id"/>').val("{{env('CCAV_MERCHANT_ID')}}");
+                        $('#details_form').append($input);
+                        $input = $('<input type="text" name="order_id"/>').val('123456');
+                        $('#details_form').append($input);
+                        $input = $('<input type="text" name="tid"/>').val(d);
+                        $('#details_form').append($input);
+                        $input = $('<input type="text" name="currency"/>').val('INR');
+                        $('#details_form').append($input);
+                        $input = $('<input type="text" name="amount"/>').val(totalAmount);
+                        $('#details_form').append($input);
+                        $input = $('<input type="text" name="redirect_url"/>').val(SITEURL+'/hdfcCheckoutResponse');
+                        $('#details_form').append($input);
+                        $input = $('<input type="text" name="cancel_url"/>').val(SITEURL+'/hdfcCheckoutResponse');
+                        $('#details_form').append($input);
+                        $input = $('<input type="text" name="language"/>').val('EN');
+                        $('#details_form').append($input);
+                        $input = $('<input type="text" name="integration_type"/>').val('iframe_normal');
+                        $('#details_form').append($input);
+                
+                        $('#details_form').attr('action', SITEURL+'/hdfcCheckout');
+                        $('#details_form').submit();
                     }
                     else{
                         $('#details_form').submit();

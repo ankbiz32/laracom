@@ -17,7 +17,7 @@ class CreateProductsTable extends Migration
             $table->id();
             $table->integer('brand_id');
             $table->string('name');
-            $table->integer('price');
+            $table->string('price');
             $table->string('image');
             $table->smallInteger('max_order_qty')->default(5);
             $table->tinyInteger('is_featured')->default(0);

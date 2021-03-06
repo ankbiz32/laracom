@@ -92,6 +92,9 @@
         }
         
         $payment = new Payment();
+        $payment->vendor ='Razorpay';
+        $payment->status ='success';
+        $payment->currency ='INR';
         $payment->payment_amount =$cart->totalPrice;
         $payment->order_id =$order->id;
         $payment->vendor_payment_id =$request->input('rpid');

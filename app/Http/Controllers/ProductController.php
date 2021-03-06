@@ -177,7 +177,7 @@ class ProductController extends Controller
                         ->leftJoin('product_discounts', 'products.id', '=', 'product_discounts.product_id')
                         ->leftJoin('product_descriptions', 'products.id', '=', 'product_descriptions.product_id')
                         ->where('products.is_active','=',1)
-                        ->where('product.country_iso_code',$_SESSION['country_iso_code'])
+                        ->where('products.country_iso_code',$_SESSION['country_iso_code'])
                         ->whereBetween('product_discounts.new_price', [$minP, $maxP])
                         ->select('products.*', 'product_discounts.has_discount', 'product_discounts.new_price','product_descriptions.short_des');
                     if($sort=='plth'){
@@ -193,7 +193,7 @@ class ProductController extends Controller
                         ->leftJoin('product_discounts', 'products.id', '=', 'product_discounts.product_id')
                         ->leftJoin('product_descriptions', 'products.id', '=', 'product_descriptions.product_id')
                         ->where('products.is_active','=',1)
-                        ->where('product.country_iso_code',$_SESSION['country_iso_code'])
+                        ->where('products.country_iso_code',$_SESSION['country_iso_code'])
                         ->select('products.*', 'product_discounts.has_discount', 'product_discounts.new_price','product_descriptions.short_des')
                         ->get();
             }

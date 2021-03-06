@@ -32,6 +32,9 @@ Route::group(['middleware' => 'web'], function () {
 
     Route::get('/checkout','CheckoutController@index')->name('checkout.index');
     Route::post('/checkout','CheckoutController@checkout')->name('checkout');
+    // Route::post('/hdfcCheckout','CheckoutController@hdfcCheckout')->name('hdfcCheckout');
+    Route::post('/hdfcCheckout', function () {return view('checkout.ccavRequestHandler');});
+    Route::post('/orderResponse', function () {return dd($_POST);});
     Route::get('/checkout/success','CheckoutController@success')->name('checkout.success');
 
     Route::post('/user/order','OrderController@show')->name('order.show')->middleware('auth');
@@ -51,6 +54,7 @@ Route::group(['middleware' => 'web'], function () {
 
     Route::post('/susbcribe', 'NewsletterController@add')->name('newsletter.add');
 });
+Route::post('/hdfcCheckoutResponse', function () {return dd($_POST);});
 
 
 /*-- Admin Dashboard --*/
