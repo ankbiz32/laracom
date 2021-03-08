@@ -637,6 +637,8 @@
                                         <div class="product-desc_info">
                                             <h3 class="product-name"><a href="#">Liquid Chyavanprash</a></h3>
                                             <div class="price-box">
+                                                <span class="old-price">₹149</span>
+                                                <span class="new-price">₹149</span>
                                             </div>
                                             <div class="review-area d-flex justify-content-between align-items-center">
                                                 <div class="rating-box">

@@ -1,7 +1,7 @@
 <html>
 <head>
 <meta name="csrf-token" content="{{ csrf_token() }}">
-<title> Iframe</title>
+<title> CC Avenue</title>
 </head>
 <body>
 <center>

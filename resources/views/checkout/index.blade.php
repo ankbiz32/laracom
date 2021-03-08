@@ -431,23 +431,23 @@
                     else if($('input[name=payment_type]:checked').val()=='hdfc'){ 
                         var totalAmount = $(this).attr("data-amount");
                         var d = new Date().getTime();
-                        $input = $('<input type="text" name="merchant_id"/>').val("{{env('CCAV_MERCHANT_ID')}}");
+                        $input = $('<input type="hidden" name="merchant_id"/>').val("{{env('CCAV_MERCHANT_ID')}}");
                         $('#details_form').append($input);
-                        $input = $('<input type="text" name="order_id"/>').val('123456');
+                        $input = $('<input type="hidden" name="order_id"/>').val('123456');
                         $('#details_form').append($input);
-                        $input = $('<input type="text" name="tid"/>').val(d);
+                        $input = $('<input type="hidden" name="tid"/>').val(d);
                         $('#details_form').append($input);
-                        $input = $('<input type="text" name="currency"/>').val('INR');
+                        $input = $('<input type="hidden" name="currency"/>').val('INR');
                         $('#details_form').append($input);
-                        $input = $('<input type="text" name="amount"/>').val(totalAmount);
+                        $input = $('<input type="hidden" name="amount"/>').val(totalAmount);
                         $('#details_form').append($input);
-                        $input = $('<input type="text" name="redirect_url"/>').val(SITEURL+'/hdfcCheckoutResponse');
+                        $input = $('<input type="hidden" name="redirect_url"/>').val(SITEURL+'/hdfcCheckoutResponse');
                         $('#details_form').append($input);
-                        $input = $('<input type="text" name="cancel_url"/>').val(SITEURL+'/hdfcCheckoutResponse');
+                        $input = $('<input type="hidden" name="cancel_url"/>').val(SITEURL+'/hdfcCheckoutResponse');
                         $('#details_form').append($input);
-                        $input = $('<input type="text" name="language"/>').val('EN');
+                        $input = $('<input type="hidden" name="language"/>').val('EN');
                         $('#details_form').append($input);
-                        $input = $('<input type="text" name="integration_type"/>').val('iframe_normal');
+                        $input = $('<input type="hidden" name="integration_type"/>').val('iframe_normal');
                         $('#details_form').append($input);
                 
                         $('#details_form').attr('action', SITEURL+'/hdfcCheckout');

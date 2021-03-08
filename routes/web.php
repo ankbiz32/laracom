@@ -54,7 +54,8 @@ Route::group(['middleware' => 'web'], function () {
 
     Route::post('/susbcribe', 'NewsletterController@add')->name('newsletter.add');
 });
-Route::post('/hdfcCheckoutResponse', function () {return dd($_POST);});
+// Route::post('/hdfcCheckoutResponse', function () {return view('checkout.ccavResponseHandler');});
+Route::post('/hdfcCheckoutResponse','CheckoutController@hdfcCheckout')->name('hdfcCheckout');
 
 
 /*-- Admin Dashboard --*/
