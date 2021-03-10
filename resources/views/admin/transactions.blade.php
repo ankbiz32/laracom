@@ -52,7 +52,7 @@
         <div class="container-fluid">
             <div class="row mb-2 mt-3 px-2">
             <div class="col-sm-6">
-                <h1 class="m-0 text-dark">Tranactions list :</h1>
+                <h1 class="m-0 text-dark">Transactions list :</h1>
             </div>
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
@@ -88,10 +88,11 @@
                             <tr>
                                 <th scope="col">Payment Ref.</th>
                                 <th scope="col">Total Amt.</th>
+                                <th scope="col">Status</th>
                                 <th scope="col">Order no.</th>
                                 <th scope="col">Paid by</th>
                                 <th scope="col">Date</th>
-                                <th scope="col">Action</th>
+                                <!-- <th scope="col">Action</th> -->
                             </tr>
                             </thead>
                             <tbody>
@@ -135,6 +136,7 @@
                     orderable: true, searchable: true
                 },
                 {data: 'payment_amount', name: 'payment_amount', orderable: true, searchable: true},
+                {data: 'status', name: 'status', orderable: true, searchable: true},
                 {data: 'order_id', name: 'order_id', orderable: true, searchable: true},
                 {data: 'email', name: 'email', orderable: true, searchable: true},
                 {
@@ -142,12 +144,13 @@
                     name: 'created_at',
                     render: function (data, type, full, meta) {
                         var cdate= new Date(data);
-                        return cdate.getDate() + '/' + cdate.getMonth() + '/' + cdate.getFullYear().toString().substr(-2)+ ' &nbsp; ' + cdate.getHours()+ ':' + cdate.getMinutes();
+                        // return cdate.getMonth()+1
+                        return cdate.getDate() + '/' + ( cdate.getMonth()+1 ) + '/' + cdate.getFullYear().toString().substr(-2)+ ' &nbsp; ' + cdate.getHours()+ ':' + cdate.getMinutes();
                     },
                     orderable: true,
                     searchable: true
                 },
-                {data: 'action', name: 'action', orderable: true, searchable: true},
+                // {data: 'action', name: 'action', orderable: true, searchable: true},
             ],
             order: [[ 1, 'desc' ]]
         });

@@ -18,7 +18,7 @@ class ProfileController extends Controller
     public function update($user){
         $name = request()->validate([
             'name'=>['required', 'string', 'max:255'],
-            'country_id'=>['required', 'string', 'max:255'],
+            'country_iso_code'=>['required', 'string', 'max:255'],
         ]);
         $data = request()->validate([
             'phonenumber'=> ['required', 'numeric'] ,

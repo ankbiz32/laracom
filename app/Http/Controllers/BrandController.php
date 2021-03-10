@@ -23,11 +23,11 @@ class BrandController extends Controller
                 ->addIndexColumn()
                 ->addColumn('action', function($row){
                     $btn = '
-                            <a href="javascript:void(0)" data-toggle="modal" data-target="#edit" data-id="'.$row->id.'" data-iso="'.$row->country_iso_code.'" data-name="'.$row->name.'" class="edit btn btn-info m-1">EDIT</a>
+                            <a href="javascript:void(0)" data-toggle="modal" data-target="#edit" data-id="'.$row->id.'" data-iso="'.$row->country_iso_code.'" data-name="'.$row->name.'" class="edit btn btn-sm btn-info m-1">EDIT</a>
                             <form action="'.route('admin-brands.destroy', $row->id).'" data-formId="'.$row->id.'" class="d-inline" method="POST">
                                 <input type="hidden" name="_method" value="DELETE">
                                 <input type="hidden" name="_token" value="'.csrf_token().'">
-                                <button type="button" onclick="confirmation(event)" data-rid="'.$row->id.'" class="btn btn-danger m-1">REMOVE</button>
+                                <button type="button" onclick="confirmation(event)" data-rid="'.$row->id.'" class="btn btn-sm btn-danger m-1">REMOVE</button>
                             </form>
                         ';
                     return $btn;

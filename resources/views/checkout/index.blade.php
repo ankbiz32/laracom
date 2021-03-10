@@ -243,28 +243,28 @@
                                     <tbody>
                                     @foreach ($products as $key => $value)
                                         <tr class="cart_item">
-                                            <td class="cart-product-name pl-0"> {{ $value['item']->name}}<strong class="product-quantity">
-                                            × {{ $value['quantity']}}</strong></td>
-                                            <td class="cart-product-total pr-0 text-right"><span class="amount">£{{ $value['quantity'] * $value['price']}}</span></td>
+                                            <td class="cart-product-name pl-0"> {{ $value['item']->name}} &nbsp;
+                                            × &nbsp; {{ $value['quantity']}}</td>
+                                            <td class="cart-product-total pr-0 text-right"><span class="amount">{{ $_SESSION['curr'].($value['quantity'] * $value['price'])}}</span></td>
                                         </tr>
                                     @endforeach
                                     </tbody>
                                     <tfoot>
                                         <tr class="cart-subtotal">
                                             <th class="pl-0">Cart Subtotal</th>
-                                            <td class="pr-0 text-right"><span class="amount">£{{$totalPrice}}</span></td>
+                                            <td class="pr-0 text-right"><span class="amount">{{$_SESSION['curr'].$totalPrice}}</span></td>
                                         </tr>
                                         <tr class="cart-subtotal">
                                             <th class="pl-0">Taxes</th>
-                                            <td class="pr-0 text-right"><span class="amount">£0</span></td>
+                                            <td class="pr-0 text-right"><span class="amount">{{$_SESSION['curr']}}0</span></td>
                                         </tr>
                                         <tr class="cart-subtotal">
                                             <th class="pl-0">Shipping</th>
-                                            <td class="pr-0 text-right"><span class="amount">£0</span></td>
+                                            <td class="pr-0 text-right"><span class="amount">{{$_SESSION['curr']}}0</span></td>
                                         </tr>
                                         <tr class="order-total">
                                             <th class="pl-0">Order Total</th>
-                                            <td class="pr-0 text-right"><strong><span class="amount">£{{$totalPrice}}</span></strong></td>
+                                            <td class="pr-0 text-right"><strong><span class="amount">{{$_SESSION['curr'].$totalPrice}}</span></strong></td>
                                         </tr>
                                     </tfoot>
                                 </table>
@@ -274,56 +274,37 @@
                                     <div id="accordion">
                                         <div class="card">
                                             <div class="card-header" id="#payment-1">
-                                                <h5 class="panel-title">
+                                                <h5 class="panel-title" style="cursor:default">
                                                     <label for="cod_check" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
                                                         <input type="radio" name="payment_type" value="cod" id="cod_check" required> Pay on delivery
                                                     </label>
-                                                    <!-- <a href="javascript:void(0)" class="" >
-                                                        Cash on delivery
-                                                    </a> -->
                                                 </h5>
                                             </div>
-                                            <div id="collapseOne" class="collapse" data-parent="#accordion">
+                                            <!-- <div id="collapseOne" class="collapse" data-parent="#accordion">
                                                 <div class="card-body">
                                                     <p>Make your payment directly into our bank account. Please use your Order
                                                         ID as the payment
                                                         reference. Your order won’t be shipped until the funds have cleared in
                                                         our account.</p>
                                                 </div>
-                                            </div>
+                                            </div> -->
                                         </div>
                                         <div class="card">
                                             <div class="card-header" id="#payment-3">
-                                                <h5 class="panel-title">
+                                                <h5 class="panel-title" style="cursor:default">
                                                     <label for="online_check" data-toggle="collapse" data-target="#collapseThree" aria-expanded="true" aria-controls="collapseThree">
-                                                        <input name="payment_type" type="radio" value="online" id="online_check" required checked> Pay with Razorpay
+                                                        <input name="payment_type" type="radio" value="online" id="online_check" required> Pay with Razorpay
                                                     </label>
                                                 </h5>
-                                            </div>
-                                            <div id="collapseThree" class="collapse" data-parent="#accordion">
-                                                <div class="card-body">
-                                                    <p>Make your payment directly into our bank account. Please use your Order
-                                                        ID as the payment
-                                                        reference. Your order won’t be shipped until the funds have cleared in
-                                                        our account.</p>
-                                                </div>
                                             </div>
                                         </div>
                                         <div class="card">
                                             <div class="card-header" id="#payment-2">
-                                                <h5 class="panel-title">
+                                                <h5 class="panel-title" style="cursor:default">
                                                     <label for="hdfc_check" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
                                                         <input name="payment_type" type="radio" value="hdfc" id="hdfc_check" required checked> Pay with HDFC
                                                     </label>
                                                 </h5>
-                                            </div>
-                                            <div id="collapseTwo" class="collapse show" data-parent="#accordion">
-                                                <div class="card-body">
-                                                    <p>Make your payment directly into our bank account. Please use your Order
-                                                        ID as the payment
-                                                        reference. Your order won’t be shipped until the funds have cleared in
-                                                        our account.</p>
-                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -447,10 +428,10 @@
                         $('#details_form').append($input);
                         $input = $('<input type="hidden" name="language"/>').val('EN');
                         $('#details_form').append($input);
-                        $input = $('<input type="hidden" name="integration_type"/>').val('iframe_normal');
+                        $input = $('<input type="hidden" name="integration_type"/>').val('CheckOut');
                         $('#details_form').append($input);
                 
-                        $('#details_form').attr('action', SITEURL+'/hdfcCheckout');
+                        $('#details_form').attr('action', SITEURL+'/hdfcCheckoutInit');
                         $('#details_form').submit();
                     }
                     else{

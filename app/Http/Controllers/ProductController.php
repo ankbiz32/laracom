@@ -72,8 +72,8 @@ class ProductController extends Controller
                 })
                 ->addColumn('action', function($row){
                     $btn = '
-                            <a href="'.route('product.editform',['id'=>$row->id]).'" class="btn btn-info m-1">EDIT</a>
-                            <a href="'.route('product.remove',['id'=>$row->id]).'" onclick="confirmation(event)" class="btn btn-danger m-1">REMOVE</a>
+                            <a href="'.route('product.editform',['id'=>$row->id]).'" class="btn btn-sm btn-info m-1">EDIT</a>
+                            <a href="'.route('product.remove',['id'=>$row->id]).'" onclick="confirmation(event)" class="btn btn-sm btn-danger m-1">REMOVE</a>
                         ';
                     return $btn;
                 })

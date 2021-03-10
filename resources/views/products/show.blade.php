@@ -54,7 +54,19 @@
                         <div class="sp-content ml-lg-4">
                             <div class="sp-heading">
                                 <h4 class="h4">{{$data['main']->name}}</h4>
-                                <p class="h6 my-3">{{ $data['descr']->short_des }}</p>
+                                <span class="price-box">
+                                    @if($data['disc']->has_discount)
+                                        <span class="old-price">{{ $_SESSION['curr'].$data['main']->price }}</span>
+                                        @if($data['disc']->type == 'FLAT')
+                                            <span class="new-price">{{ $_SESSION['curr'].$data['disc']->rate }}</span>
+                                        @else
+                                            <span class="new-price">{{$_SESSION['curr']. ( (100 - $data['disc']->rate) / 100) * $data['main']->price  }}</span>
+                                        @endif
+                                    @else
+                                        <span class="new-price ml-0">{{$_SESSION['curr']. $data['main']->price }}</span>
+                                    @endif
+                                </span>
+                                <p class="h6 mt-3 mb-1">{{ $data['descr']->short_des }}</p>
                             </div>
                             <div class="rating-box">
                                 <ul>
@@ -70,7 +82,6 @@
                                     <li>Brand: <a href="javascript:void(0)">{{$data['brand']->name}}</a></li>
                                     <li>Product Code: <a href="javascript:void(0)" style="pointer-events:none;">{{$data['inventory']->sku}}</a></li>
                                     <li>Availability: <a href="javascript:void(0)" style="pointer-events:none;">{{$data['inventory']->in_stock==1?' In stock':'Out of stock'}}</a></li>
-                                    <!-- <li>EX Tax: <a href="javascript:void(0)"><span>$453.35</span></a></li> -->
                                 </ul>
                             </div>
                             <!-- <div class="product-size_box">

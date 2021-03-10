@@ -414,7 +414,7 @@
                         <a href="{{route('cart.index')}}" class="quicky-btn-outline btn-block text-center quicky-btn_fullwidth square-btn">View Cart</a>
                     </div>
                     <div class="minicart-btn_area">
-                        <a href="#" class="quicky-btn btn-block text-center quicky-btn_fullwidth square-btn">Checkout</a>
+                        <a href="{{route('checkout.index')}}" class="quicky-btn btn-block text-center quicky-btn_fullwidth square-btn">Checkout</a>
                     </div>
                     @else
                     <div class="minicart-content">

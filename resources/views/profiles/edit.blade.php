@@ -119,7 +119,7 @@
                                                 </div>
                                                 <div class="single-input single-input-half">
                                                     <label>Country*</label>
-                                                    <select name="country_id" class="form-control @error('country_id') is-invalid @enderror" required>
+                                                    <select name="country_iso_code" class="form-control @error('country_id') is-invalid @enderror" required>
                                                         <option value="in">India</option>
                                                         <option value="usa">USA</option>
                                                     </select>

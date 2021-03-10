@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta name="csrf-token" content="{{ csrf_token() }}">
-<title> Iframe</title>
+<title> HDFC CCAvenue checkout</title>
 </head>
 <body>
 <center>
@@ -57,11 +57,11 @@
 
 	error_reporting(0);
 
-	$working_key='97B87363C1DAB702400AC63CCEF67963';//Shared by CCAVENUES
-	$access_code='AVQJ02IB27AS61JQSA';//Shared by CCAVENUES
+	$working_key=env("CCAV_WORKING_KEY");//Shared by CCAVENUES
+	$access_code=env("CCAV_ACCESS_CODE");//Shared by CCAVENUES
 	$merchant_data='';
 	
-	foreach ($_POST as $key => $value){
+	foreach ($resp as $key => $value){	
 		$merchant_data.=$key.'='.$value.'&';
 	}
 	
@@ -69,7 +69,8 @@
 
 	$production_url='https://test.ccavenue.com/transaction/transaction.do?command=initiateTransaction&encRequest='.$encrypted_data.'&access_code='.$access_code;
 ?>
-<iframe src="<?php echo $production_url?>" id="paymentFrame" width="482" height="450" frameborder="0" scrolling="No" ></iframe>
+
+<!-- <iframe src="<?php echo $production_url?>" id="paymentFrame" width="482" height="450" frameborder="0" scrolling="No" ></iframe>
 
 <script src="{{URL::to('/')}}/assets/js/vendor/jquery-1.12.4.min.js"></script>
 <script type="text/javascript">
@@ -80,7 +81,16 @@
 	 	 	
 		});
 </script>
+</center> -->
+
+<form method="post" name="redirect" action="https://test.ccavenue.com/transaction/transaction.do?command=initiateTransaction"> 
+	<?php
+		echo "<input type=hidden name=encRequest value=$encrypted_data>";
+		echo "<input type=hidden name=access_code value=$access_code>";
+	?>
+</form>
 </center>
+<script language='javascript'>document.redirect.submit();</script>
 </body>
 </html>
 
