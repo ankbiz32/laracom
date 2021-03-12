@@ -7,6 +7,7 @@ use App\User;
 use App\Product;
 use App\Profile;
 use App\Wishlist;
+use App\Country;
 use App\Reminder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -88,6 +89,11 @@ class AdminController extends Controller
     public function show_order($id)
     {
         $order =Order::findOrFail($id);
+        if($order->ship_to_different_address){
+            $order->countryFull=Country::where('country_iso_code',$order->ship_country)->firstOrFail()->country_name;
+        }else{
+            $order->countryFull=Country::where('country_iso_code',$order->country)->firstOrFail()->country_name;
+        }
         return view('admin.showorder',compact('order'));
     }
 

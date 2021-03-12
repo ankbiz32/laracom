@@ -46,7 +46,7 @@
                                     <tr>
                                         <td class="quicky-product-thumbnail"><a href="{{ route('product.show',['product'=>$value['item']->id,'slug'=>$value['item']->url_slug]) }}"><img height="80" style="object-fit:contain" src="{{URL::to('/').'/'. $value['item']->image }}" alt="Cart Thumbnail"></a></td>
                                         <td class="quicky-product-name"><strong><a href="{{ route('product.show',['product'=>$value['item']->id,'slug'=>$value['item']->url_slug]) }}">{{ $value['item']->name }}</a></strong></td>
-                                        <td data-label="Price: " class="quicky-product-price"><span class="amount">{{ $_SESSION['curr'].$value['price']}}</span></td>
+                                        <td data-label="Price: " class="quicky-product-price">{{$_SESSION['curr']}}<span class="amount">{{ $value['price']}}</span></td>
                                         <td data-label="Qty: " class="quantity">
                                             <div class="cart-plus-minus float-right float-sm-none">
                                                 <input class="cart-plus-minus-box" value="{{ $value['quantity']}}" data-max="{{$value['item']->max_order_qty}}" type="number" min=0 max="{{$value['item']->max_order_qty}}" data-id="{{encrypt($value['item']->id)}}" readonly>
@@ -55,7 +55,7 @@
                                             </div>
                                             <!-- <label class="mt-2"><small>Max: {{ $value['item']->max_order_qty}}</small></label> -->
                                         </td>
-                                        <td data-label="Sub total: " class="product-subtotal"><span class="amount">{{ $_SESSION['curr'].$value['quantity'] * $value['price']}}</span></td>
+                                        <td data-label="Sub total: " class="product-subtotal">{{$_SESSION['curr']}}<span class="amount">{{ $value['quantity'] * $value['price']}}</span></td>
                                         <td class="quicky-product-remove"><a href="{{ route('cart.remove',['id'=> $key]) }}" class="d-flex d-sm-block align-items-center justify-content-center"><i class="zmdi zmdi-close text-danger"
                                             title="Remove"> </i><small class="d-inline d-sm-none text-danger" >&nbsp;Remove this product</small></a></td>
                                     </tr>
@@ -86,9 +86,9 @@
                                 <div class="cart-page-total pt-0">
                                     <h2>Cart totals</h2>
                                     <ul class="mb-3">
-                                        <li class="cart-subtotal">Subtotal <span>{{$_SESSION['curr'].$totalPrice}}</span></li>
+                                        <li class="cart-subtotal">Subtotal <span>{{$_SESSION['curr']}} <span class="crt-sbttl"> {{$totalPrice}}</span></span></li>
                                         <li class="cart-shipping">Taxes <span>0</span></li>
-                                        <li class="cart-total">Total <span>{{$_SESSION['curr'].$totalPrice}}</span></li>
+                                        <li class="cart-total">Total <span>{{$_SESSION['curr']}} <span class="crt-ttl"> {{$totalPrice}}</span></span></li>
                                     </ul>
                                     <a href="{{route('checkout.index')}}" class="float-right quicky-btn ">PROCEED TO CHECKOUT</a>
                                 </div>
@@ -130,18 +130,17 @@
                 success:function(data)
                 {
                     if(data.status==200){
-                        
                         var p = e.parent().parent().parent().find('.quicky-product-price span').text();
                         var s = e.parent().parent().parent().find('.product-subtotal span').text();
-                        var c = $('.cart-subtotal span').text();
-                        var t = $('.cart-total span').text();
+                        var c = $('.cart-subtotal span.crt-sbttl').text();
+                        var t = $('.cart-total span.crtttl').text();
                         var ship = $('.cart-shipping span').text();
                         var pst = parseInt(p) * e.val();
                         var cst = parseInt(c) - parseInt(s) + pst;
                         var ct = parseInt(c) + parseInt(ship) - parseInt(s) + pst;
                         e.parent().parent().parent().find('.product-subtotal span').text(pst);
-                        $('.cart-subtotal span').text(cst);
-                        $('.cart-total span').text(ct);
+                        $('.cart-subtotal span.crt-sbttl').text(cst);
+                        $('.cart-total span.crt-ttl').text(ct);
                         $.message({
                             type: "success",
                             text: "Your cart has been updated",

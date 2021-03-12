@@ -357,6 +357,7 @@ class ProductController extends Controller
             $data['attr'] = $product->productAttribute;
             $data['inventory'] = $product->ProductInventory;
             $data['brand'] = $product->Brand;
+            $data['wishlist'] = $product->wishlist;
             $data['brands'] = Brand::get();
             return view('products.show', compact ('data'));
         }
@@ -421,6 +422,9 @@ class ProductController extends Controller
             $product->max_order_qty=request('max_order_qty');
             $product->tags=json_encode(request('tags'));
             $product->url_slug=str_slug(request('name'), '-');
+            if($product->url_slug==''){
+                $product->url_slug=time();
+            }
             $product->country_iso_code=$iso;
             $product->save();
 
@@ -545,6 +549,9 @@ class ProductController extends Controller
         $product->max_order_qty=$request->get('max_order_qty');
         $product->tags=json_encode($request->get('tags'));
         $product->url_slug=str_slug($request->get('name'), '-');
+        if($product->url_slug==''){
+            $product->url_slug=time();
+        }
 
         $delimg=explode(',',$request->get('pids'));
         if(!empty($delimg)){

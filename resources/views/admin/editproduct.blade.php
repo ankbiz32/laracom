@@ -103,7 +103,7 @@
                                         <div class="form-group row">
                                             <label class="col-sm-2 col-form-label" for="price">{{ __('Price') }} <span class="req"> *</span></label>
                                             <div class="col-sm-10">
-                                                <input id="price" type="text" class="form-control @error('price') is-invalid @enderror" name="price" value="{{ old('price') ?? $product->price  }}" required autocomplete="price" autofocus>
+                                                <input id="price" type="number" class="form-control @error('price') is-invalid @enderror" name="price" value="{{ old('price') ?? $product->price  }}" required autocomplete="price" autofocus>
                                                 @error('price')
                                                     <small class="text-danger">{{$message}}</small>
                                                 @enderror

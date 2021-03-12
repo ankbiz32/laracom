@@ -173,13 +173,15 @@
                 $user->is_active = 1;
                 $user->save();
                 $uid=$user->id;
-
+                
                 $profile = new Profile();
                 $profile->user_id = $uid;
                 $profile->phonenumber = $request->input('phone');
                 $profile->address = $request->input('address');
                 $profile->zipcode = $request->input('zipcode');
                 $profile->save();
+
+                Auth::loginUsingId($uid);
             }
 
             $oldCart = Session::get('cart');
@@ -240,10 +242,9 @@
             $resp['cancel_url']=$request->input('cancel_url');
             $resp['language']=$request->input('language');
             $resp['integration_type']=$request->input('integration_type');
-            // Session::forget('cart');
+            $resp['merchant_param1']=encrypt(auth()->user());
+            Session::forget('cart');
             return view('checkout.ccavRequestHandler',compact(['resp']));
-            
-            
         }
 
         public function hdfcCheckout(Request $request)
@@ -261,8 +262,9 @@
                     $info[$information[0]]=$information[1];
                     if($i==3){$order_status=$information[1];}
                 }
-        
-                // dd($info);
+
+                Auth::logout();
+                Auth::login(decrypt($info['merchant_param1']));
         
                 if($info['order_status']=='Success'){
         
@@ -334,8 +336,6 @@
             else{
                 abort(404);
             }
-            
-            
             
         }
 

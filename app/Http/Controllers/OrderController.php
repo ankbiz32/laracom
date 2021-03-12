@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 use App\Order;
+use App\Country;
 use Auth;
 use Illuminate\Http\Request;
 
@@ -9,7 +10,12 @@ class OrderController extends Controller
 {
     public function show(Request $request){
         if ($request->ajax()) {
-            $order=Order::find($request->id);
+            $order=Order::find($request->id); 
+            if($order->ship_to_different_address){
+                $countryfull=Country::where('country_iso_code',$order->ship_country)->firstOrFail()->country_name;
+            }else{
+                $countryfull=Country::where('country_iso_code',$order->country)->firstOrFail()->country_name;
+            }
             $response='
                         <div class="card">
                             <div class="card-header">
@@ -53,7 +59,7 @@ class OrderController extends Controller
                                         </div>
                                         <div class="col-7">
                                         : '.$order->ship_phone .' <br>
-                                            : '. $order->ship_country .' <br>
+                                            : '. $countryfull .' <br>
                                             : '. $order->ship_zipcode .'<br>
                                             : '.$order->ship_address .' <br>
 
@@ -68,9 +74,9 @@ class OrderController extends Controller
 
                                         </div>
                                         <div class="col-7">
-                                            : '.$order->ship_country .' <br>
-                                            : '.$order->ship_zipcode .' <br>
-                                            : '.$order->ship_address .' <br>
+                                            : '.$countryfull .' <br>
+                                            : '.$order->zipcode .' <br>
+                                            : '.$order->address .' <br>
 
                                         </div>
                                 ';
@@ -119,8 +125,5 @@ class OrderController extends Controller
             
             echo $response;
         }
-
-        
-
     }
 }

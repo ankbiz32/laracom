@@ -65,7 +65,7 @@
 
                                     </div>
                                     <div class="col-7">
-                                        : {{ $order->ship_country }} <br>
+                                        : {{ $order->countryFull }} <br>
                                         : {{ $order->ship_zipcode }} <br>
                                         : {{ $order->ship_address }} <br>
                                         : {{ $order->ship_phone }} <br>
@@ -79,9 +79,9 @@
 
                                     </div>
                                     <div class="col-7">
-                                        : {{ $order->ship_country }} <br>
-                                        : {{ $order->ship_zipcode }} <br>
-                                        : {{ $order->ship_address }} <br>
+                                        : {{ $order->countryFull }} <br>
+                                        : {{ $order->zipcode }} <br>
+                                        : {!! nl2br($order->address) !!} <br>
 
                                     </div>
                                     @endif
