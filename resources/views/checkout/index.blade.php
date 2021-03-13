@@ -18,7 +18,7 @@
                                         <p class="form-row-first">
                                             <label>E-mail <span class="required">*</span></label>
                                             <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus>
-                                            @error('email')
+                                            @error('email1')
                                                 <span class="invalid-feedback" role="alert">
                                                     <strong>{{ $message }}</strong>
                                                 </span>
@@ -101,10 +101,10 @@
                                     <div class="col-md-6">
                                         <div class="checkout-form-list">
                                             <label>Email id<span class="required">*</span></label>
-                                            <input name="email" id="new_email" placeholder="youremail@xyz.com" value="{{old('email') ??( $user->email ?? '')}}" class="@error('email') is-invalid @enderror" type="email" required>
+                                            <input name="email" id="new_email" placeholder="youremail@xyz.com" value="{{old('email') ??( $user->email ?? '')}}" class="@error('email')form-control is-invalid @enderror" type="email" required>
                                             @error('email')
                                                 <span class="invalid-feedback" role="alert">
-                                                    <strong>{{ $message }}</strong>
+                                                    <strong>Email already registered.</strong>
                                                 </span>
                                             @enderror
                                         </div>

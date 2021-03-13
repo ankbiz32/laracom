@@ -42,14 +42,14 @@
                         <div class="form-group row">
                             <label class="col-sm-4 col-form-label text-md-right" for="category">{{ __('Country') }}</label>
                             <div class="col-sm-6">
-                                <select name="country_id" id="addCountry" class="form-control select2" style="width: 100%;" required>
+                                <select name="country_iso_code" id="addCountry" class="form-control select2" style="width: 100%;" required>
                                     @if($countrylist)
                                         <option value="" disabled>Select Country</option>
                                         @foreach($countrylist as $c)
-                                        <option value="{{ $c->id }}">{{ $c->name }}</option>
+                                        <option value="{{ $c->country_iso_code }}">{{ $c->country_name }}</option>
                                         @endforeach
-                                        <option value="in">India</option>
-                                        <option value="usa">USA</option>
+                                        <option value="IN">India</option>
+                                        <option value="US">USA</option>
                                     @else
                                         <option value="" disabled>No country found. Add some country first.</option>
                                     @endif

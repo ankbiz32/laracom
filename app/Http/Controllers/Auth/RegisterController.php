@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
 use App\User;
+use App\Profile;
 use App\Country;
 use DB;
 use Session;
@@ -26,7 +27,7 @@ class RegisterController extends Controller
         if (auth()->user()->role=='Admin') {
             return '/dashboard';
         } else {
-            return '/';
+            return '/profile/'.auth()->user()->id;
         }
     }
     
@@ -43,26 +44,33 @@ class RegisterController extends Controller
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
-            'country_id' => ['required', 'string'],
+            'country_iso_code' => ['required', 'string'],
         ]);
     }
 
     public function showRegistrationForm()
     {
-        $countrylist = Country::get(["name","id"]);
+        $countrylist = Country::get();
         return view('auth.register', compact (['countrylist']));
     }
 
 
     protected function create(array $data)
-    {
-        
-        return User::create([
+    {   
+        // dd($data);
+        $user= User::create([
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
-            'country_id' => $data['country_id'],
+            'country_iso_code' => $data['country_iso_code'],
         ]);
+        $uid=$user->id;
+
+        $profile = new Profile();
+        $profile->user_id = $uid;
+        $profile->save();
+
+        return $user;
 
     }
 }
