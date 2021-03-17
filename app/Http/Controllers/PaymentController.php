@@ -251,6 +251,7 @@
         {
             if($request->encResp){
                 $workingKey=env('CCAV_WORKING_KEY');
+                $access_code=env('CCAV_ACCESS_CODE');
                 $encResponse=$request->encResp;
                 $rcvdString=$this->decrypt1($encResponse,$workingKey);
                 $order_status="";
@@ -265,6 +266,37 @@
 
                 Auth::logout();
                 Auth::login(decrypt($info['merchant_param1']));
+
+                // Status API for S2S communication
+                $merchant_json_data =
+                    array(
+                    'order_no' => '',
+                    'reference_no' =>$info['tracking_id']
+                );
+                $merchant_data = json_encode($merchant_json_data);
+                $encrypted_data = $this->encrypt1($merchant_data,$workingKey);
+                $final_data = 'enc_request='.$encrypted_data.'&access_code='.$access_code.'&command=orderStatusTracker&request_type=JSON&response_type=JSON';
+                $headers = [];
+                $headers[] = 'Content-Type: application/json';
+                $ch = curl_init();
+                curl_setopt($ch, CURLOPT_URL, "https://apitest.ccavenue.com/apis/servlet/DoWebTrans");
+                curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+                curl_setopt($ch, CURLOPT_VERBOSE, 1);
+                curl_setopt($ch, CURLOPT_HTTPHEADER, $headers) ;
+                curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
+                curl_setopt($ch, CURLOPT_POST, 1);
+                curl_setopt($ch, CURLOPT_POSTFIELDS, $final_data);
+                $result = curl_exec($ch);
+                curl_close($ch);
+                $information = explode('&', $result);
+                $dataSize = sizeof($information);
+                for ($i = 0; $i < $dataSize; $i++) {
+                    $info_value = explode('=', $information[$i]);
+                    if ($info_value[0] == 'enc_response') {
+                        // $status = $this->decrypt1(trim($info_value[1]), $workingKey);
+                    }
+                }
+
         
                 if($info['order_status']=='Success'){
         
@@ -296,6 +328,7 @@
                         $resp['country']=$order->ship_country;
                         $resp['zipcode']=$order->ship_zipcode;
                     }
+
                     return view('checkout.success',compact(['resp']));
                 }
                 else{
@@ -340,6 +373,14 @@
         }
 
 
+        function encrypt1($plainText,$key)
+        {
+            $key = $this->hextobin1(md5($key));
+            $initVector = pack("C*", 0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x0a, 0x0b, 0x0c, 0x0d, 0x0e, 0x0f);
+            $openMode = openssl_encrypt($plainText, 'AES-128-CBC', $key, OPENSSL_RAW_DATA, $initVector);
+            $encryptedText = bin2hex($openMode);
+            return $encryptedText;
+        }
         
         function decrypt1($encryptedText,$key)
         {
@@ -357,7 +398,7 @@
             $count=0; 
             while($count<$length) 
             {       
-                $subString =substr($hexString,$count,2);           
+                $subString =substr($hexString,$count,2);
                 $packedString = pack("H*",$subString); 
                 if ($count==0)
                 {
