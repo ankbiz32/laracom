@@ -92,6 +92,7 @@
                                 <th scope="col">Order no.</th>
                                 <th scope="col">Paid by</th>
                                 <th scope="col">Date</th>
+                                <th scope="col">Status</th>
                                 <!-- <th scope="col">Action</th> -->
                             </tr>
                             </thead>
@@ -150,6 +151,7 @@
                     orderable: true,
                     searchable: true
                 },
+                {data: 'txn_status', name: 'txn_status', orderable: true, searchable: true},
                 // {data: 'action', name: 'action', orderable: true, searchable: true},
             ],
             order: [[ 1, 'desc' ]]

@@ -68,6 +68,9 @@ Route::get('/order/{id}', 'AdminController@show_order')->name('admin.showorder')
 
 /*-- Admin Txns --*/
 Route::get('/transactions', 'AdminController@transactions')->name('admin.txn')->middleware(['auth','admin']);
+Route::get('txn_status', function () {
+    return view('admin.statusApi');
+});
 
 /*-- Admin Users --*/
 Route::get('/users', 'AdminController@user')->name('admin.user')->middleware(['auth','admin']);

@@ -201,6 +201,7 @@
             $order->payment_type = 'ONLINE';
             $order->payment_id = $t;
             $order->note = $request->input('note');
+            $order->order_status = 'REJECTED';
             $order->is_paid = 0;
             $order->ship_to_different_address = 0;
             if($request->input('different_shipping')){
@@ -303,6 +304,7 @@
                     $order = Order::findOrFail($info['order_id']);
                     $order->payment_id = $info['tracking_id'];
                     $order->is_paid = 1;
+                    $order->order_status = 'ORDERED';
                     $order->update();
         
                     $payment = Payment::where('order_id',$info['order_id'])->firstOrFail();

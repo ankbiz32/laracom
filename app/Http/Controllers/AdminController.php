@@ -138,13 +138,19 @@ class AdminController extends Controller
                         ';
                     return $btn;
                 })
+                ->addColumn('txn_status', function($row){
+                    $btn = '
+                            <a target="_blank" href="'.URL('/').'/txn_status?oid='.$row->order_id.'" title="See live status" class="link">See live status</a>
+                        ';
+                    return $btn;
+                })
                 ->addColumn('action', function($row){
                     $btn = '
                             <a target="_blank" href="'.route('txn.info',['pid'=>$row->vendor_payment_id]).'" title="View raw info" class="btn btn-sm btn-default m-1">View raw info</a>
                         ';
                     return $btn;
                 })
-                ->rawColumns(['email','action'])
+                ->rawColumns(['email','txn_status','action'])
                 ->make(true);
         }
         return view('admin.transactions');
