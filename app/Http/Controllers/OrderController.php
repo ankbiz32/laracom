@@ -11,6 +11,16 @@ class OrderController extends Controller
     public function show(Request $request){
         if ($request->ajax()) {
             $order=Order::find($request->id); 
+            if($order->payment){
+                $pay_by=$order->payment->vendor;
+                $pay_id=$order->payment->vendor_payment_id;
+                $pay_stat=$order->payment->status;
+            }
+            else{
+                $pay_by='Pay on delivery';
+                $pay_stat='PENDING';
+                $pay_id='<em><small>Not available</small></em>';
+            }
             if($order->ship_to_different_address){
                 $countryfull=Country::where('country_iso_code',$order->ship_country)->firstOrFail()->country_name;
             }else{
@@ -26,18 +36,22 @@ class OrderController extends Controller
                                     <div class="row">
                                         <div class="col-5">
                                             Order ID<br>
-                                            Payment ID <br>
                                             Phone Number <br>
                                             Status<br>
-                                            Ordered on:
+                                            Ordered on: <br>
+                                            Paid through <br>
+                                            Payment status <br>
+                                            Payment ID
 
                                         </div>
                                         <div class="col-7">
                                             : '.$order->id .' <br>
-                                            : '. $order->payment_id .' <br>
                                             : '. $order->phone .'<br>
                                             : '. $order->order_status .'<br>
-                                            : '.date("d/m/Y H:i",strtotime($order->created_at)).'
+                                            : '.date("d/m/Y H:i",strtotime($order->created_at)).' <br>
+                                            : '. $pay_by .' <br>
+                                            : '. $pay_stat .' <br>
+                                            : '. $pay_id .'
                                         </div>
                                     </div>
 

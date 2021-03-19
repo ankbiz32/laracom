@@ -11,7 +11,7 @@ class ProfileController extends Controller
 
     public function edit(User $user){
         $this->authorize('update',$user->profile);
-        $orders=Order::where('user_id',$user->id)->get();
+        $orders=Order::where('user_id',$user->id)->orderBy('id','DESC')->get();
         return view('profiles.edit', compact('user','orders'));
     }
 
