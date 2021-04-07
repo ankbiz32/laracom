@@ -3,6 +3,13 @@
 /* D Yellow #DA9C18 */
 /* Text black #343434 */
 
+.bg-green{
+    background-color: #415B34 !important;
+}
+.text-yellow{
+    color: #EAC71D !important;
+}
+
 .is-invalid{
     border: 1px solid #d00000 !important;
 }
@@ -49,7 +56,11 @@ label.error{
 .offcanvas-inner_logo a img, .header-logo_area a img{
     height: 55px;
 }
-
+.legacy .short-desc{
+    font-size:18px !important;
+    line-height:25px !important;
+    color:#ddd;
+}
 @media (max-width: 767px) {
     .offcanvas-inner_logo a img, .header-logo_area a img{
         height: 45px;
@@ -144,6 +155,22 @@ label.error{
     }
     .quicky-btn{
         font-size: 12px !important;
+    }
+
+    .about-us p{
+        font-size: 16px !important;
+    }
+
+    .about-us .legacy .banner-area{
+        padding-top: 50px !important;
+        padding-bottom: 50px !important;
+    }
+    .legacy .short-desc{
+        font-size:16px !important;
+        line-height:25px !important;
+    }
+    .why_us .text-area p{
+        line-height:25px !important;
     }
 
 }

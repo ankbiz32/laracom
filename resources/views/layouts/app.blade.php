@@ -89,7 +89,7 @@
                                             <li><a href="javascript:void(0)">Pages <small><small><i class="icon-arrow-down"></i></small></small>
                                             </a></a>
                                                 <ul class="quicky-dropdown">
-                                                    <li><a href="#">About Us</a></li>
+                                                    <li><a href="{{ route('home.about') }}">About Us</a></li>
                                                     <li><a href="#">FAQ</a></li>
                                                 </ul>
                                             </li>

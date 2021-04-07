@@ -135,5 +135,8 @@ Route::get('/admin-country/remove/{id}', 'CountryController@destroy')->name('cou
 Route::get('/admin-wishlist','AdminController@wishlist')->name('admin.wishlist')->middleware(['auth','admin']);
 Route::get('txn/{pid}', 'PaymentController@info')->name('txn.info')->middleware(['auth','admin']);
 
+
+Route::get('/about', 'HomeController@about')->name('home.about');
+
 Auth::routes();
 

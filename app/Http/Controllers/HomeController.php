@@ -18,6 +18,11 @@ class HomeController extends Controller
         return view('home.index',compact('products','categories'));
     }
 
+    public function about()
+    {
+        return view('home.about-us');
+    }
+
     public function tag($tag)
     {
         $categories = Category::where('parent_id', '=', 0)->get();
