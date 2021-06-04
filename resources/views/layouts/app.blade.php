@@ -95,7 +95,7 @@
                                             </li>
                                             <li><a href="{{ route('product.index') }}">Products</a>
                                             </li>
-                                            <li><a href="javascript:void(0)">Contact</a></li>
+                                            <li><a href="{{ route('home.contact') }}">Contact</a></li>
                                         </ul>
                                     </nav>
                                 </div>
@@ -577,7 +577,7 @@
                     <div class="row align-items-center">
                         <div class="col-md-6">
                             <div class="copyright">
-                                <span>Copyright &copy; 2020
+                                <span>Copyright &copy; {{date('Y')}}
                                 <a href="#">Bhukyra Agro Pvt. Ltd.</a>
                                 <a href="#" target="_blank">All Rights Reserved.</a>
                             </span>

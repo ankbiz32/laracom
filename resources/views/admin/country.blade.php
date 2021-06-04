@@ -29,7 +29,7 @@
             <div class="container-fluid">
                 <div class="col-12">
                     <div class="row col mb-4">
-                        <a href="{{ route('admin.addcountry') }}" class="btn btn-primary ml-auto">+ Add Country</a>
+                        <a href="{{ route('admin.addcountry') }}" class="btn btn-primary">+ Add Country</a>
                     </div>
                     <div class="card card-body">
                         <div class="table-responsive">

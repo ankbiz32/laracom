@@ -61,11 +61,11 @@
             <div class="container-fluid">
                 <div class="col-12">
                     <div class="row col mb-4">
-                        <!-- <a href="{{ route('admin.addform') }}" class="btn btn-default btn-flat ml-auto">BULK ACTION</a> -->
+                        <a href="{{ route('user.create') }}" class="btn btn-primary">+ ADD USER</a>
                     </div>
                     <div class="card card-body">
                         <div class="table-responsive">
-                        <table class="table table-hover yajra-datatable" id="userTable" style="position:relative">
+                        <table class="table table-sm table-hover yajra-datatable" id="userTable" style="position:relative">
                             <span class="dropdown ml-auto bulk-span">
                                 <a class="dropdown-toggle btn btn-default btn-bulk" style="display: none;" data-toggle="dropdown" href="javascript:;" aria-expanded="false">
                                     BULK ACTION<span class="caret"></span>
@@ -247,6 +247,7 @@ $(function () {
      // Change user status on switching switch button
     $(document).on('change', '.custom-control-input', function() {
         var id=$(this).data('id');
+        console.log(id);
         if(this.checked){
             $.ajax({
                 type: 'post',

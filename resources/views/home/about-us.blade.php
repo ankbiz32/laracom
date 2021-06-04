@@ -37,9 +37,9 @@
                             <h2 class="heading pb-5">What Bhukyra means?</h2>
                             <p class="short-desc pb-3">
                                 The word "Bhukyra" is a compound name, derived from "Bhu" ("Earth, Land, Soil") and “Kyra" ("Sun"). <br>
-                                Bhukyra believes that the Earth is wowed by sun, the heavenly body. The Earth spins and swaggers, trying frantically to capture the Sun’s attention. It stirs up ferocious weather patterns on its marble-like surface; it shows off its sparkling seas; it flaunts its marvelous mountain ranges. With every passing moment, the Earth falls for the Sun anew: plunging through space, it is constantly tripping over itself in a desperate attempt to get just a little closer to that captivating personality.
+                                Bhukyra believes that the Earth is wowed by sun, the heavenly body. The Earth spins and swaggers, trying frantically to capture the Sun’s attention. It stirs up ferocious weather patterns on its marble-like surface, it shows off its sparkling seas, it flaunts its marvelous mountain ranges. With every passing moment, the Earth falls for the Sun anew: plunging through space, it is constantly tripping over itself in a desperate attempt to get just a little closer to that captivating personality.
                             </p>
-                            <h5><cite>" True medicine comes from Earth not from a Lab "</cite></h5>
+                            <p class="h6"><small><cite>" True medicine comes from Earth, not from a Lab "</cite></small></p>
                             <p class="short-desc pb-0 pt-3">
                                 Bhukyra believes in maintaining balance by cohering together - body, mind and consciousness. They are simply viewed as different facets of one’s being. <br>
                                 Bhukyra ‘s insights towards Ayurveda , is a qualitative, holistic science of health and longevity, a philosophy and system of healing the whole person, body and mind.

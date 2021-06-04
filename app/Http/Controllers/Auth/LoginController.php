@@ -21,14 +21,18 @@ class LoginController extends Controller
     // protected $redirectTo = RouteServiceProvider::HOME;
     protected function redirectTo()
     {
-        if (Auth::user()->role == 'Admin') {
-            return 'dashboard';
+        if (Auth::user()->is_active) {
+            if (Auth::user()->role == 'Admin') {
+                return 'dashboard';
+            } elseif (Auth::user()->role == 'Customer') {
+                return url()->previous();
+            } else {
+                return '/';
+            }
         }
-        elseif (Auth::user()->role == 'Customer') {
-            return url()->previous();
-        }
-        else {
-            return '/';
+        else{
+           Auth::logout();
+           return '/login';
         }
     }
 
@@ -39,7 +43,7 @@ class LoginController extends Controller
         $urlBase = url()->to('/');
 
         // Set the previous url that we came from to redirect to after successful login but only if is internal
-        if(($urlPrevious != $urlBase . '/login') && (substr($urlPrevious, 0, strlen($urlBase)) === $urlBase)) {
+        if (($urlPrevious != $urlBase . '/login') && (substr($urlPrevious, 0, strlen($urlBase)) === $urlBase)) {
             session()->put('url.intended', $urlPrevious);
         }
 
@@ -55,5 +59,4 @@ class LoginController extends Controller
     {
         $this->middleware('guest')->except('logout');
     }
-
 }

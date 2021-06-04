@@ -6,6 +6,7 @@ use App\Product;
 use App\Category;
 use App\Wishlist;
 use App\Country;
+use App\Enquiry;
 use Illuminate\Http\Request;
 use DB;
 
@@ -21,6 +22,11 @@ class HomeController extends Controller
     public function about()
     {
         return view('home.about-us');
+    }
+
+    public function contact()
+    {
+        return view('home.contact');
     }
 
     public function tag($tag)
@@ -422,6 +428,25 @@ class HomeController extends Controller
             );
             echo json_encode($data);
         }
+    }
+
+    
+    public function contactSubmit(Request $request)
+    {
+        $this->validate(request(),[
+            'con_name'=>'required|string|max:50',
+            'con_email'=>'required|email|max:50',
+            'con_subject'=>'max:120',
+            'con_message'=>'max:300'
+        ]);
+        $enq = new Enquiry();
+        $enq->name=request('con_name');
+        $enq->email=request('con_email');
+        $enq->subject=request('con_subject');
+        $enq->message=substr(trim(strip_tags(request('con_message'))),0,300);
+        
+        $enq->save();
+        return redirect()->route('home.contact')->with('success','Thank you for contacting us. Our team will get in touch with you soon.');
     }
 
 }
