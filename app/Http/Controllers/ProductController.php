@@ -391,13 +391,14 @@ class ProductController extends Controller
         $brands = Brand::get();
         $countries = Country::get();
         $attributes = Attribute::get(["name","id"]);
-        $attribute_details = AttributeDetail::get(["name","id"]);
+        $attribute_details = AttributeDetail::get(["name","attribute_id","id"]);
 
         return view('admin.addproduct', compact (['categories','tags','brands','countries','attributes','attribute_details']));
     }
 
     public function create(Request $request)
     {
+        dd($request);
         $this->validate(request(),[
             'name'=>'required|string',
             'price'=>'required|integer',
