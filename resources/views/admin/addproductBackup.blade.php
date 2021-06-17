@@ -303,9 +303,8 @@
                                     </div>
 
                                     <div class="form-row addAttr">
-                                        <div class="col-md-4" style="margin-bottom:15px;">
-                                            <a href="javascript:void(0);" id="addAttrBtn" class="btn btn-info btn-sm btn_add_attribute" onclick="addAttribute();"><i class="fa fa-plus"></i> Add Attributes</a>
-                                            <a href="javascript:void(0);" id="addAttrOptBtn" style="display:none" class="btn btn-info btn-sm btn_add_attribute" onclick="addAttributeOption();"><i class="fa fa-plus"></i> Add attribute option</a>
+                                        <div class="col-md-3" style="margin-bottom:15px;">
+                                            <a href="javascript:void(0);" class="btn btn-info btn-sm btn_add_attribute" onclick="addAttribute();"><i class="fa fa-plus"></i> Add Attributes</a>
                                         </div>
                                     </div>
                                 </div>
@@ -434,8 +433,6 @@
 <script>
     $(document).ready(function() {
 
-        let opts;
-
         bsCustomFileInput.init();
 
         $('#full_des').summernote({
@@ -478,17 +475,7 @@
         var l = $(".attribute_id").length;
         $('<div class="form-row attribute_row' + tsp + '"><div class="col-md-4"><div class="position-relative form-group"><label for="attribute_id' + tsp + '" class="">Attribute</label><select id="attribute_id' + tsp + '" name="attribute_id[' + tsp + ']" class="form-control-sm form-control attribute_id" data-placeholder="Select Attribute" data-no="' + tsp + '"><option value=""></option><?php if (!empty($attributes)) {
                                                                                                                                                                                                                                                                                                                                                                                                             foreach ($attributes as $row) { ?> <option value="{{ $row->id}}">{{ $row->name }}</option> <?php }
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        } ?></select><label id="attribute_id' + tsp + '-error" class="error" for="attribute_id' + tsp + '"></label></div>').insertBefore($('.addAttr'));
-        $('#attribute_id' + tsp + '').select2();
-        $('#attribute_detail_id' + tsp + '').select2();
-        $('#addAttrBtn').hide();
-        
-    }
-
-    function addAttributeOption() {
-        var tsp = Date.now();
-        var l = $(".attribute_id").length;
-        $('<div class="form-row attribute_detail_row attribute_row' + tsp + '"><div class="col-md-4"><div class="position-relative form-group"><label for="attribute_detail_id' + tsp + '" class="">Attribute Option</label><select id="attribute_detail_id' + tsp + '" name="attribute_detail_id[' + tsp + ']" class="form-control-sm form-control attribute_detail_id" data-placeholder="Select Option"  data-no="' + tsp + '" required>'+opts+'</select><label id="attribute_detail_id' + tsp + '-error" class="error" for="attribute_detail_id' + tsp + '"></label></div></div><div class="col-md-4"><div class="position-relative form-group"><label for="attribute_detail_id' + tsp + '" class="">Price</label><input class="form-control" name="attribute_detail_price[' + tsp + ']" style="height: calc(1.8rem + 2px);" required /></div></div><div class="col-md-2" style="margin-top:30px;"><a href="javascript:void(0);" class="btn btn-danger btn-sm" onclick="removeAttributeDiv(\'attribute_row' + tsp + '\');"><i class="fa fa-trash"></i></a></div></div>').insertBefore($('.addAttr'));
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        } ?></select><label id="attribute_id' + tsp + '-error" class="error" for="attribute_id' + tsp + '"></label></div></div><div class="col-md-4"><div class="position-relative form-group"><label for="attribute_detail_id' + tsp + '" class="">Attribute Option</label><select id="attribute_detail_id' + tsp + '" name="attribute_detail_id[' + tsp + ']" class="form-control-sm form-control attribute_detail_id" data-placeholder="Select Option"  data-no="' + tsp + '" ></select><label id="attribute_detail_id' + tsp + '-error" class="error" for="attribute_detail_id' + tsp + '"></label></div></div><div class="col-md-2" style="margin-top:30px;"><a href="javascript:void(0);" class="btn btn-danger btn-sm" onclick="removeAttributeDiv(\'attribute_row' + tsp + '\');"><i class="fa fa-trash"></i></a></div></div>').insertBefore($('.addAttr'));
         $('#attribute_id' + tsp + '').select2();
         $('#attribute_detail_id' + tsp + '').select2();
     }
@@ -513,15 +500,13 @@
         let adt = <?= $attribute_details ?>;
         let ast = adt.filter(a => a.attribute_id == attribute_id)
         console.log(ast);
-        opts = '<option value="">Select Option</option>';
+        let opts = '<option value="">Select Option</option>';
         ast.map(a => {
             opts += `<option value="${a.id}">${a.name}</option>`;
         })
 
         $("#attribute_detail_id" + itemNo).html(opts);
         $('#attribute_detail_id' + itemNo + '').trigger('change');
-        $('body .attribute_detail_row').remove();
-        $('#addAttrOptBtn').show().click();
     });
 
     $(document).on("change keyup", ".attribute_detail_id", function() {
