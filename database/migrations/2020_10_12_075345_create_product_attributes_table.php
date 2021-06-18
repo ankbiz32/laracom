@@ -18,6 +18,7 @@ class CreateProductAttributesTable extends Migration
             $table->bigInteger('product_id')->unsigned()->nullable();
             $table->bigInteger('attribute_id')->unsigned()->nullable();
             $table->bigInteger('attribute_detail_id')->unsigned()->nullable();
+            $table->bigInteger('attribute_price')->unsigned()->default(0);
             $table->timestamps();
         });
     }

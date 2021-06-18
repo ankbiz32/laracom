@@ -62,7 +62,7 @@
                                 <a class="nav-link py-2" id="vert-tabs-profile-tab" data-toggle="pill" href="#vert-tabs-profile" role="tab" aria-controls="vert-tabs-profile" aria-selected="false">Images</a>
                                 <a class="nav-link py-2" id="vert-tabs-description-tab" data-toggle="pill" href="#vert-tabs-description" role="tab" aria-controls="vert-tabs-description" aria-selected="false">Description</a>
                                 <a class="nav-link @error('meta_title') text-danger @enderror py-2" id="vert-tabs-messages-tab" data-toggle="pill" href="#vert-tabs-messages" role="tab" aria-controls="vert-tabs-messages" aria-selected="false">SEO</a>
-                                <a class="nav-link py-2" id="vert-tabs-settings-tab" data-toggle="pill" href="#vert-tabs-settings" role="tab" aria-controls="vert-tabs-settings" aria-selected="false">Attributes</a>
+                                <a class="nav-link py-2" id="vert-tabs-settings-tab" data-toggle="pill" href="#vert-tabs-settings" role="tab" aria-controls="vert-tabs-settings" aria-selected="false">Variable pricing</a>
                                 <a class="nav-link py-2" id="vert-tabs-discount-tab" data-toggle="pill" href="#vert-tabs-discount" role="tab" aria-controls="vert-tabs-discount" aria-selected="false">Discount</a>
                                 <a class="nav-link py-2" id="vert-tabs-inventory-tab" data-toggle="pill" href="#vert-tabs-inventory" role="tab" aria-controls="vert-tabs-inventory" aria-selected="false">Inventory</a>
                                 <a class="nav-link py-2" id="vert-tabs-location-tab" data-toggle="pill" href="#vert-tabs-location" role="tab" aria-controls="vert-tabs-location" aria-selected="false">Marketplace</a>
@@ -303,9 +303,11 @@
                                     </div>
 
                                     <div class="form-row addAttr">
-                                        <div class="col-md-4" style="margin-bottom:15px;">
-                                            <a href="javascript:void(0);" id="addAttrBtn" class="btn btn-info btn-sm btn_add_attribute" onclick="addAttribute();"><i class="fa fa-plus"></i> Add Attributes</a>
-                                            <a href="javascript:void(0);" id="addAttrOptBtn" style="display:none" class="btn btn-info btn-sm btn_add_attribute" onclick="addAttributeOption();"><i class="fa fa-plus"></i> Add attribute option</a>
+                                        <div class="col-md-8" style="margin-bottom:15px;">
+                                            <p id="attrInfo">Add variable pricing to the product according to different sizes, weight, volume etc.</p>
+                                            <a href="javascript:void(0);" id="addAttrBtn" class="btn btn-info btn-sm mr-2 btn_add_attribute" onclick="addAttribute();"><i class="fa fa-sm fa-plus"> </i> Start now</a>
+                                            <a href="javascript:void(0);" id="addAttrOptBtn" style="display:none" class="btn btn-info btn-sm mr-2 btn_add_attribute" onclick="addAttributeOption();"><i class="fa fa-plus"></i> Add attribute option</a>
+                                            <button id="resetAttrBtn" style="display:none" class="btn btn-default btn-sm" onclick="resetAttribute();"><i class="fa fa-undo fa-sm"> </i> Reset</button>
                                         </div>
                                     </div>
                                 </div>
@@ -476,19 +478,30 @@
     function addAttribute() {
         var tsp = Date.now();
         var l = $(".attribute_id").length;
-        $('<div class="form-row attribute_row' + tsp + '"><div class="col-md-4"><div class="position-relative form-group"><label for="attribute_id' + tsp + '" class="">Attribute</label><select id="attribute_id' + tsp + '" name="attribute_id[' + tsp + ']" class="form-control-sm form-control attribute_id" data-placeholder="Select Attribute" data-no="' + tsp + '"><option value=""></option><?php if (!empty($attributes)) {
+        $('<div class="form-row attribute_row' + tsp + '"><div class="col-md-4 attr_row"><div class="position-relative form-group"><label for="attribute_id' + tsp + '" class="">Select attribute</label><select id="attribute_id' + tsp + '" name="attribute_id[' + tsp + ']" class="form-control-sm form-control attribute_id" data-placeholder="Select Attribute" data-no="' + tsp + '" required><option value=""></option><?php if (!empty($attributes)) {
                                                                                                                                                                                                                                                                                                                                                                                                             foreach ($attributes as $row) { ?> <option value="{{ $row->id}}">{{ $row->name }}</option> <?php }
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         } ?></select><label id="attribute_id' + tsp + '-error" class="error" for="attribute_id' + tsp + '"></label></div>').insertBefore($('.addAttr'));
         $('#attribute_id' + tsp + '').select2();
         $('#attribute_detail_id' + tsp + '').select2();
         $('#addAttrBtn').hide();
+        $('#attrInfo').hide();
+        $('#resetAttrBtn').show();
         
+    }
+
+    function resetAttribute() {
+        $('body .attr_row').remove();
+        $('body .attribute_detail_row').remove();
+        $('#addAttrBtn').show();
+        $('#addAttrOptBtn').hide();
+        $('#resetAttrBtn').hide();
+        $('#attrInfo').show();
     }
 
     function addAttributeOption() {
         var tsp = Date.now();
         var l = $(".attribute_id").length;
-        $('<div class="form-row attribute_detail_row attribute_row' + tsp + '"><div class="col-md-4"><div class="position-relative form-group"><label for="attribute_detail_id' + tsp + '" class="">Attribute Option</label><select id="attribute_detail_id' + tsp + '" name="attribute_detail_id[' + tsp + ']" class="form-control-sm form-control attribute_detail_id" data-placeholder="Select Option"  data-no="' + tsp + '" required>'+opts+'</select><label id="attribute_detail_id' + tsp + '-error" class="error" for="attribute_detail_id' + tsp + '"></label></div></div><div class="col-md-4"><div class="position-relative form-group"><label for="attribute_detail_id' + tsp + '" class="">Price</label><input class="form-control" name="attribute_detail_price[' + tsp + ']" style="height: calc(1.8rem + 2px);" required /></div></div><div class="col-md-2" style="margin-top:30px;"><a href="javascript:void(0);" class="btn btn-danger btn-sm" onclick="removeAttributeDiv(\'attribute_row' + tsp + '\');"><i class="fa fa-trash"></i></a></div></div>').insertBefore($('.addAttr'));
+        $('<div class="form-row attribute_detail_row attribute_row' + tsp + '"><div class="col-md-4"><div class="position-relative form-group"><label for="attribute_detail_id' + tsp + '" class="">Attribute Option</label><select id="attribute_detail_id' + tsp + '" name="attribute_detail_id[' + tsp + ']" class="form-control-sm form-control attribute_detail_id" data-placeholder="Select Option"  data-no="' + tsp + '" required>'+opts+'</select><label id="attribute_detail_id' + tsp + '-error" class="error" for="attribute_detail_id' + tsp + '"></label></div></div><div class="col-md-4"><div class="position-relative form-group"><label for="attribute_detail_id' + tsp + '" class="">Price</label><input class="form-control" name="attribute_detail_price[' + tsp + ']" style="height: calc(1.8rem + 2px);" type="number" value="0" required /></div></div><div class="col-md-2" style="margin-top:30px;"><a href="javascript:void(0);" class="btn text-danger btn-sm" onclick="removeAttributeDiv(\'attribute_row' + tsp + '\');"><i class="fa fa-times"></i></a></div></div>').insertBefore($('.addAttr'));
         $('#attribute_id' + tsp + '').select2();
         $('#attribute_detail_id' + tsp + '').select2();
     }
@@ -512,7 +525,6 @@
 
         let adt = <?= $attribute_details ?>;
         let ast = adt.filter(a => a.attribute_id == attribute_id)
-        console.log(ast);
         opts = '<option value="">Select Option</option>';
         ast.map(a => {
             opts += `<option value="${a.id}">${a.name}</option>`;

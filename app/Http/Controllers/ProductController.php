@@ -398,7 +398,7 @@ class ProductController extends Controller
 
     public function create(Request $request)
     {
-        dd($request);
+        // dd($request);
         $this->validate(request(),[
             'name'=>'required|string',
             'price'=>'required|integer',
@@ -493,13 +493,19 @@ class ProductController extends Controller
             // Save product attributes detail
             $attribute_ids = $request->input("attribute_id");
             $attribute_detail_ids = $request->input("attribute_detail_id");
-            if(!empty($attribute_ids)){
-                foreach($attribute_ids as $k=>$v){
-                    if(!empty($v) and !empty($attribute_detail_ids[$k])){
+            $attribute_prices = $request->input("attribute_detail_price");
+            if(!empty($attribute_ids) && !empty($attribute_detail_ids)){
+                $aid = null;
+                foreach ($attribute_ids as $z){
+                    $aid = $z;
+                }
+                foreach($attribute_detail_ids as $k=>$v){
+                    if(!empty($v)){
                         $product_attribute = new ProductAttribute;
                         $product_attribute->product_id = $product->id;
-                        $product_attribute->attribute_id=$v;
+                        $product_attribute->attribute_id=$aid;
                         $product_attribute->attribute_detail_id=$attribute_detail_ids[$k];
+                        $product_attribute->attribute_price=$attribute_prices[$k];
                         $product_attribute->save();
                     }
                 }
