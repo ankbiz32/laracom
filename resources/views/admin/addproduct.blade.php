@@ -307,7 +307,7 @@
                                             <p id="attrInfo">Add variable pricing to the product according to different sizes, weight, volume etc.</p>
                                             <a href="javascript:void(0);" id="addAttrBtn" class="btn btn-info btn-sm mr-2 btn_add_attribute" onclick="addAttribute();"><i class="fa fa-sm fa-plus"> </i> Start now</a>
                                             <a href="javascript:void(0);" id="addAttrOptBtn" style="display:none" class="btn btn-info btn-sm mr-2 btn_add_attribute" onclick="addAttributeOption();"><i class="fa fa-plus"></i> Add attribute option</a>
-                                            <button id="resetAttrBtn" style="display:none" class="btn btn-default btn-sm" onclick="resetAttribute();"><i class="fa fa-undo fa-sm"> </i> Reset</button>
+                                            <button id="resetAttrBtn" style="display:none" type="button" class="btn btn-default btn-sm" onclick="resetAttribute();"><i class="fa fa-undo fa-sm"> </i> Reset</button>
                                         </div>
                                     </div>
                                 </div>

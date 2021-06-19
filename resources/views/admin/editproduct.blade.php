@@ -306,18 +306,21 @@ foreach ($product->categories as $ctg) {
                                 <div class="tab-pane fade" id="vert-tabs-settings" role="tabpanel" aria-labelledby="vert-tabs-settings-tab">
                                     <div class="attributeDiv">
                                         <?=$attr_id=null?>
-                                        @if($product->productAttribute!=null)
-                                            <p>In</p>
+                                        @if(count($product->productAttribute))
                                             <?php $i = 0; $l=0;?>
                                             @foreach($product->productAttribute as $k=>$v)
                                                 <?php $attr_id = $v->attribute_id; ?>
                                             @endforeach
-                                        
                                             <div class="form-row attribute_row">
-                                                <div class="col-md-4">
+                                                <div class="col-md-6">
+                                                    <p id="attrInfo" style="display:none;">Add variable pricing to the product according to different sizes, weight, volume etc.</p>
+                                                    <a href="javascript:void(0);" id="addAttrBtn" style="display:none;" class="btn btn-info btn-sm mr-2 btn_add_attribute" onclick="addAttribute();"><i class="fa fa-sm fa-plus"> </i> Start now</a>
+                                                </div>
+                                                <div class="col-6"></div>
+                                                <div class="col-md-4 attr_row">
                                                     <div class="position-relative form-group">
                                                         <label for="attribute_id" class="">Attribute</label>
-                                                        <select id="attribute_id" name="attr[]" class="form-control-sm form-control select2 attribute_id" data-placeholder="Select Attribute" required>
+                                                        <select id="attribute_id" name="attribute_id[]" class="form-control-sm form-control select2 attribute_id" data-placeholder="Select Attribute" required>
                                                             <option value=""></option>
                                                             <?php if (!empty($attributes)) {
                                                                 foreach ($attributes as $row) { ?>
@@ -331,6 +334,7 @@ foreach ($product->categories as $ctg) {
                                                     </div>
                                                 </div>
                                             </div>
+
                                             @foreach($product->productAttribute as $k=>$v)
                                                 @if($i >= 0)
                                                     <div class="form-row attribute_detail_row attribute_row<?php echo $k; ?>">
@@ -340,7 +344,7 @@ foreach ($product->categories as $ctg) {
                                                                 $attributeDetailsList = AttributeDetail::all()->where('attribute_id', $v->attribute_id);
                                                                 ?>
                                                                 <label for="attribute_detail_id<?php echo $k; ?>" class="">Attribute Options</label>
-                                                                <select id="attribute_detail_id<?php echo $k; ?>" name="attr_detail[]" class="form-control-sm form-control select2 attribute_detail_id" data-placeholder="Select Option" data-no="<?php echo $k; ?>">
+                                                                <select id="attribute_detail_id<?php echo $k; ?>" name="attribute_detail_id[]" class="form-control-sm form-control select2 attribute_detail_id" data-placeholder="Select Option" data-no="<?php echo $k; ?>">
                                                                     <option value=""></option>
                                                                     <?php if (!empty($attributeDetailsList)) {
                                                                         foreach ($attributeDetailsList as $row) { ?>
@@ -356,7 +360,7 @@ foreach ($product->categories as $ctg) {
                                                         <div class="col-md-4">
                                                             <div class="position-relative form-group">
                                                                 <label for="attribute_detail_price<?php echo $k; ?>" class="">Attribute Price</label>
-                                                                    <input type="number" class="form-control" required value="{{$v->attribute_price}}"  style="height: calc(1.8rem + 2px);"/>
+                                                                    <input type="number" class="form-control" name="attribute_detail_price[]" required value="{{$v->attribute_price}}"  style="height: calc(1.8rem + 2px);"/>
                                                                 <label id="attribute_detail_price<?php echo $k; ?>-error" class="error" for="attribute_detail_price<?php echo $k; ?>"></label>
                                                             </div>
                                                         </div>
@@ -371,18 +375,21 @@ foreach ($product->categories as $ctg) {
                                             
                                             <div class="form-row attrAdd">
                                                 <div class="col-md-6" style="margin-bottom:15px;">
-                                                    <a href="javascript:void(0);" class="btn btn-info btn-sm" id="addAttrOptBtn" onclick="addAttributeOption();"><i class="fa fa-plus"></i> Add attribute option</a>
+                                                    <a href="javascript:void(0);" class="btn btn-info btn-sm mr-2" id="addAttrOptBtn" onclick="addAttributeOption();"><i class="fa fa-plus"></i> Add attribute option</a>
+                                                    <button id="resetAttrBtn" type="button" class="btn btn-default btn-sm" onclick="resetAttribute();"><i class="fa fa-undo fa-sm"> </i> Reset</button>
                                                 </div>
-                                                <button id="resetAttrBtn" style="display:none" class="btn btn-default btn-sm" onclick="resetAttribute();"><i class="fa fa-undo fa-sm"> </i> Reset</button>
                                             </div>
+                                        @else
+                                            <div class="form-row attrAdd">
+                                                <div class="col-md-8" style="margin-bottom:15px;">
+                                                    <p id="attrInfo">Add variable pricing to the product according to different sizes, weight, volume etc.</p>
+                                                    <a href="javascript:void(0);" id="addAttrBtn" class="btn btn-info btn-sm mr-2 btn_add_attribute" onclick="addAttribute();"><i class="fa fa-sm fa-plus"> </i> Start now</a>
+                                                    <a href="javascript:void(0);" id="addAttrOptBtn" style="display:none" class="btn btn-info btn-sm mr-2 btn_add_attribute" onclick="addAttributeOption();"><i class="fa fa-plus"></i> Add attribute option</a>
+                                                    <button id="resetAttrBtn" style="display:none" type="button" class="btn btn-default btn-sm" onclick="resetAttribute();"><i class="fa fa-undo fa-sm"> </i> Reset</button>
+                                                </div>
+                                            </div>
+
                                         @endif
-<!-- 
-                                        <div class="form-row attrAdd">
-                                            <div class="col-md-6" style="margin-bottom:15px;">
-                                                <a href="javascript:void(0);" class="btn btn-info btn-sm" id="addAttrOptBtn" onclick="addAttributeOption();"><i class="fa fa-plus"></i> Add attribute option</a>
-                                            </div>
-                                            <button id="resetAttrBtn" class="btn btn-default btn-sm" onclick="resetAttribute();"><i class="fa fa-undo fa-sm"> </i> Reset</button>
-                                        </div> -->
                                     </div>
                                 </div>
 
@@ -561,12 +568,18 @@ foreach ($product->categories as $ctg) {
 
     function addAttribute() {
         var tsp = Date.now();
-        $('<div class="form-row attribute_row' + tsp + '"><div class="col-md-4"><div class="position-relative form-group"><label for="attribute_id' + tsp + '" class="">Attribute</label><select id="attribute_id' + tsp + '" name="attr[]" class="form-control-sm form-control attribute_id" data-placeholder="Select Attribute" data-no="' + tsp + '" required><option value=""></option><?php if (!empty($attributes)) {
-                                                                                                                                                                                                                                                                                                                                                                                                foreach ($attributes as $row) { ?> <option value="{{ $row->id}}">{{ $row->name }}</option> <?php }
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            } ?></select><label id="attribute_id' + tsp + '-error" class="error" for="attribute_id' + tsp + '"></label></div></div><div class="col-md-4"><div class="position-relative form-group"><label for="attribute_detail_id' + tsp + '" class="">Attribute Options</label><select id="attribute_detail_id' + tsp + '" name="attr_detail[]" class="form-control-sm form-control attribute_detail_id" data-placeholder="Select Option"  data-no="' + tsp + '" required></select><label id="attribute_detail_id' + tsp + '-error" class="error" for="attribute_detail_id' + tsp + '"></label></div></div><div class="col-md-2"><div class="position-relative form-group mt-30" style="margin-top:30px;"><a href="javascript:void(0);" class="btn btn-danger btn-sm" onclick="removeAttributeDiv(\'attribute_row' + tsp + '\');"><i class="fa fa-trash"></i></a></div></div></div>').insertBefore($('.attrAdd'));
+        var l = $(".attribute_id").length;
+        $('<div class="form-row attribute_row' + tsp + '"><div class="col-md-4 attr_row"><div class="position-relative form-group"><label for="attribute_id' + tsp + '" class="">Select attribute</label><select id="attribute_id' + tsp + '" name="attribute_id[' + tsp + ']" class="form-control-sm form-control attribute_id" data-placeholder="Select Attribute" data-no="' + tsp + '" required><option value=""></option><?php if (!empty($attributes)) {
+                                                                                                                                                                                                                                                                                                                                                                                                            foreach ($attributes as $row) { ?> <option value="{{ $row->id}}">{{ $row->name }}</option> <?php }
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        } ?></select><label id="attribute_id' + tsp + '-error" class="error" for="attribute_id' + tsp + '"></label></div>').insertBefore($('.attrAdd'));
         $('#attribute_id' + tsp + '').select2();
         $('#attribute_detail_id' + tsp + '').select2();
+        $('#addAttrBtn').hide();
+        $('#attrInfo').hide();
+        $('#resetAttrBtn').show();
+        
     }
+
 
     function resetAttribute() {
         $('body .attr_row').remove();
@@ -610,7 +623,8 @@ foreach ($product->categories as $ctg) {
             opts += `<option value="${a.id}">${a.name}</option>`;
         })
         $('body .attribute_detail_row').remove();
-        $('#addAttrOptBtn').click();
+        $('#addAttrBtn').hide();
+        $('#addAttrOptBtn').show().click();
     });
 
     $(document).on("change keyup", ".attribute_detail_id", function() {

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 04, 2021 at 12:51 PM
+-- Generation Time: Jun 19, 2021 at 02:28 PM
 -- Server version: 10.4.13-MariaDB
 -- PHP Version: 7.4.8
 
@@ -35,6 +35,15 @@ CREATE TABLE `attributes` (
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+--
+-- Dumping data for table `attributes`
+--
+
+INSERT INTO `attributes` (`id`, `name`, `country_iso_code`, `created_at`, `updated_at`) VALUES
+(1, 'Size', 'IN', '2021-06-05 04:17:38', '2021-06-05 04:17:38'),
+(2, 'Weight', 'IN', '2021-06-05 04:19:02', '2021-06-05 04:19:12'),
+(3, 'Volume', 'IN', '2021-06-05 04:19:27', '2021-06-05 04:19:27');
+
 -- --------------------------------------------------------
 
 --
@@ -49,6 +58,20 @@ CREATE TABLE `attribute_details` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `attribute_details`
+--
+
+INSERT INTO `attribute_details` (`id`, `attribute_id`, `name`, `describe`, `created_at`, `updated_at`) VALUES
+(1, 1, 'S', NULL, '2021-06-05 04:17:38', '2021-06-05 04:17:38'),
+(2, 1, 'M', NULL, '2021-06-05 04:18:12', '2021-06-05 04:18:12'),
+(3, 1, 'L', NULL, '2021-06-05 04:18:12', '2021-06-05 04:18:12'),
+(4, 1, 'XL', NULL, '2021-06-05 04:18:12', '2021-06-05 04:18:12'),
+(5, 2, '100gms', NULL, '2021-06-05 04:19:02', '2021-06-05 04:19:02'),
+(6, 2, '250gms', NULL, '2021-06-05 04:19:02', '2021-06-05 04:19:02'),
+(7, 3, '100ml', NULL, '2021-06-05 04:19:27', '2021-06-05 04:19:27'),
+(8, 3, '250ml', NULL, '2021-06-05 04:19:27', '2021-06-05 04:19:27');
 
 -- --------------------------------------------------------
 
@@ -117,7 +140,11 @@ CREATE TABLE `category_product` (
 
 INSERT INTO `category_product` (`id`, `category_id`, `product_id`, `created_at`, `updated_at`) VALUES
 (28, 3, 6, NULL, '2021-03-13 00:57:35'),
-(29, 3, 7, NULL, '2021-03-13 00:57:53');
+(31, 3, 8, NULL, '2021-06-18 02:36:24'),
+(32, 3, 9, '2021-06-19 01:15:28', '2021-06-19 01:15:28'),
+(41, 3, 10, NULL, '2021-06-19 01:28:27'),
+(51, 3, 7, NULL, '2021-06-19 04:52:40'),
+(68, 3, 11, NULL, '2021-06-19 05:36:44');
 
 -- --------------------------------------------------------
 
@@ -239,7 +266,6 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 (13, '2020_10_07_104409_create_payment_table', 1),
 (14, '2020_10_12_075024_create_attributes_table', 1),
 (15, '2020_10_12_075202_create_attribute_details_table', 1),
-(16, '2020_10_12_075345_create_product_attributes_table', 1),
 (17, '2020_10_29_183141_create_countries_table', 1),
 (18, '2020_11_03_061822_create_product_descriptions_table', 1),
 (19, '2020_11_03_062214_create_product_seos_table', 1),
@@ -248,7 +274,8 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 (22, '2020_12_10_113548_create_category_product_table', 1),
 (23, '2020_12_15_180102_create_order_details_table', 1),
 (24, '2020_12_18_073803_create_wishlists_table', 1),
-(25, '2021_04_12_083004_create_enquiries_table', 2);
+(25, '2021_04_12_083004_create_enquiries_table', 2),
+(26, '2020_10_12_075345_create_product_attributes_table', 3);
 
 -- --------------------------------------------------------
 
@@ -421,7 +448,8 @@ CREATE TABLE `products` (
 
 INSERT INTO `products` (`id`, `brand_id`, `name`, `price`, `image`, `max_order_qty`, `is_featured`, `is_todays_deal`, `tags`, `url_slug`, `country_iso_code`, `is_active`, `created_at`, `updated_at`) VALUES
 (6, 1, 'Test product 1', '599', 'products/JnVvsC2wRj2IlmeRvEdxRe4YbxweVJ5ucLIppwMZ.jpeg', 3, 0, 0, '[\"Skin care\"]', 'test-product-1', 'IN', 1, '2021-03-13 00:51:04', '2021-03-13 00:51:04'),
-(7, 1, 'Test product 2', '199', 'products/Vpo7J2eFifVBAOxYCDcr8NGI1Ircc4I0kpwObQWz.jpeg', 2, 0, 0, '[\"Skin care\"]', 'test-product-2', 'IN', 1, '2021-03-13 00:52:46', '2021-06-04 05:13:28');
+(7, 1, 'Test product 2', '199', 'products/Vpo7J2eFifVBAOxYCDcr8NGI1Ircc4I0kpwObQWz.jpeg', 2, 0, 0, '[\"Skin care\"]', 'test-product-2', 'IN', 1, '2021-03-13 00:52:46', '2021-06-04 05:13:28'),
+(11, 1, 'Attributer sand', '400', 'products/Ix6dt1H4YmPq8Dtpn7X0XHFEYxoXtcVPyxZhmblE.jpeg', 5, 0, 0, '[\"Skin care\"]', 'attributer-sand', 'IN', 1, '2021-06-19 01:30:31', '2021-06-19 04:59:02');
 
 -- --------------------------------------------------------
 
@@ -434,9 +462,22 @@ CREATE TABLE `product_attributes` (
   `product_id` bigint(20) UNSIGNED DEFAULT NULL,
   `attribute_id` bigint(20) UNSIGNED DEFAULT NULL,
   `attribute_detail_id` bigint(20) UNSIGNED DEFAULT NULL,
+  `attribute_price` bigint(20) UNSIGNED NOT NULL DEFAULT 0,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `product_attributes`
+--
+
+INSERT INTO `product_attributes` (`id`, `product_id`, `attribute_id`, `attribute_detail_id`, `attribute_price`, `created_at`, `updated_at`) VALUES
+(3, 8, 1, 4, 200, '2021-06-18 02:36:24', '2021-06-18 02:36:24'),
+(4, 8, 1, 2, 300, '2021-06-18 02:36:24', '2021-06-18 02:36:24'),
+(17, 10, 3, 7, 600, '2021-06-19 01:28:28', '2021-06-19 01:28:28'),
+(18, 10, 3, 8, 650, '2021-06-19 01:28:28', '2021-06-19 01:28:28'),
+(95, 11, 2, 5, 600, '2021-06-19 05:36:44', '2021-06-19 05:36:44'),
+(96, 11, 2, 6, 1050, '2021-06-19 05:36:44', '2021-06-19 05:36:44');
 
 -- --------------------------------------------------------
 
@@ -459,7 +500,11 @@ CREATE TABLE `product_descriptions` (
 
 INSERT INTO `product_descriptions` (`id`, `product_id`, `short_des`, `full_des`, `created_at`, `updated_at`) VALUES
 (6, 6, 'it is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout', '<div class=\"PA-z\" style=\"margin-top: 16px; display: flex; justify-content: space-between; align-items: baseline; flex-wrap: wrap;\"><h5 style=\"padding: 0px 32px 0px 0px; margin-right: 8px; margin-bottom: 5px; margin-left: 0px; font-variant-numeric: normal; font-variant-east-asian: normal; font-stretch: normal; line-height: normal; position: relative;\">Item Information</h5><p style=\"padding: 0px 32px 0px 0px; margin-right: 8px; margin-bottom: 5px; margin-left: 0px; font-variant-numeric: normal; font-variant-east-asian: normal; font-stretch: normal; line-height: normal; position: relative;\"><br></p></div><div class=\"PA-z\" style=\"margin-top: 16px; display: flex; justify-content: space-between; align-items: baseline; flex-wrap: wrap;\"><p style=\"padding: 0px 32px 0px 0px; margin-right: 8px; margin-bottom: 5px; margin-left: 0px; font-variant-numeric: normal; font-variant-east-asian: normal; font-stretch: normal; line-height: normal; position: relative;\"><br></p></div><div class=\"FA-z\" style=\"padding: 0px 0px 32px; position: relative; clear: left;\"><ul style=\"padding: 0px; margin-right: 0px; margin-bottom: 0px; margin-left: 0px; line-height: 24px;\"><li class=\"EA-z\" style=\"list-style-type: disc; padding: 0px; margin: 0px 0px 6px 20px; font-variant-numeric: normal; font-variant-east-asian: normal; font-stretch: normal; line-height: normal;\">The A/O Lug Chukka boot by will send your thoughts to the sea with its classic nautical details.</li><li style=\"list-style-type: disc; padding: 0px; margin: 0px 0px 6px 20px; font-variant-numeric: normal; font-variant-east-asian: normal; font-stretch: normal; line-height: normal;\">Waterproof leather upper.</li><li style=\"list-style-type: disc; padding: 0px; margin: 0px 0px 6px 20px; font-variant-numeric: normal; font-variant-east-asian: normal; font-stretch: normal; line-height: normal;\">Waterproof construction with full membrane protection to keep out the wet elements.</li><li style=\"list-style-type: disc; padding: 0px; margin: 0px 0px 6px 20px; font-variant-numeric: normal; font-variant-east-asian: normal; font-stretch: normal; line-height: normal;\">Genuine hand-sewn with true moccassin construction to ensure longevity of wear.</li><li style=\"list-style-type: disc; padding: 0px; margin: 0px 0px 6px 20px; font-variant-numeric: normal; font-variant-east-asian: normal; font-stretch: normal; line-height: normal;\">Cushioned footbed with EVA heel cup for enhanced shock absorption and supportive comfort.</li><li style=\"list-style-type: disc; padding: 0px; margin: 0px 0px 6px 20px; font-variant-numeric: normal; font-variant-east-asian: normal; font-stretch: normal; line-height: normal;\">Nonmarking, molded rubber cupsole with heavy lugs and Wave-Siping™ technology for the ultimate traction on both dry and wet surfaces.</li><li style=\"list-style-type: disc; padding: 0px; margin: 0px 0px 6px 20px; font-variant-numeric: normal; font-variant-east-asian: normal; font-stretch: normal; line-height: normal;\">Imported.</li><li style=\"list-style-type: disc; padding: 0px; margin: 0px 0px 6px 20px; font-variant-numeric: normal; font-variant-east-asian: normal; font-stretch: normal; line-height: normal;\">Product measurements were taken using size 9, width M (D). Please note that measurements may vary by size.</li><li style=\"list-style-type: disc; padding: 0px; margin: 0px 0px 6px 20px; font-variant-numeric: normal; font-variant-east-asian: normal; font-stretch: normal; line-height: normal;\">Weight of footwear is based on a single item, not a pair.</li><li style=\"list-style-type: disc; padding: 0px; margin: 0px 0px 6px 20px; font-variant-numeric: normal; font-variant-east-asian: normal; font-stretch: normal; line-height: normal;\">Measurements:<ul style=\"list-style-type: disc; padding: 0px; margin-right: 0px; margin-left: 0px; line-height: 24px;\"><li style=\"list-style-type: disc; padding: 0px; margin: 0px 0px 6px 20px; font-variant-numeric: normal; font-variant-east-asian: normal; font-stretch: normal; line-height: normal;\">Heel Height: 1 in</li><li style=\"list-style-type: disc; padding: 0px; margin: 0px 0px 6px 20px; font-variant-numeric: normal; font-variant-east-asian: normal; font-stretch: normal; line-height: normal;\">Weight: 1 lb 1 oz</li><li style=\"list-style-type: disc; padding: 0px; margin: 0px 0px 6px 20px; font-variant-numeric: normal; font-variant-east-asian: normal; font-stretch: normal; line-height: normal;\">Platform Height:&nbsp;<font color=\"#1f1f1f\" face=\"Open Sans, sans-serif\"><span style=\"font-size: 16px; letter-spacing: 0px;\">1</span></font>⁄2 in</li></ul></li></ul></div>', '2021-03-13 00:51:05', '2021-03-13 00:57:35'),
-(7, 7, NULL, NULL, '2021-03-13 00:52:46', '2021-03-13 00:57:53');
+(7, 7, NULL, NULL, '2021-03-13 00:52:46', '2021-06-19 04:52:40'),
+(8, 8, NULL, NULL, '2021-06-18 01:34:52', '2021-06-18 02:36:24'),
+(9, 9, NULL, NULL, '2021-06-19 01:15:28', '2021-06-19 01:15:28'),
+(10, 10, NULL, NULL, '2021-06-19 01:16:00', '2021-06-19 01:28:27'),
+(11, 11, NULL, NULL, '2021-06-19 01:30:31', '2021-06-19 05:36:44');
 
 -- --------------------------------------------------------
 
@@ -484,7 +529,11 @@ CREATE TABLE `product_discounts` (
 
 INSERT INTO `product_discounts` (`id`, `product_id`, `has_discount`, `type`, `rate`, `new_price`, `created_at`, `updated_at`) VALUES
 (6, 6, 0, '', '599', '599', '2021-03-13 00:51:04', '2021-03-13 00:57:35'),
-(7, 7, 1, 'FLAT', '129', '129', '2021-03-13 00:52:46', '2021-03-13 00:57:53');
+(7, 7, 1, 'PERCENT', '9.75', '180', '2021-03-13 00:52:46', '2021-06-19 04:52:40'),
+(8, 8, 0, '', '800', '800', '2021-06-18 01:34:52', '2021-06-18 02:36:24'),
+(9, 9, 0, '', '440', '440', '2021-06-19 01:15:28', '2021-06-19 01:15:28'),
+(10, 10, 0, '', '560', '560', '2021-06-19 01:16:00', '2021-06-19 01:28:27'),
+(11, 11, 1, 'PERCENT', '5', '380', '2021-06-19 01:30:31', '2021-06-19 05:36:44');
 
 -- --------------------------------------------------------
 
@@ -529,7 +578,11 @@ CREATE TABLE `product_inventories` (
 
 INSERT INTO `product_inventories` (`id`, `product_id`, `sku`, `in_stock`, `created_at`, `updated_at`) VALUES
 (6, 6, NULL, 1, '2021-03-13 00:51:05', '2021-03-13 00:57:35'),
-(7, 7, NULL, 1, '2021-03-13 00:52:47', '2021-03-13 00:57:53');
+(7, 7, NULL, 1, '2021-03-13 00:52:47', '2021-06-19 04:52:40'),
+(8, 8, NULL, 1, '2021-06-18 01:34:52', '2021-06-18 02:36:24'),
+(9, 9, NULL, 1, '2021-06-19 01:15:28', '2021-06-19 01:15:28'),
+(10, 10, NULL, 1, '2021-06-19 01:16:00', '2021-06-19 01:28:28'),
+(11, 11, NULL, 1, '2021-06-19 01:30:31', '2021-06-19 05:36:44');
 
 -- --------------------------------------------------------
 
@@ -552,7 +605,11 @@ CREATE TABLE `product_seos` (
 
 INSERT INTO `product_seos` (`id`, `product_id`, `title`, `description`, `created_at`, `updated_at`) VALUES
 (6, 6, 'Test product 1', NULL, '2021-03-13 00:51:05', '2021-03-13 00:57:35'),
-(7, 7, 'Test product 2', NULL, '2021-03-13 00:52:46', '2021-03-13 00:57:53');
+(7, 7, 'Test product 2', NULL, '2021-03-13 00:52:46', '2021-06-19 04:52:40'),
+(8, 8, 'Attr test', NULL, '2021-06-18 01:34:52', '2021-06-18 02:36:24'),
+(9, 9, 'No attr', NULL, '2021-06-19 01:15:28', '2021-06-19 01:15:28'),
+(10, 10, 'With attr', NULL, '2021-06-19 01:16:00', '2021-06-19 01:28:28'),
+(11, 11, 'W/O attr', NULL, '2021-06-19 01:30:31', '2021-06-19 05:36:44');
 
 -- --------------------------------------------------------
 
@@ -830,13 +887,13 @@ ALTER TABLE `wishlists`
 -- AUTO_INCREMENT for table `attributes`
 --
 ALTER TABLE `attributes`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `attribute_details`
 --
 ALTER TABLE `attribute_details`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `brands`
@@ -854,7 +911,7 @@ ALTER TABLE `categories`
 -- AUTO_INCREMENT for table `category_product`
 --
 ALTER TABLE `category_product`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=69;
 
 --
 -- AUTO_INCREMENT for table `countries`
@@ -878,7 +935,7 @@ ALTER TABLE `failed_jobs`
 -- AUTO_INCREMENT for table `migrations`
 --
 ALTER TABLE `migrations`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
 
 --
 -- AUTO_INCREMENT for table `newsletters`
@@ -908,25 +965,25 @@ ALTER TABLE `payment`
 -- AUTO_INCREMENT for table `products`
 --
 ALTER TABLE `products`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT for table `product_attributes`
 --
 ALTER TABLE `product_attributes`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=97;
 
 --
 -- AUTO_INCREMENT for table `product_descriptions`
 --
 ALTER TABLE `product_descriptions`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT for table `product_discounts`
 --
 ALTER TABLE `product_discounts`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT for table `product_images`
@@ -938,13 +995,13 @@ ALTER TABLE `product_images`
 -- AUTO_INCREMENT for table `product_inventories`
 --
 ALTER TABLE `product_inventories`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT for table `product_seos`
 --
 ALTER TABLE `product_seos`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT for table `profiles`
@@ -974,7 +1031,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `wishlists`
 --
 ALTER TABLE `wishlists`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

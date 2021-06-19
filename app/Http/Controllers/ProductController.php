@@ -85,7 +85,7 @@ class ProductController extends Controller
                         if($row->ProductDiscount->type=='FLAT'){
                             $disc_rate = $row->ProductDiscount->rate;
                         }else{
-                            $disc_rate = ((100 - $row->ProductDiscount->rate) / 100) * $row->price;
+                            $disc_rate = round(((100 - $row->ProductDiscount->rate) / 100) * $row->price);
                         }
                         return $txt='<del>'.$row->price.'</del>&emsp;'.$disc_rate;
                     }
@@ -354,12 +354,11 @@ class ProductController extends Controller
             $data['images'] = $product->productImage;
             $data['descr'] = $product->ProductDescription;
             $data['disc'] = $product->ProductDiscount;
-            $data['attr'] = $product->productAttribute;
             $data['inventory'] = $product->ProductInventory;
             $data['brand'] = $product->Brand;
             $data['wishlist'] = $product->wishlist;
             $data['brands'] = Brand::get();
-            return view('products.show', compact ('data'));
+            return view('products.show', compact ('data', 'product'));
         }
         abort(404);
     }
@@ -542,7 +541,7 @@ class ProductController extends Controller
         $countries = Country::get();
         $attribute_details = AttributeDetail::get();
         $productImageList = ProductImage::where('product_id',$id);
-
+        // dd($product->productAttribute);
         return view('admin.editproduct',compact('product','categories','countries','tags','brands','attributes','attribute_details'));
     }
 
@@ -580,15 +579,25 @@ class ProductController extends Controller
         DB::table('category_product')->insert($dataSet);
 
         ProductAttribute::where('product_id',$id)->delete();
-        if(!empty($request->get('attr'))){
-            for ( $z=0; $z<count($request->get('attr')); $z++){
-                $p_attr = new ProductAttribute;
-                $p_attr->product_id = $product->id;
-                $p_attr->attribute_detail_id = $request->get('attr_detail')[$z];
-                $p_attr->attribute_id = $request->get('attr')[$z];
-                $p_attr->save();
-            }
-        }
+         $attribute_ids = $request->input("attribute_id");
+         $attribute_detail_ids = $request->input("attribute_detail_id");
+         $attribute_prices = $request->input("attribute_detail_price");
+         if(!empty($attribute_ids) && !empty($attribute_detail_ids)){
+             $aid = null;
+             foreach ($attribute_ids as $z){
+                 $aid = $z;
+             }
+             foreach($attribute_detail_ids as $k=>$v){
+                 if(!empty($v)){
+                     $product_attribute = new ProductAttribute;
+                     $product_attribute->product_id = $product->id;
+                     $product_attribute->attribute_id=$aid;
+                     $product_attribute->attribute_detail_id=$attribute_detail_ids[$k];
+                     $product_attribute->attribute_price=$attribute_prices[$k];
+                     $product_attribute->save();
+                 }
+             }
+         }
   
 
         if ($request->file('image') == null) {
@@ -645,32 +654,33 @@ class ProductController extends Controller
         $d['description']=request('meta_descr');
         $product_seo->update($d);
 
+        ProductAttribute::where('product_id',$id)->delete();
+        $attribute_ids = $request->input("attribute_id");
+        $attribute_detail_ids = $request->input("attribute_detail_id");
+        $attribute_prices = $request->input("attribute_detail_price");
+        if(!empty($attribute_ids) && !empty($attribute_detail_ids)){
+            $aid = null;
+            foreach ($attribute_ids as $z){
+                $aid = $z;
+            }
+            foreach($attribute_detail_ids as $k=>$v){
+                if(!empty($v)){
+                    $product_attribute = new ProductAttribute;
+                    $product_attribute->product_id = $id;
+                    $product_attribute->attribute_id=$aid;
+                    $product_attribute->attribute_detail_id=$attribute_detail_ids[$k];
+                    $product_attribute->attribute_price=$attribute_prices[$k];
+                    $product_attribute->save();
+                }
+            }
+        }
+
+
         $product_inv = ProductInventory::where('product_id',$id);
         $d = array();
         $d['sku']=request('sku');
         $d['in_stock']=request('in_stock');
         $product_inv->update($d);
-
-
-        if(!empty($request->get('Attribute'))){
-            foreach($request->get('Attribute') as $k){
-                $did = $k['attri_id'];
-                if(!empty($did)){
-                    $product_attribute = ProductAttribute::find($did);
-                    $product_attribute->product_id=$id;
-                    $product_attribute->attribute_id=$k['attribute_id'];
-                    $product_attribute->attribute_detail_id=$k['attribute_detail_id'];
-                    $product_attribute->update();
-                }
-                else{
-                    $product_attribute = new ProductAttribute;
-                    $product_attribute->product_id=$product->id;
-                    $product_attribute->attribute_id=$k['attribute_id'];
-                    $product_attribute->attribute_detail_id=$k['attribute_detail_id'];
-                    $product_attribute->save();
-                }
-            }
-        }
 
 
         if($request->hasfile('multi_img'))

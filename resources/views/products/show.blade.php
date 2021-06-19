@@ -55,15 +55,28 @@
                             <div class="sp-heading">
                                 <h4 class="h4">{{$data['main']->name}}</h4>
                                 <span class="price-box">
-                                    @if($data['disc']->has_discount)
-                                        <span class="old-price">{{ $_SESSION['curr'].$data['main']->price }}</span>
-                                        @if($data['disc']->type == 'FLAT')
-                                            <span class="new-price">{{ $_SESSION['curr'].$data['disc']->rate }}</span>
+                                    @if(count($product->productAttribute))
+                                        @if($data['disc']->has_discount)
+                                            <span class="old-price">{{ $_SESSION['curr'].$product->productAttribute[0]->attribute_price }}</span>
+                                            @if($data['disc']->type == 'FLAT')
+                                                <span class="new-price">{{ $_SESSION['curr'].$data['disc']->rate }}</span>
+                                            @else
+                                                <span class="new-price">{{$_SESSION['curr']. round(( (100 - $data['disc']->rate) / 100) * $product->productAttribute[0]->attribute_price)  }}</span>
+                                            @endif
                                         @else
-                                            <span class="new-price">{{$_SESSION['curr']. ( (100 - $data['disc']->rate) / 100) * $data['main']->price  }}</span>
+                                            <span class="new-price ml-0">{{$_SESSION['curr']. $product->productAttribute[0]->attribute_price }}</span>
                                         @endif
                                     @else
-                                        <span class="new-price ml-0">{{$_SESSION['curr']. $data['main']->price }}</span>
+                                        @if($data['disc']->has_discount)
+                                            <span class="old-price">{{ $_SESSION['curr'].$data['main']->price }}</span>
+                                            @if($data['disc']->type == 'FLAT')
+                                                <span class="new-price">{{ $_SESSION['curr'].$data['disc']->rate }}</span>
+                                            @else
+                                                <span class="new-price">{{$_SESSION['curr']. round(( (100 - $data['disc']->rate) / 100) * $data['main']->price)  }}</span>
+                                            @endif
+                                        @else
+                                            <span class="new-price ml-0">{{$_SESSION['curr']. $data['main']->price }}</span>
+                                        @endif
                                     @endif
                                 </span>
                                 <p class="h6 mt-3 mb-1">{{ $data['descr']->short_des }}</p>
@@ -84,16 +97,18 @@
                                     <li>Availability: <a href="javascript:void(0)" style="pointer-events:none;">{{$data['inventory']->in_stock==1?' In stock':'Out of stock'}}</a></li>
                                 </ul>
                             </div>
-                            <!-- <div class="product-size_box">
-                                <span>Size</span>
-                                <select class="myniceselect nice-select">
-                                    <option value="1">S</option>
-                                    <option value="2">M</option>
-                                    <option value="3">L</option>
-                                    <option value="4">XL</option>
+                            @if (count($product->productAttribute))
+                            <div class="product-size_box">
+                                <span>Select {{$product->productAttribute[0]->attribute->name}} :</span>
+                                <select class="myniceselect nice-select" id="attrChange">
+                                    @foreach ($product->productAttribute as $opt)
+                                        <option data-price="{{$opt->attribute_price}}" value="{{$opt->attributeDetail->id}}">{{$opt->attributeDetail->name}}</option>
+                                    @endforeach
                                 </select>
                             </div>
-                            <div class="quantity">
+                            @endif
+                           
+                            <!-- <div class="quantity">
                                 <label>Quantity</label>
                                 <div class="cart-plus-minus">
                                     <input class="cart-plus-minus-box" value="1" type="text">
@@ -288,4 +303,24 @@
 
 
 @section ('script')
+<script>
+    $(document).on('change', '#attrChange', function(){
+       let price =  $(this).find(':selected').data('price');
+       let disc =  <?=$data['disc']->has_discount?>;
+       if(disc){
+            let discType =  "<?=$data['disc']->type?>";
+            let rate =  <?=$data['disc']->rate?>;
+            if(discType == 'FLAT'){
+                $('.old-price').html("<?=$_SESSION['curr']?>" + price);
+                $('.new-price').html("<?=$_SESSION['curr']?>"+ rate);
+            } else{ 
+                let new_price = Math.round(((100-rate)/100)*price);
+                $('.old-price').html("<?=$_SESSION['curr']?>" + price);
+                $('.new-price').html("<?=$_SESSION['curr']?>" + new_price);
+            } 
+        } else { 
+            $('.new-price').html("<?=$_SESSION['curr']?>" + price);
+        }
+    })
+</script>
 @endsection
