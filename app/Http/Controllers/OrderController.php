@@ -113,7 +113,11 @@ class OrderController extends Controller
 
                                                 <div class="order-detail mr-auto d-flex flex-column justify-content-center">
                                                     <div class="detail-1">
-                                                        <p class="h6">'.$item->product->name.'</p>
+                                                        <p class="h6">'.$item->product->name;
+
+                                                    $item->product_variant!=null ? $response.= '<small> ('.$item->product_variant.')</small>' : '' ;
+                                                    
+                                                    $response.='</p>  
                                                     </div>
                                                     <div class="detail-3">
                                                         <p class="mb-0">Quantity: '.$item->qty.'</p>

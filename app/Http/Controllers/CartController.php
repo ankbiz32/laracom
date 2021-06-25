@@ -26,10 +26,24 @@ class CartController extends Controller
     {
         $product = Product::find($id);
         if($product && $product->is_active && $product->ProductInventory->in_stock){
+            
+            if(isset($_GET['attr'])){
+                if(!$product->productAttribute->pluck('attribute_detail_id')->contains($_GET['attr'])){
+                    return redirect()->back()->with('info','Product variant not found.');
+                }
+            }
+
             $oldCart = Session::has('cart') ? Session::get('cart') : null;
             if($oldCart){
-                if(array_key_exists($id,$oldCart->items)){
-                    if($oldCart->items[$id]['quantity'] < $product->max_order_qty){
+                $filteredArray =  array_filter($oldCart->items, function($e) use($id){
+                                    return isset($e['product_id']) && $e['product_id'] == $id;
+                                });
+                if($filteredArray){
+                    $qt = 0;
+                    foreach($filteredArray as $fa){
+                        $qt+=$fa['quantity'];
+                    }
+                    if($qt < $product->max_order_qty){
                         $cart = new Cart($oldCart);
                         $cart->add($product,$product->id);
                         $request->session()->put('cart',$cart);
@@ -65,10 +79,27 @@ class CartController extends Controller
             if(Session::has('cart')){
                 $id=decrypt($request->id);
                 $oldCart = Session::get('cart');
-                $cart = new Cart($oldCart);
-                $cart->update($id, $request->qty);
-                $request->session()->put('cart',$cart);
-                return json_encode(['status'=>'200']);
+                $product = Product::find($id);
+
+                $filteredArray =  array_filter($oldCart->items, function($e) use($id){
+                                    return isset($e['product_id']) && $e['product_id'] == $id;
+                                });
+                if($filteredArray){
+                    $qt = 0;
+                    foreach($filteredArray as $fa){
+                        $qt+=$fa['quantity'];
+                    }
+                    if($qt <= $product->max_order_qty){
+                        $cart = new Cart($oldCart);
+                        $cart->update($id, $request->qty, $request->variant);
+                        $request->session()->put('cart',$cart);
+                        return json_encode(['status'=>'200']);
+                    }
+                    else{
+                        return json_encode(['status'=>'Max order qty limit reached for this product']);
+                    }
+                }
+                // return json_encode(['status'=>'200']);
             }
             else{
                 return json_encode(['status'=>'404']);

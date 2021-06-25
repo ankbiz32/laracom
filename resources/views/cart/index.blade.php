@@ -45,17 +45,20 @@
                                     @foreach ($products as $key => $value)
                                     <tr>
                                         <td class="quicky-product-thumbnail"><a href="{{ route('product.show',['product'=>$value['item']->id,'slug'=>$value['item']->url_slug]) }}"><img height="80" style="object-fit:contain" src="{{URL::to('/').'/'. $value['item']->image }}" alt="Cart Thumbnail"></a></td>
-                                        <td class="quicky-product-name"><strong><a href="{{ route('product.show',['product'=>$value['item']->id,'slug'=>$value['item']->url_slug]) }}">{{ $value['item']->name }}</a></strong></td>
-                                        <td data-label="Price: " class="quicky-product-price">{{$_SESSION['curr']}}<span class="amount">{{ $value['price']}}</span></td>
+                                        <td class="quicky-product-name"><strong><a href="{{ route('product.show',['product'=>$value['item']->id,'slug'=>$value['item']->url_slug]) }}">{{ $value['item']->name }}</a></strong>
+                                        <br><br>
+                                        <small>{{ $value['product_variant_name'] }}</small>
+                                        </td>
+                                        <td data-label="Price: " class="quicky-product-price">{{$_SESSION['curr']}}<span class="amount">{{ round($value['price'])}}</span></td>
                                         <td data-label="Qty: " class="quantity">
                                             <div class="cart-plus-minus float-right float-sm-none">
-                                                <input class="cart-plus-minus-box" value="{{ $value['quantity']}}" data-max="{{$value['item']->max_order_qty}}" type="number" min=0 max="{{$value['item']->max_order_qty}}" data-id="{{encrypt($value['item']->id)}}" readonly>
+                                                <input class="cart-plus-minus-box" value="{{ $value['quantity']}}" data-max="{{$value['item']->max_order_qty}}" data-variant="{{ $value['product_variant'] }}" type="number" min=0 max="{{$value['item']->max_order_qty}}" data-id="{{encrypt($value['item']->id)}}" readonly>
                                                 <div class="dec qtybutton"><i class="zmdi zmdi-chevron-down"></i></div>
                                                 <div class="inc qtybutton"><i class="zmdi zmdi-chevron-up"></i></div>
                                             </div>
                                             <!-- <label class="mt-2"><small>Max: {{ $value['item']->max_order_qty}}</small></label> -->
                                         </td>
-                                        <td data-label="Sub total: " class="product-subtotal">{{$_SESSION['curr']}}<span class="amount">{{ $value['quantity'] * $value['price']}}</span></td>
+                                        <td data-label="Sub total: " class="product-subtotal">{{$_SESSION['curr']}}<span class="amount">{{ $value['quantity'] * round($value['price'])}}</span></td>
                                         <td class="quicky-product-remove"><a href="{{ route('cart.remove',['id'=> $key]) }}" class="d-flex d-sm-block align-items-center justify-content-center"><i class="zmdi zmdi-close text-danger"
                                             title="Remove"> </i><small class="d-inline d-sm-none text-danger" >&nbsp;Remove this product</small></a></td>
                                     </tr>
@@ -86,9 +89,9 @@
                                 <div class="cart-page-total pt-0">
                                     <h2>Cart totals</h2>
                                     <ul class="mb-3">
-                                        <li class="cart-subtotal">Subtotal <span>{{$_SESSION['curr']}} <span class="crt-sbttl"> {{$totalPrice}}</span></span></li>
+                                        <li class="cart-subtotal">Subtotal <span>{{$_SESSION['curr']}} <span class="crt-sbttl"> {{round($totalPrice)}}</span></span></li>
                                         <li class="cart-shipping">Taxes <span>0</span></li>
-                                        <li class="cart-total">Total <span>{{$_SESSION['curr']}} <span class="crt-ttl"> {{$totalPrice}}</span></span></li>
+                                        <li class="cart-total">Total <span>{{$_SESSION['curr']}} <span class="crt-ttl"> {{round($totalPrice)}}</span></span></li>
                                     </ul>
                                     <a href="{{route('checkout.index')}}" class="float-right quicky-btn ">PROCEED TO CHECKOUT</a>
                                 </div>
@@ -111,7 +114,12 @@
 
 @section ('script')
     <script>
-        function update(e){
+        function update(e, oldVal){
+            let variant = null;
+            if(e.data('variant')!=""){
+                variant = e.data('variant');
+            } 
+
             if(e.val()<1){
                 e.val(1);
             }
@@ -124,6 +132,7 @@
                 data:{
                     "_token": "{{ csrf_token() }}",
                     "id": e.data('id'),
+                    "variant": variant,
                     "qty": e.val()
                 },
                 dataType:'json',
@@ -150,6 +159,7 @@
                         });;
                     }
                     else if(data.status==404){
+                        e.val(oldVal)
                         $.message({
                             type: "info",
                             text: "Product not found",
@@ -158,10 +168,21 @@
                             showClose: true
                         });;
                     }
-                    else{
+                    else if(data.status==403){
+                        e.val(oldVal)
                         $.message({
                             type: "warning",
                             text: "<strong>Warning</strong> <br> This action is not allowed",
+                            duration: 2000,
+                            positon: "top-right",
+                            showClose: true
+                        });;
+                    }
+                    else{
+                        e.val(oldVal)
+                        $.message({
+                            type: "Info",
+                            text: "<strong>Warning</strong> <br>"+data.status,
                             duration: 2000,
                             positon: "top-right",
                             showClose: true

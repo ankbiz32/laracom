@@ -244,15 +244,15 @@
                                     @foreach ($products as $key => $value)
                                         <tr class="cart_item">
                                             <td class="cart-product-name pl-0"> {{ $value['item']->name}} &nbsp;
-                                            × &nbsp; {{ $value['quantity']}}</td>
-                                            <td class="cart-product-total pr-0 text-right"><span class="amount">{{ $_SESSION['curr'].($value['quantity'] * $value['price'])}}</span></td>
+                                            × &nbsp; {{ $value['quantity']}} <br> <small>{{$value['product_variant_name']!=null ? ' ('. $value['product_variant_name'] .')' : ''}}</small> </td>
+                                            <td class="cart-product-total pr-0 text-right"><span class="amount">{{ $_SESSION['curr'].($value['quantity'] * round($value['price']))}}</span></td>
                                         </tr>
                                     @endforeach
                                     </tbody>
                                     <tfoot>
                                         <tr class="cart-subtotal">
                                             <th class="pl-0">Cart Subtotal</th>
-                                            <td class="pr-0 text-right"><span class="amount">{{$_SESSION['curr'].$totalPrice}}</span></td>
+                                            <td class="pr-0 text-right"><span class="amount">{{$_SESSION['curr'].round($totalPrice)}}</span></td>
                                         </tr>
                                         <tr class="cart-subtotal">
                                             <th class="pl-0">Taxes</th>
@@ -264,7 +264,7 @@
                                         </tr>
                                         <tr class="order-total">
                                             <th class="pl-0">Order Total</th>
-                                            <td class="pr-0 text-right"><strong><span class="amount">{{$_SESSION['curr'].$totalPrice}}</span></strong></td>
+                                            <td class="pr-0 text-right"><strong><span class="amount">{{$_SESSION['curr'].round($totalPrice)}}</span></strong></td>
                                         </tr>
                                     </tfoot>
                                 </table>

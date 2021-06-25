@@ -392,15 +392,16 @@
                         <ul class="minicart-list mt-3">
                         
                             @foreach ($cart->items as $key => $value)
-                            <li class="minicart-product">
+                            <li class="minicart-product align-items-start">
                                 <a class="product-item_remove" href="{{ route('cart.remove',['id'=> $key]) }}"><i
                                     class="zmdi zmdi-close"></i></a>
                                 <div class="product-item_img">
                                     <img src="{{URL::to('/').'/'. $value['item']->image }}" style="width:100%; height: 60px; -o-object-fit: contain; object-fit: contain;" alt="Product Image">
                                 </div>
                                 <div class="product-item_content">
-                                    <a class="product-item_title" href="{{ route('product.show',[ 'product'=>$value['item']->id, 'slug'=>$value['item']->url_slug ])}}">{{ $value['item']->name }}</a>
-                                    <span class="product-item_quantity">{{ $value['quantity'] }} x {{ $value['price']}}</span>
+                                    <a class="product-item_title" href="{{ route('product.show',[ 'product'=>$value['item']->id, 'slug'=>$value['item']->url_slug ])}}">{{ $value['item']->name }}</a> 
+                                    <span class="product-item_quantity pt-0"><small>{{$value['product_variant_name'] ?? ''}}</small></span>
+                                    <span class="product-item_quantity pt-0">{{ $value['quantity'] }} x {{$_SESSION['curr']. round($value['price'])}}</span>
                                 </div>
                             </li>
                             @endforeach
@@ -408,7 +409,7 @@
                     </div>
                     <div class="minicart-item_total">
                         <span>Subtotal:</span>
-                        <span class="ammount">{{$cart->totalPrice}}</span>
+                        <span class="ammount">{{$_SESSION['curr']. round($cart->totalPrice)}}</span>
                     </div>
                     <div class="minicart-btn_area">
                         <a href="{{route('cart.index')}}" class="quicky-btn-outline btn-block text-center quicky-btn_fullwidth square-btn">View Cart</a>

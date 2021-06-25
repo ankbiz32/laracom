@@ -119,7 +119,11 @@
                             <div class="qty-btn_area">
                                 <ul>
                                     @if($data['inventory']->in_stock)
-                                        <li class="mr-2"><a href="{{ route('cart.add',['product'=>$data['main']->id]) }}" class="quicky-btn btn-block text-center quicky-btn_fullwidth square-btn">Add to cart</a></li>
+                                        @if (count($product->productAttribute))
+                                            <li class="mr-2"><a href="{{ route('cart.add',['product'=>$data['main']->id]) }}?attr={{$product->productAttribute[0]->attributeDetail->id}}" id="productAdder" class="quicky-btn btn-block text-center quicky-btn_fullwidth square-btn">Add to cart</a></li>
+                                        @else
+                                            <li class="mr-2"><a href="{{ route('cart.add',['product'=>$data['main']->id]) }}" id="productAdder" class="quicky-btn btn-block text-center quicky-btn_fullwidth square-btn">Add to cart</a></li>
+                                        @endif
                                     @endif
 
                                     @if($data['main']->wishlist)
@@ -306,6 +310,7 @@
 <script>
     $(document).on('change', '#attrChange', function(){
        let price =  $(this).find(':selected').data('price');
+       $('#productAdder').attr('href', "{{ route('cart.add',['product'=>$data['main']->id]) }}?attr="+$(this).val());
        let disc =  <?=$data['disc']->has_discount?>;
        if(disc){
             let discType =  "<?=$data['disc']->type?>";

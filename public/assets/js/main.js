@@ -230,7 +230,7 @@
             if (oldValue < maxValue) {
                 var newVal = parseFloat(oldValue) + 1;
                 $button.parent().find('input').val(newVal);
-                update ($button.parent().find('input'));
+                update ($button.parent().find('input'), oldValue);
 			} else {
 				var newVal = maxValue;
                 $button.parent().find('input').val(newVal);
@@ -239,7 +239,7 @@
 			if (oldValue > 1) {
 				var newVal = parseFloat(oldValue) - 1;
                 $button.parent().find('input').val(newVal);
-                update ($button.parent().find('input'));
+                update ($button.parent().find('input'), oldValue);
             } else {
 				var newVal = 1;
                 $button.parent().find('input').val(newVal);

@@ -100,7 +100,10 @@
 
                                             <div class="order-detail mr-auto d-flex flex-column justify-content-center">
                                                 <div class="detail-1">
-                                                    <h5>{{$item->product->name}}</h5>
+                                                    <h5>{{$item->product->name}}
+                                                    
+                                                    {!! $item->product_variant!=null ? '<small><small> ('.$item->product_variant.')</small></small>' : '' !!}
+                                                    </h5>
                                                 </div>
                                                 <div class="detail-3">
                                                     <h6>Quantity: {{$item->qty}}</h6>

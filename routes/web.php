@@ -25,6 +25,9 @@ Route::group(['middleware' => 'web'], function () {
     Route::post('/hdfcCheckoutResponse','PaymentController@hdfcCheckout')->name('hdfcCheckoutResponse');
     Route::post('/orderResponse', function () {return dd($_POST);});
     Route::get('/checkout/success','CheckoutController@success')->name('checkout.success');
+    
+    Route::post('paysuccess', 'PaymentController@paysuccess');
+    Route::get('thank-you', 'PaymentController@thankYou');
 
     Route::post('/user/order','OrderController@show')->name('order.show')->middleware('auth');
 
@@ -38,8 +41,6 @@ Route::group(['middleware' => 'web'], function () {
     Route::get('/wishlist/remove/{id}','WishlistController@remove')->name('wishlist.remove')->middleware('auth');
     Route::get('/wishlist/update/{id}', 'WishlistController@update')->name('wishlist.update')->middleware('auth');
 
-    Route::post('paysuccess', 'PaymentController@paysuccess');
-    Route::get('thank-you', 'PaymentController@thankYou');
 
     Route::post('/susbcribe', 'NewsletterController@add')->name('newsletter.add');
 });

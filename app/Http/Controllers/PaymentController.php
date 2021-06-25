@@ -88,6 +88,7 @@
                 $order_det = new Order_details();
                 $order_det->order_id = $order->id;
                 $order_det->product_id = $item['product_id'];
+                $order_det->product_variant = $item['product_variant_name'];
                 $order_det->qty = $item['quantity'];
                 $order_det->price = $item['price'];
                 $order_det->save();
@@ -217,6 +218,7 @@
                 $order_det = new Order_details();
                 $order_det->order_id = $order->id;
                 $order_det->product_id = $item['product_id'];
+                $order_det->product_variant = $item['product_variant_name'];
                 $order_det->qty = $item['quantity'];
                 $order_det->price = $item['price'];
                 $order_det->save();
