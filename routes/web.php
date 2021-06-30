@@ -133,6 +133,8 @@ Route::post('/admin-enquiries/remove', 'AdminController@delEnqBatch')->name('adm
 Route::get('/admin-wishlist','AdminController@wishlist')->name('admin.wishlist')->middleware(['auth','backend']);
 Route::get('txn/{pid}', 'PaymentController@info')->name('txn.info')->middleware(['auth','admin']);
 
+/*--Admin Reports--*/
+Route::get('/admin-reports', 'adminController@reports')->name('admin.reports')->middleware(['auth','admin']);
 
 Route::get('/about', 'HomeController@about')->name('home.about');
 Route::get('/contact', 'HomeController@contact')->name('home.contact');

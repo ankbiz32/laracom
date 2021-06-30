@@ -25,6 +25,7 @@ class CheckoutController extends Controller
             return view('cart.index');
         }
         
+        $country = Country::all();
         $oldCart= Session::get('cart');
         $cart= new Cart($oldCart);
         $products = $cart->items;
@@ -38,7 +39,7 @@ class CheckoutController extends Controller
             ));
         $oid=$order['id'];
         $user = Auth::user();
-        return view('checkout.index', compact ('products','totalPrice','user','totalQuantity','oid'));
+        return view('checkout.index', compact ('products','country', 'totalPrice','user','totalQuantity','oid'));
     }
 
     public function checkout(Request $request)

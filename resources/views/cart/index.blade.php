@@ -159,34 +159,34 @@
                         });;
                     }
                     else if(data.status==404){
-                        e.val(oldVal)
                         $.message({
                             type: "info",
                             text: "Product not found",
                             duration: 2000,
                             positon: "top-right",
                             showClose: true
-                        });;
+                        });
+                        e.val(oldVal);
                     }
                     else if(data.status==403){
-                        e.val(oldVal)
                         $.message({
                             type: "warning",
                             text: "<strong>Warning</strong> <br> This action is not allowed",
                             duration: 2000,
                             positon: "top-right",
                             showClose: true
-                        });;
+                        });
+                        e.val(oldVal);
                     }
                     else{
-                        e.val(oldVal)
                         $.message({
-                            type: "Info",
-                            text: "<strong>Warning</strong> <br>"+data.status,
+                            type: "info",
+                            text: data.status,
                             duration: 2000,
                             positon: "top-right",
                             showClose: true
-                        });;
+                        });
+                        e.val(oldVal);
                     }
 
                 },

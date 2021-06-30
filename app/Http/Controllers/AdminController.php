@@ -392,4 +392,15 @@ class AdminController extends Controller
         }
         return view('admin.wishlist');
     }
+
+    public function reports()
+    {
+
+
+        return view('admin.reports');
+    }
+
+
+
+
 }

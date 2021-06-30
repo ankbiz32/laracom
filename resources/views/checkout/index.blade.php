@@ -73,12 +73,15 @@
                                             <label>Country *</label>
                                             <select class="myniceselect nice-select wide @error('country') is-invalid @enderror" name="country" required>
                                                 <option value="in">India</option>
-                                                <option value="uk">London</option>
+                                            @foreach ($country as $c)
+                                                <option value="{{$c->country_iso_code}}">{{$c->country_name}}</option>
+                                            @endforeach
+                                                <!-- <option value="uk">London</option>
                                                 <option value="jpn">Japan</option>
                                                 <option value="fr">France</option>
                                                 <option value="de">Germany</option>
                                                 <option value="aus">Australia</option>
-                                                <option value="usa">USA</option>
+                                                <option value="usa">USA</option> -->
                                             </select>
                                             @error('country')
                                                 <span class="invalid-feedback" role="alert">

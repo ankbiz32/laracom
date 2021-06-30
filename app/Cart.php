@@ -78,53 +78,46 @@ class Cart
         }
     }
 
-    public function update($id, $qty, $variant)
+    public function update($id, $qty)
     {
-        $product = Product::find($id);
-        $key= null;
-        $other_variant_qty= 0;
-        $qt = 0;
-        if($variant){
-            foreach($this->items as $k=>$fa){
-                if($fa['product_id'] == $id){
-                    $qt+=$fa['quantity'];
-                    if($fa['product_variant'] == $variant){
-                        $key=$k;
-                    }
-                    else{
-                        $other_variant_qty=$fa['quantity'];
-                    }
-                }
+        $key= "";
+        $flag=false;
+        foreach($this->items as $k=>$fa){
+            if($fa['product_id'] == $id){
+                $key=$k;
+                $flag=true;
             }
-            if($qt <= $product->max_order_qty){
-                if(($qty+$other_variant_qty) <= $product->max_order_qty){
-                    $this->totalPrice = $this->totalPrice - $this->items[$key]['price'] * $this->items[$key]['quantity'] + $this->items[$key]['price'] * $qty;
-                    $this->totalQuantity = $this->totalQuantity - $this->items[$key]['quantity'] + $qty;
-                    $this->items[$key]['quantity'] = $qty;
-                }
-            }
+        }
+        if($flag){
+            $this->totalPrice = $this->totalPrice - $this->items[$key]['price'] * $this->items[$key]['quantity'] + $this->items[$key]['price'] * $qty;
+            $this->totalQuantity = $this->totalQuantity - $this->items[$key]['quantity'] + $qty;
+            $this->items[$key]['quantity'] = $qty;
+            return true;
         }
         else{
-            foreach($this->items as $k=>$fa){
-                if($fa['product_id'] == $id){
-                    $qt+=$fa['quantity'];
-                    $key=$k;
-                }
-            }
-            if($qty <= $product->max_order_qty){
-                $this->totalPrice = $this->totalPrice - $this->items[$key]['price'] * $this->items[$key]['quantity'] + $this->items[$key]['price'] * $qty;
-                $this->totalQuantity = $this->totalQuantity - $this->items[$key]['quantity'] + $qty;
-                $this->items[$key]['quantity'] = $qty;
+            return false;
+        }
+    }
+
+    public function update_variant($id, $qty, $variant)
+    {
+        $key= "";
+        $flag=false;
+        foreach($this->items as $k=>$fa){
+            if($fa['product_variant'] == $variant && $fa['product_id'] == $id){
+                $key=$k;
+                $flag=true;
             }
         }
-
-      
-
-        // if (array_key_exists($id, $this->items)) {
-        //     $this->totalPrice = $this->totalPrice - $this->items[$id]['price'] * $this->items[$id]['quantity'] + $this->items[$id]['price'] * $qty;
-        //     $this->totalQuantity = $this->totalQuantity - $this->items[$id]['quantity'] + $qty;
-        //     $this->items[$id]['quantity'] = $qty;
-        // }
+        if($flag){
+            $this->totalPrice = $this->totalPrice - $this->items[$key]['price'] * $this->items[$key]['quantity'] + $this->items[$key]['price'] * $qty;
+            $this->totalQuantity = $this->totalQuantity - $this->items[$key]['quantity'] + $qty;
+            $this->items[$key]['quantity'] = $qty;
+            return true;
+        }
+        else{
+            return false;
+        }
     }
 
     public function remove($id)

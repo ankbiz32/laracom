@@ -213,7 +213,7 @@
 
             <li class="nav-header pt-2 text-grey" style="opacity: .5">SYSTEM</li>
             <li class="nav-item">
-              <a href="#" class="nav-link py-3">
+              <a href="{{ route('admin.reports') }}" class="nav-link py-3">
                 <i class="far fa-chart-bar nav-icon"></i>
                 <p>Reports</p>
               </a>
